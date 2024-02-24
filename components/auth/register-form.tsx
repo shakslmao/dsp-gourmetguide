@@ -116,7 +116,6 @@ export const RegisterForm = () => {
                                                         type="email"
                                                     />
                                                 </FormControl>
-                                                <FormMessageError errorMessage={validationError} />
                                                 <FormMessage className="text-center" />
                                             </FormItem>
                                         )}
