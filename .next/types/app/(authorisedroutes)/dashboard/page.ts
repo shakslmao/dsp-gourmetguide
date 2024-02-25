@@ -1,4 +1,4 @@
-// File: /Users/shaks/Desktop/dsp-gourmetguide/app/(authorisedroutes)/dashboard/page.tsx
+// File: /Users/shaks/Desktop/digitalsystemsproject/app/(authorisedroutes)/dashboard/page.tsx
 import * as entry from '../../../../../app/(authorisedroutes)/dashboard/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

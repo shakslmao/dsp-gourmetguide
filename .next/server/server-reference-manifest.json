@@ -1,22 +1,5 @@
 {
-  "node": {
-    "374e09f8b15995f454c3a815306f9f625bb15022": {
-      "workers": {
-        "app/inital-preferences/register/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fshaks%2FDesktop%2Fdsp-gourmetguide%2Factions%2Fregister.ts%22%2C%5B%22register%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/inital-preferences/register/page": "action-browser"
-      }
-    },
-    "e9bf58a2737eda85cdeeb9ece313418c6bdb366f": {
-      "workers": {
-        "app/auth/login/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fshaks%2FDesktop%2Fdsp-gourmetguide%2Factions%2Flogin.ts%22%2C%5B%22login%22%5D%5D%5D&__client_imported__=true!"
-      },
-      "layer": {
-        "app/auth/login/page": "action-browser"
-      }
-    }
-  },
+  "node": {},
   "edge": {},
-  "encryptionKey": "+ZAP3qFNgsbInzT0GAcYlDmrHS7bZehwtOH7MaIT/jE="
+  "encryptionKey": "S4S/qq4F/B3pD/PjNnfsnNhgHosSiZngmD+GW4k/XWY="
 }
