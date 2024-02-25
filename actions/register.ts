@@ -37,12 +37,12 @@ export const register = async (data: TRegistrationValidationSchema) => {
         data: {
             firstName,
             email,
-            hashedPassword,
+            password: hashedPassword,
         },
     });
 
     // Placeholder for sending a verification email to the user.
 
-    // Return a success message once the user is created and the verification email is (presumably) sent.
+    // Return a success message once the user is created and the verification email is sent.
     return { success: "Sent" };
 };

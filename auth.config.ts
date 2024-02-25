@@ -16,7 +16,7 @@ export default {
                     if (!user || !user.password) {
                         return null;
                     }
-                    //
+                    // Check if the password is valid
                     const passwordMatch = await bcrypt.compare(password, user.password);
                     if (passwordMatch) return user;
                 }
@@ -26,4 +26,3 @@ export default {
         }),
     ],
 } satisfies NextAuthConfig;
-// Auth

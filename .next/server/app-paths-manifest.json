@@ -1,3 +1,5 @@
 {
-  "/auth/login/page": "app/auth/login/page.js"
+  "/auth/login/page": "app/auth/login/page.js",
+  "/inital-preferences/register/page": "app/inital-preferences/register/page.js",
+  "/(authorisedroutes)/dashboard/page": "app/(authorisedroutes)/dashboard/page.js"
 }
