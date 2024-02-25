@@ -33,7 +33,7 @@ export const RegisterForm = () => {
     const form = useForm<TRegistrationValidationSchema>({
         resolver: zodResolver(RegistrationValidationSchema),
         defaultValues: {
-            firstName: "",
+            name: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -79,7 +79,7 @@ export const RegisterForm = () => {
                                 <div className="space-y-2">
                                     <FormField
                                         control={form.control}
-                                        name="firstName"
+                                        name="name"
                                         render={({ field }) => (
                                             <FormItem>
                                                 <FormLabel className="block text-medium text-green-600">
@@ -90,7 +90,7 @@ export const RegisterForm = () => {
                                                         {...field}
                                                         disabled={isSubmitting} // Disable input while submitting
                                                         placeholder="Enter your First Name"
-                                                        type="firstName"
+                                                        type="name"
                                                     />
                                                 </FormControl>
                                                 <FormMessage className="text-center" />

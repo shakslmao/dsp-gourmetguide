@@ -14,7 +14,7 @@ export const register = async (data: TRegistrationValidationSchema) => {
     }
 
     // Destructure the validated data to extract email, password, and firstName.
-    const { email, password, firstName } = fieldsValidated.data;
+    const { email, password, name } = fieldsValidated.data;
 
     // Define the number of salt rounds for bcrypt hashing.
     const saltRounds = 12;
@@ -35,7 +35,7 @@ export const register = async (data: TRegistrationValidationSchema) => {
     // If no existing user is found, create a new user record in the database with the provided details.
     await db.user.create({
         data: {
-            firstName,
+            name,
             email,
             password: hashedPassword,
         },

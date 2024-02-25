@@ -14,7 +14,7 @@ export const LoginValidationSchema = z.object({
 
 export const RegistrationValidationSchema = z
     .object({
-        firstName: z.string().min(3, { message: "Name must be a minimum of 3 characters" }),
+        name: z.string().min(3, { message: "Name must be a minimum of 3 characters" }),
 
         email: z.string().email({ message: "Invalid Format" }),
         password: z
