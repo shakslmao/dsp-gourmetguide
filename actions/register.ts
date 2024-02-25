@@ -1,6 +1,6 @@
 "use server";
 
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "@/db/prismadb";
 import { RegistrationValidationSchema, TRegistrationValidationSchema } from "@/schemas";
 

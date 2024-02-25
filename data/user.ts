@@ -1,7 +1,7 @@
 import { db } from "@/db/prismadb";
 
 // Return a user by their Email
-export const getUserByEmail = async (email: string) => {
+export const fetchUserEmail = async (email: string) => {
     try {
         const user = await db.user.findUnique({ where: { email } });
         return user;
@@ -11,7 +11,7 @@ export const getUserByEmail = async (email: string) => {
 };
 
 // Return a user by their ID
-export const getUserById = async (id: string) => {
+export const fetchUserId = async (id: string) => {
     try {
         const user = await db.user.findUnique({ where: { id } });
         return user;

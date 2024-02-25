@@ -1,0 +1,14 @@
+{
+  "node": {
+    "e9bf58a2737eda85cdeeb9ece313418c6bdb366f": {
+      "workers": {
+        "app/auth/login/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fshaks%2FDesktop%2Fdsp-gourmetguide%2Factions%2Flogin.ts%22%2C%5B%22login%22%5D%5D%5D&__client_imported__=true!"
+      },
+      "layer": {
+        "app/auth/login/page": "action-browser"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "Gf6hjE7TNgawZjaHuYoff95gvQZS3S47R5nNjbw5O3k="
+}
