@@ -22,6 +22,7 @@ import { Separator } from "@/components/ui/separator";
 import { FormMessageError } from "../formError";
 import { FormMessageSuccess } from "../formSuccess";
 import { login } from "@/actions/login";
+import { LOGIN_REDIRECT } from "@/routes";
 
 // Component for rendering the login form
 export const LoginForm = () => {
@@ -50,6 +51,10 @@ export const LoginForm = () => {
                 setValidationSuccess(values.success);
             });
         });
+    };
+
+    const onClick = (provider: "google") => {
+        signIn(provider, { callbackUrl: LOGIN_REDIRECT });
     };
 
     // Render method returning TSX for the login form
@@ -134,11 +139,7 @@ export const LoginForm = () => {
                         </p>
                         <div className="flex justify-center">
                             <button
-                                onClick={() =>
-                                    signIn("google", {
-                                        callbackUrl: "/your-redirect-url",
-                                    })
-                                }
+                                onClick={() => onClick("google")}
                                 className="flex items-center justify-center gap-2 px-6 py-3 border border-grey-200 text-base font-medium rounded-md text-grey-900">
                                 <FcGoogle className="text-sm text-gray-900" /> Continue with Google
                             </button>

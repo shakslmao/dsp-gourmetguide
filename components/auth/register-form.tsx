@@ -22,6 +22,7 @@ import { RegistrationValidationSchema, TRegistrationValidationSchema } from "@/s
 import { signIn } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
 import { register } from "@/actions/register";
+import { LOGIN_REDIRECT } from "@/routes";
 
 export const RegisterForm = () => {
     const [isSubmitting, startTransition] = useTransition(); // Use the useTransition hook to manage state transitions for submitting the form.
@@ -53,6 +54,10 @@ export const RegisterForm = () => {
                 setValidationSuccess(values.success);
             });
         });
+    };
+
+    const onClick = (provider: "google") => {
+        signIn(provider, { callbackUrl: LOGIN_REDIRECT });
     };
 
     return (
@@ -184,11 +189,7 @@ export const RegisterForm = () => {
                         </p>
                         <div className="flex justify-center">
                             <button
-                                onClick={() =>
-                                    signIn("google", {
-                                        callbackUrl: "/your-redirect-url",
-                                    })
-                                }
+                                onClick={() => onClick("google")}
                                 className="flex items-center justify-center gap-2 px-6 py-3 border border-grey-200 text-base font-medium rounded-md text-grey-900">
                                 <FcGoogle className="text-sm text-gray-900" /> Sign up with Google
                             </button>
