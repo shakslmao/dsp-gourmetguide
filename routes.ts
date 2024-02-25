@@ -9,7 +9,7 @@ export const publicRoutes = ["/"];
  * @type {string[]}
  */
 
-export const authenticatedRoutes = ["/auth/login", "/inital-preferences/register"];
+export const authenticatedRoutes = ["/auth/login", "/inital-preferences/register", "/auth/error"];
 
 /**
  *  Routes that are for API authentication purposes,
