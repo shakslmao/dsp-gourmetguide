@@ -133,6 +133,13 @@ export const LoginForm = () => {
                                 </Button>
                             </form>
                         </Form>
+                        <p className="text-sm max-w-prose text-center text-muted-foreground text-gray-900">
+                            <Link
+                                href="/auth/reset"
+                                className="hover:underline">
+                                Forgot your Password ?
+                            </Link>
+                        </p>
 
                         <Separator />
                         <p className="text-sm max-w-prose text-center text-muted-foreground text-gray-900">
