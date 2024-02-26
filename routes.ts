@@ -2,7 +2,7 @@
  *  Routes that do not require authentication
  * @type {string[]}
  */
-export const publicRoutes = ["/"];
+export const publicRoutes = ["/", "/auth/new-verification"];
 
 /**
  *  Routes that are used for authentication, they will be redirected to the home page if the user is already authenticated
