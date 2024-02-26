@@ -23,16 +23,17 @@ export const {
         },
     },
     callbacks: {
-        /*
-        async signIn({ user }) {
+        async signIn({ user, account }) {
+            if (account?.provider !== "credentials") {
+                return true;
+            }
             const UserExists = await fetchUserId(user.id);
 
-            if (!UserExists || !UserExists.emailVerified) {
+            if (!UserExists?.emailVerified) {
                 return false;
             }
             return true;
         },
-         */
 
         async session({ session, token }) {
             console.log({ sessToken: token, session });

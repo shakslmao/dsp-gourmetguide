@@ -2,7 +2,7 @@
 
 import { PuffLoader } from "react-spinners";
 
-const Loader = () => {
+const PageLoader = () => {
     return (
         <div className="h-[70vh] flex flex-col justify-center items-center">
             <PuffLoader
@@ -13,4 +13,4 @@ const Loader = () => {
         </div>
     );
 };
-export default Loader;
+export default PageLoader;

@@ -3,6 +3,8 @@
 import bcrypt from "bcryptjs";
 import { db } from "@/db/prismadb";
 import { RegistrationValidationSchema, TRegistrationValidationSchema } from "@/schemas";
+import { createVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/mail";
 
 // Define an async function to handle user registration.
 export const register = async (data: TRegistrationValidationSchema) => {
@@ -41,8 +43,9 @@ export const register = async (data: TRegistrationValidationSchema) => {
         },
     });
 
-    // Placeholder for sending a verification email to the user.
+    const verificationToken = await createVerificationToken(email);
+    await sendVerificationEmail(verificationToken.email, verificationToken.token);
 
     // Return a success message once the user is created and the verification email is sent.
-    return { success: "Sent" };
+    return { success: "Email Confirmation Sent" };
 };

@@ -4,6 +4,9 @@ import { LoginValidationSchema, TLoginValidationSchema } from "@/schemas";
 import { signIn } from "@/auth";
 import { LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
+import { fetchUserEmail } from "@/data/user";
+import { createVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export const login = async (data: TLoginValidationSchema) => {
     const fieldsValidated = LoginValidationSchema.safeParse(data);
@@ -12,6 +15,16 @@ export const login = async (data: TLoginValidationSchema) => {
     }
 
     const { email, password } = fieldsValidated.data;
+    const currentUser = await fetchUserEmail(email);
+    if (!currentUser || !currentUser.email || !currentUser.password) {
+        return { error: "Invalid Credentials" };
+    }
+
+    if (!currentUser.emailVerified) {
+        const verificationToken = await createVerificationToken(currentUser.email);
+        await sendVerificationEmail(verificationToken.email, verificationToken.token);
+        return { success: "Email Confirmation Sent" };
+    }
 
     try {
         await signIn("credentials", {
