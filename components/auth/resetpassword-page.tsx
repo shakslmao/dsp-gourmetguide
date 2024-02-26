@@ -2,11 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
-import Link from "next/link";
-import { FcGoogle } from "react-icons/fc";
-import { ArrowRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useSearchParams } from "next/navigation";
 import { FieldValues, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ResetPasswordValidationSchema, TResetValidationSchema } from "@/schemas";
@@ -18,10 +14,10 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { signIn } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
 import { FormMessageError } from "../formError";
 import { FormMessageSuccess } from "../formSuccess";
+import { resetPassword } from "@/actions/reset-password";
 
 export const ResetPassword = () => {
     const [validationError, setValidationError] = useState<string | undefined>("");
@@ -31,8 +27,7 @@ export const ResetPassword = () => {
     const form = useForm<TResetValidationSchema>({
         resolver: zodResolver(ResetPasswordValidationSchema),
         defaultValues: {
-            password: "",
-            confirmPassword: "",
+            email: "",
         },
     });
 
@@ -40,7 +35,12 @@ export const ResetPassword = () => {
         setValidationError("");
         setValidationSuccess("");
 
-        startTransition(() => {});
+        startTransition(() => {
+            resetPassword(data).then((values) => {
+                setValidationError(values.error);
+                setValidationSuccess(values.success);
+            });
+        });
     };
     return (
         <div>
@@ -54,25 +54,27 @@ export const ResetPassword = () => {
                                 <span className="text-green-600">Password</span>.
                             </h1>
                         </div>
+
                         <div className="grid gap-6">
                             <Form {...form}>
-                                <form className="space-y-4">
-                                    {/* Password input field */}
+                                <form
+                                    className="space-y-4"
+                                    onSubmit={form.handleSubmit(onSubmit)}>
                                     <div className="space-y-2">
                                         <FormField
                                             control={form.control}
-                                            name="password"
+                                            name="email"
                                             render={({ field }) => (
                                                 <FormItem>
                                                     <FormLabel className="block text-medium text-green-600">
-                                                        New Password
+                                                        Email
                                                     </FormLabel>
                                                     <FormControl>
                                                         <Input
                                                             {...field}
                                                             disabled={isSubmitting} // Disable input while submitting
-                                                            placeholder="Enter your Password"
-                                                            type="password"
+                                                            placeholder="Enter your email"
+                                                            type="email"
                                                         />
                                                     </FormControl>
                                                     <FormMessage className="text-center" />
@@ -80,28 +82,7 @@ export const ResetPassword = () => {
                                             )}
                                         />
                                     </div>
-                                    <div className="space-y-2">
-                                        <FormField
-                                            control={form.control}
-                                            name="confirmPassword"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel className="block text-medium text-green-600">
-                                                        Confirm New Password
-                                                    </FormLabel>
-                                                    <FormControl>
-                                                        <Input
-                                                            {...field}
-                                                            disabled={isSubmitting} // Disable input while submitting
-                                                            placeholder="Please Confirm your Password"
-                                                            type="password"
-                                                        />
-                                                    </FormControl>
-                                                    <FormMessage className="text-center" />
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
+
                                     <FormMessageError errorMessage={validationError} />
                                     <FormMessageSuccess successMessage={validationSuccess} />
                                     {/* Submission  field */}
@@ -109,7 +90,7 @@ export const ResetPassword = () => {
                                         disabled={isSubmitting} // Disable button while submitting
                                         className="mt-auto py-4 m-auto w-full text-center"
                                         type="submit">
-                                        Reset Now
+                                        Send Reset Link
                                     </Button>
                                 </form>
                             </Form>

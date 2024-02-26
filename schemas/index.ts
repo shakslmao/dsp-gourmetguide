@@ -39,22 +39,26 @@ export const RegistrationValidationSchema = z
         path: ["confirmPassword"],
     });
 
-export const ResetPasswordValidationSchema = z
+export const ResetPasswordValidationSchema = z.object({
+    email: z.string().email({ message: "Your Email is Required!" }),
+});
+
+export const NewPasswordValidationSchema = z
     .object({
         password: z
             .string()
-            .min(8, {})
+            .min(8, { message: "New assword must be at least 8 characters long" })
             .regex(/[a-z]/, {
-                message: "New Password must contain at least one lowercase letter",
+                message: "New password must contain at least one lowercase letter",
             })
             .regex(/[A-Z]/, {
-                message: "New Password must contain at least one uppercase letter",
+                message: "New assword must contain at least one uppercase letter",
             })
             .regex(/[0-9]/, {
-                message: "New Password must contain at least one number",
+                message: "New password must contain at least one number",
             })
             .regex(/[@$!%*#?&]/, {
-                message: "New Password must contain at least one special character",
+                message: "New password must contain at least one special character",
             }),
         confirmPassword: z.string(),
     })
@@ -66,3 +70,4 @@ export const ResetPasswordValidationSchema = z
 export type TLoginValidationSchema = z.infer<typeof LoginValidationSchema>;
 export type TRegistrationValidationSchema = z.infer<typeof RegistrationValidationSchema>;
 export type TResetValidationSchema = z.infer<typeof ResetPasswordValidationSchema>;
+export type TNewPasswordValidationSchema = z.infer<typeof NewPasswordValidationSchema>;

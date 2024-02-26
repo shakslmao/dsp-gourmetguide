@@ -9,7 +9,7 @@ import { newVerificationToken } from "@/actions/new-verification";
 import { FormMessageError } from "../formError";
 import { FormMessageSuccess } from "../formSuccess";
 
-const VerificationPageCard = () => {
+const NewPassword = () => {
     const [error, setError] = useState<string | undefined>();
     const [success, setSuccess] = useState<string | undefined>();
     const searchParams = useSearchParams();
@@ -38,8 +38,8 @@ const VerificationPageCard = () => {
         <div className="flex items-center justify-center min-h-screen">
             <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 text-center sm:text-6xl">
-                    <span className="text-green-600">Please Wait...</span> <br />
-                    We&apos;re Confirming your <span className="text-green-600">Verification</span>.
+                    Enter Your <br />
+                    <span className="text-green-600">New Password</span>.
                 </h1>
 
                 <div className="mt-6 flex items-center w-full justify-center">
@@ -50,7 +50,7 @@ const VerificationPageCard = () => {
                     <Link
                         href="/auth/login"
                         className={buttonVariants({})}>
-                        Back to Login
+                        Confirm New Password
                     </Link>
                 </div>
                 <div className="mt-6 flex items-center w-full justify-center">
@@ -62,4 +62,4 @@ const VerificationPageCard = () => {
     );
 };
 
-export default VerificationPageCard;
+export default NewPassword;
