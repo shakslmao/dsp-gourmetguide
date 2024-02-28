@@ -4,6 +4,8 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import WidthCover from "@/components/WidthCover";
 import { Navbar } from "@/components/navbar/Navbar";
+import { SessionProvider } from "next-auth/react";
+import { auth } from "@/auth";
 
 const figtree = Figtree({ subsets: ["latin"], adjustFontFallback: false });
 
@@ -13,23 +15,24 @@ export const metadata: Metadata = {
 };
 
 // root
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const session = await auth();
     return (
-        <html lang="en">
-            <body className={cn("relative h-full font-sans antialiased", figtree.className)}>
-                <main className="relative flex flex-col min-h-screen">
-                    <div className="flex-grow flex-1">
-                        <WidthCover>
+        <SessionProvider session={session}>
+            <html lang="en">
+                <body className={cn("relative h-full font-sans antialiased", figtree.className)}>
+                    <main className="relative flex flex-col min-h-screen">
+                        <div className="flex-grow flex-1">
                             <Navbar />
                             {children}
-                        </WidthCover>
-                    </div>
-                </main>
-            </body>
-        </html>
+                        </div>
+                    </main>
+                </body>
+            </html>
+        </SessionProvider>
     );
 }

@@ -1,17 +1,24 @@
-import { auth, signOut } from "@/auth";
+"use client";
 
-const DashboardPage = async () => {
-    const session = await auth();
+import { logout } from "@/actions/logout";
+import { auth, signOut } from "@/auth";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { useCurrentUser } from "@/hooks/get-user";
+
+const DashboardPage = () => {
+    const currentUser = useCurrentUser();
     return (
-        <div>
-            {JSON.stringify(session)}
-            <form
-                action={async () => {
-                    "use server";
-                    await signOut();
-                }}>
-                <button>Sign Out</button>
-            </form>
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
+                <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+                    Hello {currentUser?.name} <br />
+                    <span className="text-green-600">Here is what we think you may like</span>.
+                </h1>
+                <p className="mt-6 text-lg max-w-prose text-muted-foreground text-gray-900"></p>
+                <div className="flex flex-col sm:flex-row gap-6 mt-8">
+                    <Button onClick={() => logout()}> Sign Out</Button>
+                </div>
+            </div>
         </div>
     );
 };
