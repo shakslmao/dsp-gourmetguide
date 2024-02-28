@@ -1,16 +1,16 @@
 "use client";
 import Image from "next/image";
 
-const Logo = () => {
+const AltLogo = () => {
     return (
         <Image
             className="hidden md:block cursor-pointer"
-            src="/images/gglogo.png"
-            width={180}
-            height={180}
+            src="/images/faviconlogo.png"
+            width={100}
+            height={100}
             alt="Logo"
         />
     );
 };
 
-export default Logo;
+export default AltLogo;

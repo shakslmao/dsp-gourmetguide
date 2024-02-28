@@ -15,9 +15,7 @@ const DashboardPage = () => {
                     <span className="text-green-600">Here is what we think you may like</span>.
                 </h1>
                 <p className="mt-6 text-lg max-w-prose text-muted-foreground text-gray-900"></p>
-                <div className="flex flex-col sm:flex-row gap-6 mt-8">
-                    <Button onClick={() => logout()}> Sign Out</Button>
-                </div>
+                <div className="flex flex-col sm:flex-row gap-6 mt-8"></div>
             </div>
         </div>
     );

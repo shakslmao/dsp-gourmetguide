@@ -1,4 +1,5 @@
 import WidthCover from "@/components/WidthCover";
+import AltLogo from "@/components/navbar/AltLogo";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -6,6 +7,7 @@ export default function Home() {
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">
+                <AltLogo />
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                     Gourmet Guide <br />
                     <span className="text-green-600">Your Personalised Restaurant Experience</span>.
