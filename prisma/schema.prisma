@@ -18,22 +18,41 @@ datasource db {
     relationMode = "prisma"
 }
 
+enum PriceRange {
+    LOW
+    MEDIUM
+    HIGH
+}
+
+enum SocialVisibility {
+    PRIVATE
+    FRIENDS_ONLY
+    PUBLIC
+}
+
+enum NotificationType {
+    EMAIL
+    SMS
+    APP_NOTIFICATION
+}
+
 model User {
-    id                    String                 @id @default(auto()) @map("_id") @db.ObjectId
-    name                  String
-    email                 String?                @unique
-    emailVerified         DateTime?
-    password              String?
-    image                 String?
-    contactNumber         String?
-    preferencesId         String?                @db.ObjectId // OPTIONAL FOR NOW - TO BE MADE REQUIRED
-    twoFactorEnabled      Boolean                @default(false)
-    twoFactorConfirmation TwoFactorConfirmation?
-    history               History[]
-    preferences           Preferences?           @relation(fields: [preferencesId], references: [id]) // OPTIONAL FOR NOW - TO BE MADE REQUIRED
-    Ratings               Ratings[]
-    Reviews               Reviews[]
-    Account               Account[]
+    id                     String                   @id @default(auto()) @map("_id") @db.ObjectId
+    name                   String
+    email                  String?                  @unique
+    emailVerified          DateTime?
+    password               String?
+    image                  String?
+    contactNumber          String?
+    preferencesId          String?                  @db.ObjectId // OPTIONAL FOR NOW - TO BE MADE REQUIRED
+    twoFactorEnabled       Boolean                  @default(false)
+    twoFactorConfirmation  TwoFactorConfirmation?
+    history                History[]
+    preferences            Preferences?             @relation(fields: [preferencesId], references: [id]) // OPTIONAL FOR NOW - TO BE MADE REQUIRED
+    Ratings                Ratings[]
+    Reviews                Reviews[]
+    Account                Account[]
+    NotificationPreference NotificationPreference[]
 }
 
 model Account {
@@ -56,19 +75,19 @@ model Account {
 }
 
 model Preferences {
-    id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-    User                User[]
-    cuisineTypes        String[]
-    dietaryRestrictions String[]
-    priceSensitivity    Int
-    preferredTime       String
-    favouriteCuisines   String[]
-}
-
-enum PriceRange {
-    LOW
-    MEDIUM
-    HIGH
+    id                          String            @id @default(auto()) @map("_id") @db.ObjectId
+    User                        User[]
+    cuisineTypes                String[]
+    dietaryRestrictions         String[]
+    priceSensitivity            Int
+    preferredTime               String
+    prefferedLocations          String[]
+    recommendationRadius        Int
+    mealTypes                   String[]
+    ambienceTypes               String[]
+    accessibilityFeatures       String[]
+    favouriteCuisines           String[]
+    socialVisibilityPreferences SocialVisibility?
 }
 
 model History {
@@ -175,4 +194,11 @@ model TwoFactorConfirmation {
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([userId])
+}
+
+model NotificationPreference {
+    id     String           @id @default(auto()) @map("_id") @db.ObjectId
+    type   NotificationType
+    userId String           @db.ObjectId
+    User   User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

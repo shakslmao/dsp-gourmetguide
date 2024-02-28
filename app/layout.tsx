@@ -3,6 +3,7 @@ import { Figtree } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import WidthCover from "@/components/WidthCover";
+import { Navbar } from "@/components/navbar/Navbar";
 
 const figtree = Figtree({ subsets: ["latin"], adjustFontFallback: false });
 
@@ -22,7 +23,10 @@ export default function RootLayout({
             <body className={cn("relative h-full font-sans antialiased", figtree.className)}>
                 <main className="relative flex flex-col min-h-screen">
                     <div className="flex-grow flex-1">
-                        <WidthCover>{children}</WidthCover>
+                        <WidthCover>
+                            <Navbar />
+                            {children}
+                        </WidthCover>
                     </div>
                 </main>
             </body>
