@@ -4,15 +4,17 @@ import countries from "world-countries";
 import { Card, CardContent } from "./ui/card";
 import {
     Carousel,
+    CarouselApi,
     CarouselContent,
     CarouselItem,
     CarouselNext,
     CarouselPrevious,
 } from "./ui/carousel";
 import FlagAvatar from "./FlagAvatar";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
 
+// Labels and descriptions for different cuisine categories
 export const cuisineCategories = [
     {
         label: "British",
@@ -65,7 +67,7 @@ export const cuisineCategories = [
         label: "Vietnamese",
         flag: countries.find((country) => country.name.common === "Vietnam")?.flag,
         description:
-            "Fresh, light, and fragrant, characterized by its use of herbs, noodles, and distinctive pho",
+            "Fresh, light, and fragrant, characterised by its use of herbs, noodles, and distinctive pho",
     },
     {
         label: "Korean",
@@ -89,7 +91,7 @@ export const cuisineCategories = [
         label: "Greek",
         flag: countries.find((country) => country.name.common === "Greece")?.flag,
         description:
-            "Fresh, flavorful, and steeped in tradition, Greek cuisine offers a feast of Mediterranean delights. From succulent grilled meats and seafood to vibrant salads, creamy tzatziki, and crisp phyllo pastries, every dish is a celebration of simplicity and zest.",
+            "Fresh, flavorful, and steeped in tradition, Greek cuisine offers a feast of Mediterranean delights, every dish is a celebration of simplicity and zest.",
     },
     {
         label: "Portuguese",
@@ -125,7 +127,7 @@ export const cuisineCategories = [
         label: "Ethiopian",
         flag: countries.find((country) => country.name.common === "Ethiopia")?.flag,
         description:
-            "Characterized by spicy stews and injera bread, offering a communal dining experience.",
+            "Characterised by spicy stews and injera bread, offering a communal dining experience.",
     },
     {
         label: "Bangladeshi",
@@ -135,7 +137,7 @@ export const cuisineCategories = [
     },
     {
         label: "Middle Eastern",
-        flag: countries.find((country) => country.name.common === "")?.flag,
+        flag: "",
         description:
             "Flavorful and aromatic, featuring mezze, kebabs, and richly spiced dishes from across the Middle East",
     },
@@ -143,7 +145,7 @@ export const cuisineCategories = [
         label: "Mediterranean",
         flag: "",
         description:
-            "Sun-drenched flavors from the Mediterranean coast, emphasizing fresh ingredients and healthy dishes.",
+            "Sun-drenched flavors from the Mediterranean coast, emphasising fresh ingredients and healthy dishes.",
     },
     {
         label: "African",
@@ -167,6 +169,23 @@ export const cuisineCategories = [
 
 const CuisineCategories = () => {
     const [selectedCard, setSelectedCard] = useState<number[]>([]);
+    const [api, setApi] = useState<CarouselApi>();
+    const [current, setCurrent] = useState(0);
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        if (!api) {
+            return;
+        }
+
+        setCount(api.scrollSnapList().length);
+        setCurrent(api.selectedScrollSnap() + 1);
+
+        api.on("select", () => {
+            setCurrent(api.selectedScrollSnap() + 1);
+        });
+    }, [api]);
+
     const handleCardClick = (index: number) => {
         const isSelected = selectedCard.includes(index);
         setSelectedCard((prevSelected) =>
@@ -186,6 +205,7 @@ const CuisineCategories = () => {
         <div>
             <Carousel
                 opts={{ align: "start" }}
+                setApi={setApi}
                 className="w-full max-w-sm">
                 <CarouselContent>
                     {cuisineCategories.map((item, index) => (
@@ -208,7 +228,6 @@ const CuisineCategories = () => {
                                             {item.label}
                                         </h3>
                                         <p className="text-sm text-center font-light">
-                                            {" "}
                                             {item.description}
                                         </p>
                                     </CardContent>
@@ -220,6 +239,9 @@ const CuisineCategories = () => {
                 <CarouselPrevious />
                 <CarouselNext />
             </Carousel>
+            <div className="py-1 text-center text-xs text-muted-foreground">
+                Cuisine {current} of {count}
+            </div>
         </div>
     );
 };
