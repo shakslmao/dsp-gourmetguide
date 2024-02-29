@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
-import WidthCover from "@/components/WidthCover";
 import { Navbar } from "@/components/navbar/Navbar";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
+import { Toaster } from "@/components/ui/toaster";
 
 const figtree = Figtree({ subsets: ["latin"], adjustFontFallback: false });
 
@@ -27,6 +27,7 @@ export default async function RootLayout({
                 <body className={cn("relative h-full font-sans antialiased", figtree.className)}>
                     <main className="relative flex flex-col min-h-screen">
                         <div className="flex-grow flex-1">
+                            <Toaster />
                             <Navbar />
                             {children}
                         </div>

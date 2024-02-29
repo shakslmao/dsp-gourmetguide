@@ -9,10 +9,11 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "./ui/carousel";
-import { Avatar, AvatarImage } from "./ui/avatar";
-import UserAvatar from "./Avatar";
+import FlagAvatar from "./FlagAvatar";
+import { useState } from "react";
+import { toast } from "./ui/use-toast";
 
-export const cusineCategories = [
+export const cuisineCategories = [
     {
         label: "British",
         flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
@@ -36,12 +37,6 @@ export const cusineCategories = [
         flag: countries.find((country) => country.name.common === "China")?.flag,
         description:
             "A vast culinary landscape offering everything from dim sum to Sichuan spice, showcasing China's regional diversity",
-    },
-    {
-        label: "Middle Eastern",
-        flag: "",
-        description:
-            "Flavorful and aromatic, featuring mezze, kebabs, and richly spiced dishes from across the Middle East",
     },
     {
         label: "Japanese",
@@ -71,24 +66,6 @@ export const cusineCategories = [
         flag: countries.find((country) => country.name.common === "Vietnam")?.flag,
         description:
             "Fresh, light, and fragrant, characterized by its use of herbs, noodles, and distinctive pho",
-    },
-    {
-        label: "Mediterranean",
-        flag: "",
-        description:
-            "Sun-drenched flavors from the Mediterranean coast, emphasizing fresh ingredients and healthy dishes.",
-    },
-    {
-        label: "African",
-        flag: "",
-        description:
-            "Diverse cuisines from across the continent, known for their use of grains, beans, and rich spices.",
-    },
-    {
-        label: "Caribbean",
-        flag: "",
-        description:
-            "A fusion of African, European, and East Indian flavors, featuring seafood, tropical fruits, and spicy meats",
     },
     {
         label: "Korean",
@@ -157,6 +134,30 @@ export const cusineCategories = [
             "Spicy curries, rice dishes, and fish, reflecting Bangladesh's rich culinary traditions and flavors",
     },
     {
+        label: "Middle Eastern",
+        flag: countries.find((country) => country.name.common === "")?.flag,
+        description:
+            "Flavorful and aromatic, featuring mezze, kebabs, and richly spiced dishes from across the Middle East",
+    },
+    {
+        label: "Mediterranean",
+        flag: "",
+        description:
+            "Sun-drenched flavors from the Mediterranean coast, emphasizing fresh ingredients and healthy dishes.",
+    },
+    {
+        label: "African",
+        flag: "",
+        description:
+            "Diverse cuisines from across the continent, known for their use of grains, beans, and rich spices.",
+    },
+    {
+        label: "Caribbean",
+        flag: "",
+        description:
+            "A fusion of African, European, and East Indian flavors, featuring seafood, tropical fruits, and spicy meats",
+    },
+    {
         label: "Fusion",
         flag: "",
         description:
@@ -165,20 +166,44 @@ export const cusineCategories = [
 ];
 
 const CuisineCategories = () => {
+    const [selectedCard, setSelectedCard] = useState<number[]>([]);
+    const handleCardClick = (index: number) => {
+        const isSelected = selectedCard.includes(index);
+        setSelectedCard((prevSelected) =>
+            isSelected
+                ? prevSelected.filter((cardIndex) => cardIndex !== index)
+                : [...prevSelected, index]
+        );
+        const toastItem = cuisineCategories[index];
+        toast({
+            title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} Cuisine ${
+                toastItem.flag
+            }`,
+            description: "Your Preferences Have Been Saved!",
+        });
+    };
     return (
         <div>
             <Carousel
                 opts={{ align: "start" }}
                 className="w-full max-w-sm">
                 <CarouselContent>
-                    {cusineCategories.map((item, index) => (
+                    {cuisineCategories.map((item, index) => (
                         <CarouselItem
                             key={index}
                             className="md:basis-2/2 lg:basis-3/3">
                             <div className="p-1">
-                                <Card>
+                                <Card
+                                    className={`cursor-pointer ${
+                                        selectedCard.includes(index)
+                                            ? "bg-green-600 text-white"
+                                            : "bg-white"
+                                    }`}
+                                    onClick={() => {
+                                        handleCardClick(index);
+                                    }}>
                                     <CardContent className="flex flex-col aspect-square items-center justify-center p-6 mx-6">
-                                        <UserAvatar src={item.flag} />
+                                        <FlagAvatar src={item.flag} />
                                         <h3 className="text-3xl font-semibold mb-4">
                                             {item.label}
                                         </h3>

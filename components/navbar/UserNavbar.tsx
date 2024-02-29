@@ -25,6 +25,11 @@ const UserNavbar = () => {
                     {!currentUser ? (
                         <div className="py-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition">
                             <Link
+                                href="/"
+                                className="text-sm font-semibold py-2 px-4 rounded-full hover:bg-green-600 hover:text-white transition cursor-pointer">
+                                Start your personalisation
+                            </Link>
+                            <Link
                                 href="/auth/login"
                                 className="text-sm font-semibold py-2 px-4 rounded-full hover:bg-green-600 hover:text-white transition cursor-pointer">
                                 Sign In
