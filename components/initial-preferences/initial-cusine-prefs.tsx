@@ -5,10 +5,27 @@ import { Button, buttonVariants } from "../ui/button";
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Badge } from "../ui/badge";
 import { useRouter } from "next/navigation";
+import { CuisinePrefsValidationSchema } from "@/schemas";
+import { toast } from "../ui/use-toast";
 
 export const InitialCusinePrefs = () => {
     const { preferences } = useUserPreferences();
     const router = useRouter();
+    const handleOnClick = () => {
+        const result = CuisinePrefsValidationSchema.safeParse({
+            selectedCuisines: preferences.cuisineTypes,
+        });
+
+        if (result.success) {
+            router.push("/inital-preferences/dietarypreferences");
+        } else {
+            toast({
+                title: "Error",
+                description: result.error.message,
+            });
+        }
+    };
+
     console.log(preferences);
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
@@ -39,12 +56,17 @@ export const InitialCusinePrefs = () => {
                 )}
 
                 <Button
-                    onClick={() => router.push("/initial-preferences/dietrypreferences")}
-                    className={buttonVariants({
+                    onClick={() => handleOnClick()}
+                    disabled={preferences.cuisineTypes.length === 0}
+                    className={`${buttonVariants({
                         variant: "default",
                         className: "w-full py-2 text-white bg-black rounded-lg",
                         size: "sm",
-                    })}>
+                    })} ${
+                        preferences.cuisineTypes.length === 0
+                            ? "bg-gray-400 cursor-not-allowed"
+                            : "bg-green-600"
+                    }`}>
                     Next
                 </Button>
             </div>

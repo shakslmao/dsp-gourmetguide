@@ -67,7 +67,14 @@ export const NewPasswordValidationSchema = z
         path: ["confirmPassword"],
     });
 
+export const CuisinePrefsValidationSchema = z.object({
+    selectedCuisines: z
+        .array(z.string())
+        .nonempty({ message: "Please select at least one cuisine" }),
+});
+
 export type TLoginValidationSchema = z.infer<typeof LoginValidationSchema>;
 export type TRegistrationValidationSchema = z.infer<typeof RegistrationValidationSchema>;
 export type TResetValidationSchema = z.infer<typeof ResetPasswordValidationSchema>;
 export type TNewPasswordValidationSchema = z.infer<typeof NewPasswordValidationSchema>;
+export type TCuisinePreferencesValidationSchema = z.infer<typeof CuisinePrefsValidationSchema>;

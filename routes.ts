@@ -12,7 +12,7 @@ export const publicRoutes = ["/", "/auth/new-verification", "/auth/new-password"
 export const authenticatedRoutes = [
     "/auth/login",
     "/inital-preferences/cuisinepreferences",
-    "inital-preferences/dietarypreferences",
+    "/inital-preferences/dietarypreferences",
     "/inital-preferences/register",
     "/auth/error",
     "/auth/reset",
