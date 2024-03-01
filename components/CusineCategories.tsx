@@ -13,7 +13,8 @@ import {
 import FlagAvatar from "./FlagAvatar";
 import React, { useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
-import { useUserPreferences } from "@/hooks/useUserPreferences";
+import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
+import { Label } from "./ui/label";
 
 // Labels and descriptions for different cuisine categories
 export const cuisineCategories = [
@@ -173,6 +174,10 @@ const CuisineCategories = () => {
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
+
+    useEffect(() => {
+        console.log("User Cuisine Types: ", preferences.cuisineTypes);
+    }, [preferences.cuisineTypes]);
 
     useEffect(() => {
         if (!api) {

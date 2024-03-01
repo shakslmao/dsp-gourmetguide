@@ -1,12 +1,15 @@
 "use client";
 
 import { ReactNode, createContext, useContext, useState } from "react";
-import { UserPreferences, UserPreferencesContextType } from "@/types/UserPreferencesTypes";
+import {
+    UserCuisinePreferences,
+    UserCuisinePreferencesContextType,
+} from "@/types/UserPreferencesTypes";
 
 // Define the default user preferences for the application.
-const defaultUserPrefs: UserPreferences = {
+const defaultUserPrefs: UserCuisinePreferences = {
     cuisineTypes: [], // List of preferred cuisines, initially empty.
-    dietryRestrictions: [], // Dietary restrictions of the user, initially none.
+    dietaryRestrictions: [], // Dietary restrictions of the user, initially none.
     priceSensitivity: 0, // User's sensitivity to price, 0 indicates no preference.
     prefferedTime: "", // Preferred dining time, initially unspecified.
     preferredLocations: [], // Preferred dining locations, initially unspecified.
@@ -19,11 +22,13 @@ const defaultUserPrefs: UserPreferences = {
 };
 
 // Create a context for UserPreferences with an undefined default value.
-const UserPreferencesContext = createContext<UserPreferencesContextType | undefined>(undefined);
+const UserCuisinePreferencesContext = createContext<UserCuisinePreferencesContextType | undefined>(
+    undefined
+);
 
 // Custom hook to use the UserPreferences context.
-export const useUserPreferences = (): UserPreferencesContextType => {
-    const context = useContext(UserPreferencesContext);
+export const useUserPreferences = (): UserCuisinePreferencesContextType => {
+    const context = useContext(UserCuisinePreferencesContext);
     if (context === undefined) {
         throw new Error("useUserPreferences must be used within a UserPreferencesProvider");
     }
@@ -31,11 +36,11 @@ export const useUserPreferences = (): UserPreferencesContextType => {
 };
 
 // Provider component for UserPreferences, allowing state management for user preferences.
-export const UserPreferencesProvider = ({ children }: { children: ReactNode }) => {
-    const [preferences, setPreferences] = useState<UserPreferences>(defaultUserPrefs); // Initialise state with default preferences.
+export const UserCuisinePreferencesProvider = ({ children }: { children: ReactNode }) => {
+    const [preferences, setPreferences] = useState<UserCuisinePreferences>(defaultUserPrefs); // Initialise state with default preferences.
 
     // Function to update user preferences with new values.
-    const updatePreferences = (newPreferences: Partial<UserPreferences>) => {
+    const updatePreferences = (newPreferences: Partial<UserCuisinePreferences>) => {
         setPreferences((prevPreferences) => ({
             ...prevPreferences,
             ...newPreferences,
@@ -44,8 +49,8 @@ export const UserPreferencesProvider = ({ children }: { children: ReactNode }) =
 
     // Provide the context to children components.
     return (
-        <UserPreferencesContext.Provider value={{ preferences, updatePreferences }}>
+        <UserCuisinePreferencesContext.Provider value={{ preferences, updatePreferences }}>
             {children}
-        </UserPreferencesContext.Provider>
+        </UserCuisinePreferencesContext.Provider>
     );
 };

@@ -21,7 +21,7 @@ export default function Home() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-6 mt-8">
                     <Link
-                        href="/inital-preferences/cusinepreferences"
+                        href="/inital-preferences/cuisinepreferences"
                         className={buttonVariants()}>
                         Get Started Now
                     </Link>

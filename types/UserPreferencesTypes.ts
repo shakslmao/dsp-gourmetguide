@@ -1,8 +1,8 @@
 import { SocialVisibility } from "@prisma/client";
 
-export interface UserPreferences {
+export interface UserCuisinePreferences {
     cuisineTypes: string[];
-    dietryRestrictions: string[];
+    dietaryRestrictions: string[];
     priceSensitivity: number;
     prefferedTime: string;
     preferredLocations: string[];
@@ -14,7 +14,7 @@ export interface UserPreferences {
     socialVisibilityPreferences: SocialVisibility | null;
 }
 
-export interface UserPreferencesContextType {
-    preferences: UserPreferences;
-    updatePreferences: (newPreferences: Partial<UserPreferences>) => void;
+export interface UserCuisinePreferencesContextType {
+    preferences: UserCuisinePreferences;
+    updatePreferences: (newPreferences: Partial<UserCuisinePreferences>) => void;
 }

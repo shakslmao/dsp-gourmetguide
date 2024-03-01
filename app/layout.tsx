@@ -6,7 +6,7 @@ import { Navbar } from "@/components/navbar/Navbar";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
-import { UserPreferencesProvider } from "@/hooks/useUserPreferences";
+import { UserCuisinePreferencesProvider } from "@/hooks/useUserCuisinePreferences";
 
 const figtree = Figtree({ subsets: ["latin"], adjustFontFallback: false });
 
@@ -24,7 +24,7 @@ export default async function RootLayout({
     const session = await auth();
     return (
         <SessionProvider session={session}>
-            <UserPreferencesProvider>
+            <UserCuisinePreferencesProvider>
                 <html lang="en">
                     <body
                         className={cn("relative h-full font-sans antialiased", figtree.className)}>
@@ -37,7 +37,7 @@ export default async function RootLayout({
                         </main>
                     </body>
                 </html>
-            </UserPreferencesProvider>
+            </UserCuisinePreferencesProvider>
         </SessionProvider>
     );
 }
