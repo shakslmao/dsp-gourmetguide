@@ -1,8 +1,4 @@
 "use client";
-
-import { logout } from "@/actions/logout";
-import { auth, signOut } from "@/auth";
-import { Button, buttonVariants } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/get-user";
 
 const DashboardPage = () => {

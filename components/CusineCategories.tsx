@@ -13,6 +13,7 @@ import {
 import FlagAvatar from "./FlagAvatar";
 import React, { useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
+import { useUserPreferences } from "@/hooks/useUserPreferences";
 
 // Labels and descriptions for different cuisine categories
 export const cuisineCategories = [
@@ -168,7 +169,7 @@ export const cuisineCategories = [
 ];
 
 const CuisineCategories = () => {
-    const [selectedCard, setSelectedCard] = useState<number[]>([]);
+    const { preferences, updatePreferences } = useUserPreferences();
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
@@ -187,12 +188,14 @@ const CuisineCategories = () => {
     }, [api]);
 
     const handleCardClick = (index: number) => {
-        const isSelected = selectedCard.includes(index);
-        setSelectedCard((prevSelected) =>
-            isSelected
-                ? prevSelected.filter((cardIndex) => cardIndex !== index)
-                : [...prevSelected, index]
-        );
+        const cuisineLabel = cuisineCategories[index].label;
+        const isSelected = preferences.cuisineTypes.includes(cuisineLabel);
+        const UserCuisineTypes = isSelected
+            ? preferences.cuisineTypes.filter((cuisine) => cuisine !== cuisineLabel)
+            : [...preferences.cuisineTypes, cuisineLabel];
+
+        updatePreferences({ cuisineTypes: UserCuisineTypes });
+
         const toastItem = cuisineCategories[index];
         toast({
             title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} Cuisine ${
@@ -215,7 +218,7 @@ const CuisineCategories = () => {
                             <div className="p-1">
                                 <Card
                                     className={`cursor-pointer ${
-                                        selectedCard.includes(index)
+                                        preferences.cuisineTypes.includes(item.label)
                                             ? "bg-green-600 text-white"
                                             : "bg-white"
                                     }`}
