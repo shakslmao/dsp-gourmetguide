@@ -42,7 +42,9 @@ export const InitialCusinePrefs = () => {
                 {/* display selected prefs */}
                 {preferences.cuisineTypes.length > 0 && (
                     <div>
-                        <h2 className="text-md  text-center font-semibold"> Selected Cuisines</h2>
+                        <h2 className="text-md  text-center font-semibold">
+                            Selected Cuisine Preferences
+                        </h2>
                         <ul className="text-sm text-center">
                             {preferences.cuisineTypes.map((cuisine, index) => (
                                 <Badge

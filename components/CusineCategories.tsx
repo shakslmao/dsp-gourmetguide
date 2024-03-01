@@ -14,7 +14,6 @@ import FlagAvatar from "./FlagAvatar";
 import React, { useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
-import { Label } from "./ui/label";
 
 // Labels and descriptions for different cuisine categories
 export const cuisineCategories = [
@@ -65,6 +64,13 @@ export const cuisineCategories = [
         description:
             "Renowned for its sophistication, from rustic countryside fare to the heights of fine dining",
     },
+    {
+        label: "Indonesian",
+        flag: countries.find((country) => country.name.common === "Indonesia")?.flag,
+        description:
+            "Indonesian cuisine is a vibrant tapestry of flavors and textures, offering a diverse range of dishes from spicy rendang and savory satay to the richly spiced nasi goreng",
+    },
+
     {
         label: "Vietnamese",
         flag: countries.find((country) => country.name.common === "Vietnam")?.flag,
@@ -138,6 +144,48 @@ export const cuisineCategories = [
             "Spicy curries, rice dishes, and fish, reflecting Bangladesh's rich culinary traditions and flavors",
     },
     {
+        label: "Brazilian",
+        flag: countries.find((country) => country.name.common === "Brazil")?.flag,
+        description:
+            "Celebrates the diverse culinary heritage of Brazil, from churrasco (barbecue) to feijoada (black bean stew), highlighting the country's rich flavors and ingredients.",
+    },
+    {
+        label: "Nigerian",
+        flag: countries.find((country) => country.name.common === "Nigeria")?.flag,
+        description:
+            "A vibrant feast of flavors, Nigerian cuisine offers a rich palette of spicy stews, fragrant soups, and hearty dishes like jollof rice and pounded yam, celebrating Nigeria's diverse culinary traditions",
+    },
+    {
+        label: "Ghanaian",
+        flag: countries.find((country) => country.name.common === "Ghana")?.flag,
+        description:
+            "Bursting with flavor, Ghanaian cuisine brings you a colorful array of dishes from spicy to savory, including the famous jollof rice, peanut soup, and kelewele, showcasing Ghana's rich culinary heritage",
+    },
+    {
+        label: "Moroccan",
+        flag: countries.find((country) => country.name.common === "Morocco")?.flag,
+        description:
+            "A sensory journey through spices and aromas, Moroccan cuisine offers a tantalizing array of tagines, couscous, and pastilla, infused with the exotic flavors of saffron, mint, and lemon.",
+    },
+    {
+        label: "Russian",
+        flag: countries.find((country) => country.name.common === "Russia")?.flag,
+        description:
+            "Hearty and comforting, Russian cuisine serves up a warming selection of soups like borscht, robust salads like Olivier, and rich dishes such as beef stroganoff, embodying the soul of Russia.",
+    },
+    {
+        label: "German",
+        flag: countries.find((country) => country.name.common === "Germany")?.flag,
+        description:
+            "Robust and hearty, German cuisine delights with its variety of sausages (Wurst), schnitzels, and pretzels, complemented by the world-renowned tradition of beer brewing",
+    },
+    {
+        label: "Scaninavian",
+        flag: "",
+        description:
+            "A celebration of simplicity and freshness, Scandinavian cuisine offers a clean palette of flavors, from seafood delicacies like gravlax to foraged berries and rye bread, reflecting the Nordic connection to nature",
+    },
+    {
         label: "Middle Eastern",
         flag: "",
         description:
@@ -198,7 +246,6 @@ const CuisineCategories = () => {
         const UserCuisineTypes = isSelected
             ? preferences.cuisineTypes.filter((cuisine) => cuisine !== cuisineLabel)
             : [...preferences.cuisineTypes, cuisineLabel];
-
         updatePreferences({ cuisineTypes: UserCuisineTypes });
 
         const toastItem = cuisineCategories[index];
