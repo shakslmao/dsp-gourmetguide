@@ -4,13 +4,12 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Badge } from "../ui/badge";
 import { Button, buttonVariants } from "../ui/button";
 import { useRouter } from "next/navigation";
-import PriceRangePreferences from "../PriceRangePreferences";
 import TimeRangePreferences from "../TimeRangePreferences";
 
 export const InitialTimePrefs = () => {
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("");
+        router.push("/inital-preferences/citylocationpreferences");
     };
     const handlePrevOnClick = () => {
         router.push("/inital-preferences/pricepreferences");
@@ -57,11 +56,18 @@ export const InitialTimePrefs = () => {
                     </Button>
                     <Button
                         onClick={() => handleNextOnClick()}
-                        className={buttonVariants({
+                        disabled={preferences.preferredTime.length === 0}
+                        className={`${buttonVariants({
                             variant: "default",
                             className: "w-full py-2 text-white bg-black rounded-lg",
                             size: "sm",
-                        })}>
+                        })}${
+                            preferences.preferredTime.length === 0
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-green-600"
+                        }
+                        
+                        `}>
                         Next
                     </Button>
                 </div>

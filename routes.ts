@@ -15,6 +15,7 @@ export const authenticatedRoutes = [
     "/inital-preferences/dietarypreferences",
     "/inital-preferences/pricepreferences",
     "/inital-preferences/timepreferences",
+    "/inital-preferences/citylocationpreferences",
     "/inital-preferences/register",
     "/auth/error",
     "/auth/reset",
