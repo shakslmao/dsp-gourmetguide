@@ -74,17 +74,8 @@ export const CuisinePrefsValidationSchema = z.object({
         .nonempty({ message: "Please select at least one cuisine" }),
 });
 
-export const PriceRangePrefsValidationSchema = z
-    .object({
-        priceRange: z.enum(["£", "££", "£££", "££££"]),
-    })
-    .refine((data) => data.priceRange !== undefined, {
-        message: "Price range is required and must be one of '£', '££', '£££', '££££'.",
-    });
-
 export type TLoginValidationSchema = z.infer<typeof LoginValidationSchema>;
 export type TRegistrationValidationSchema = z.infer<typeof RegistrationValidationSchema>;
 export type TResetValidationSchema = z.infer<typeof ResetPasswordValidationSchema>;
 export type TNewPasswordValidationSchema = z.infer<typeof NewPasswordValidationSchema>;
 export type TCuisinePreferencesValidationSchema = z.infer<typeof CuisinePrefsValidationSchema>;
-export type TPriceRangePrefsValidationSchema = z.infer<typeof PriceRangePrefsValidationSchema>;

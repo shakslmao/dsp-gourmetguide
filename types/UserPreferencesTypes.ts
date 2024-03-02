@@ -4,7 +4,7 @@ export interface UserCuisinePreferences {
     cuisineTypes: string[];
     dietaryRestrictions: string[];
     priceRangePreference: PriceRange;
-    preferredTime: string; //
+    preferredTime: string[]; //
     preferredLocations: string[]; // city names
     recommendationRadius: number; // in km
     ambienceTypes: string[];

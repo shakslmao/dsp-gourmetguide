@@ -20,11 +20,11 @@ const priceRangeToSliderValue = {
 
 const sliderValueToPriceRange: PriceRangeMapping = {
     0: "No Preference",
-    20: "Very Low Price",
-    40: "Low Price ",
-    60: "Medium Price",
-    80: "High Price",
-    100: "Very High Price",
+    20: "Very Low Prices",
+    40: "Low Prices ",
+    60: "Medium Prices",
+    80: "High Prices",
+    100: "Very High Prices",
 };
 
 const sliderValueDescription: PriceRangeMapping = {
@@ -59,7 +59,7 @@ const PriceRangePreferences = () => {
     return (
         <div>
             <div className="text-center mb-4">
-                <h2 className="text-md text-center">Selected Price Range</h2>
+                <h2 className="text-sm text-center">Selected Price Range</h2>
                 <h3 className="text-2xl font-semibold text-green-600">{selectedPriceRangeLabel}</h3>
                 <p className="text-xs text-center font-light">{selectedPriceRangeDescription}</p>
             </div>

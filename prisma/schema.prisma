@@ -83,7 +83,7 @@ model Preferences {
     cuisineTypes                String[]
     dietaryRestrictions         String[]
     priceRangePreference        PriceRange
-    preferredTime               String
+    preferredTime               String[]
     prefferedLocations          String[]
     recommendationRadius        Int
     ambienceTypes               String[]
