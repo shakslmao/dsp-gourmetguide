@@ -22,8 +22,7 @@ export const InitialTimePrefs = () => {
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                 <h1 className="text-2xl font-bold text-center">
-                    Tell us when is your ideal <span className="text-green-600">dining</span> at
-                    moment.
+                    Tell us when is your ideal <span className="text-green-600">dining</span> time.
                 </h1>
                 <TimeRangePreferences />
                 <p className="text-xs text-center font-light">

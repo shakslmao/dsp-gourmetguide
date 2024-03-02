@@ -14,7 +14,7 @@ export const InitialPricePrefs = () => {
     const handlePrevOnClick = () => {
         router.push("/inital-preferences/dietarypreferences");
     };
-    const { preferences, updatePreferences } = useUserPreferences();
+    const { preferences } = useUserPreferences();
     console.log(preferences);
 
     return (
