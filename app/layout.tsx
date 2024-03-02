@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     description: "A guide to the best restaurants in the world.",
 };
 
-// root
+// rooooooooooot
 export default async function RootLayout({
     children,
 }: Readonly<{
