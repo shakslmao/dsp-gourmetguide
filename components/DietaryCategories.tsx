@@ -80,10 +80,6 @@ const DietaryCategories = () => {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        console.log("User Diet Types: ", preferences.dietaryRestrictions);
-    }, [preferences.dietaryRestrictions]);
-
-    useEffect(() => {
         if (!api) {
             return;
         }

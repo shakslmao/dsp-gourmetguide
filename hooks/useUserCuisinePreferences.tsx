@@ -5,19 +5,19 @@ import {
     UserCuisinePreferences,
     UserCuisinePreferencesContextType,
 } from "@/types/UserPreferencesTypes";
+import { PriceRange } from "@prisma/client";
 
 // Define the default user preferences for the application.
 const defaultUserPrefs: UserCuisinePreferences = {
     cuisineTypes: [], // List of preferred cuisines, initially empty.
     dietaryRestrictions: [], // Dietary restrictions of the user, initially none.
-    priceSensitivity: 0, // User's sensitivity to price, 0 indicates no preference.
-    prefferedTime: "", // Preferred dining time, initially unspecified.
+    priceRangePreference: PriceRange.NONE_SET, // enum for price range, initially unspecified.
+    preferredTime: "", // Preferred dining time, initially unspecified.
     preferredLocations: [], // Preferred dining locations, initially unspecified.
     recommendationRadius: 0, // Radius for recommendations, initially set to 0.
-    mealTypes: [], // Types of meals preferred, initially unspecified.
+    prefersMichelinRated: false, // Whether the user prefers Michelin rated restaurants, initially false.
     ambienceTypes: [], // Preferred ambience types, initially unspecified.
     accessibilityFeatures: [], // Accessibility features required, initially unspecified.
-    favouriteCuisines: [], // User's favourite cuisines, initially unspecified.
     socialVisibilityPreferences: null, // Preferences for social visibility, initially null.
 };
 

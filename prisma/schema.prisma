@@ -19,9 +19,12 @@ datasource db {
 }
 
 enum PriceRange {
+    NONE_SET
+    VERY_LOW
     LOW
     MEDIUM
     HIGH
+    VERY_HIGH
 }
 
 enum SocialVisibility {
@@ -79,14 +82,13 @@ model Preferences {
     User                        User[]
     cuisineTypes                String[]
     dietaryRestrictions         String[]
-    priceSensitivity            Int
+    priceRangePreference        PriceRange
     preferredTime               String
     prefferedLocations          String[]
     recommendationRadius        Int
-    mealTypes                   String[]
     ambienceTypes               String[]
+    prefersMichelinRated        Boolean           @default(false)
     accessibilityFeatures       String[]
-    favouriteCuisines           String[]
     socialVisibilityPreferences SocialVisibility?
 }
 
@@ -109,17 +111,20 @@ enum ActionType {
 }
 
 model Restaurant {
-    id             String     @id @default(auto()) @map("_id") @db.ObjectId
-    restaurantName String
-    location       Location   @relation(fields: [locationId], references: [id])
-    locationId     String     @db.ObjectId
-    cuisineType    String[]
-    priceRange     PriceRange
-    restaurantMenu MenuItem[]
-    reviewsId      String     @db.ObjectId
-    Ratings        Ratings?   @relation(fields: [ratingsId], references: [id])
-    ratingsId      String?    @db.ObjectId
-    Reviews        Reviews[]
+    id                  String     @id @default(auto()) @map("_id") @db.ObjectId
+    restaurantName      String
+    location            Location   @relation(fields: [locationId], references: [id])
+    locationId          String     @db.ObjectId
+    cuisineType         String[]
+    michelinStars       Int?
+    michelinBibGourmand Boolean    @default(false)
+    michelinGreenStar   Boolean    @default(false)
+    priceRange          PriceRange
+    restaurantMenu      MenuItem[]
+    reviewsId           String     @db.ObjectId
+    Ratings             Ratings?   @relation(fields: [ratingsId], references: [id])
+    ratingsId           String?    @db.ObjectId
+    Reviews             Reviews[]
 }
 
 model Location {

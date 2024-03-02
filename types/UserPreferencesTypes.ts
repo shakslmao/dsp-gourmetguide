@@ -1,16 +1,15 @@
-import { SocialVisibility } from "@prisma/client";
+import { PriceRange, SocialVisibility } from "@prisma/client";
 
 export interface UserCuisinePreferences {
     cuisineTypes: string[];
     dietaryRestrictions: string[];
-    priceSensitivity: number;
-    prefferedTime: string;
-    preferredLocations: string[];
-    recommendationRadius: number;
-    mealTypes: string[];
+    priceRangePreference: PriceRange;
+    preferredTime: string; //
+    preferredLocations: string[]; // city names
+    recommendationRadius: number; // in km
     ambienceTypes: string[];
+    prefersMichelinRated: boolean;
     accessibilityFeatures: string[];
-    favouriteCuisines: string[];
     socialVisibilityPreferences: SocialVisibility | null;
 }
 

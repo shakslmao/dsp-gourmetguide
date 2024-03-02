@@ -224,10 +224,6 @@ const CuisineCategories = () => {
     const [count, setCount] = useState(0);
 
     useEffect(() => {
-        console.log("User Cuisine Types: ", preferences.cuisineTypes);
-    }, [preferences.cuisineTypes]);
-
-    useEffect(() => {
         if (!api) {
             return;
         }
