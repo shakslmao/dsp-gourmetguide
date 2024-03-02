@@ -8,7 +8,9 @@ import PriceRangePreferences from "../PriceRangePreferences";
 
 export const InitialPricePrefs = () => {
     const router = useRouter();
-    const handleNextOnClick = () => {};
+    const handleNextOnClick = () => {
+        router.push("/inital-preferences/timepreferences");
+    };
     const handlePrevOnClick = () => {
         router.push("/inital-preferences/dietarypreferences");
     };
