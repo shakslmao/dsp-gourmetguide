@@ -15,7 +15,7 @@ export const InitialTimePrefs = () => {
     const handlePrevOnClick = () => {
         router.push("/inital-preferences/pricepreferences");
     };
-    const { preferences, updatePreferences } = useUserPreferences();
+    const { preferences } = useUserPreferences();
     console.log(preferences);
 
     return (
@@ -26,10 +26,24 @@ export const InitialTimePrefs = () => {
                 </h1>
                 <TimeRangePreferences />
                 <p className="text-xs text-center font-light">
-                    Please drag the slider to your preferred dining time, this will help us match
-                    you with the restaurants that fit your preferences, you can change this at any
-                    time.
+                    Please select the times that best suits you, we will try find restaurants that
+                    align with these times, you can change this at any time. Any time is
+                    recommended.
                 </p>
+                {preferences.preferredTime.length > 0 && (
+                    <div>
+                        <h2 className="text-md text-center font-semibold">Selected Times</h2>
+                        <ul className="text-sm text-center">
+                            {preferences.preferredTime.map((time, index) => (
+                                <Badge
+                                    key={index}
+                                    className="m-2 cursor-default">
+                                    <li key={index}>{time}</li>
+                                </Badge>
+                            ))}
+                        </ul>
+                    </div>
+                )}
 
                 <div className="flex justify-evenly gap-x-4">
                     <Button

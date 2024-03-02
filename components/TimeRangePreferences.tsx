@@ -14,31 +14,69 @@ import FlagAvatar from "./FlagAvatar";
 interface TimeRange {
     label: string;
     timeRange: string;
+    description?: string;
     recommended?: string;
 }
 
 const timeRangeCategories = {
     AnyTime: [
         {
-            label: "Anytime",
-            timeRange: "Choosing Anytime includes all available dining hours.",
+            label: "Any time",
+            timeRange: "Choosing any time includes all available dining hours.",
             recommended: "This choice is recommended for the most flexibility.",
+            description: "Perfect for spontaneous foodies - dine whenever you desire.",
         },
     ],
     Breakfast: [
-        { label: "Early Morning", timeRange: "6:00 AM - 7:00 AM" },
-        { label: "Mid Morning", timeRange: "8:00 AM - 9:00 AM" },
-        { label: "Late Morning", timeRange: "10:00 AM - 11:00 AM" },
+        {
+            label: "Early Morning",
+            timeRange: "6:00 AM - 7:00 AM",
+            description: "Catch the first light with fresh brews and pastries.",
+        },
+        {
+            label: "Mid Morning",
+            timeRange: "8:00 AM - 9:00 AM",
+            description: "Ideal for late risers craving the full breakfast experience.",
+        },
+        {
+            label: "Late Morning",
+            timeRange: "10:00 AM - 11:00 AM",
+            description: "Brunch enthusiasts unite for a blend of breakfast and lunch.",
+        },
     ],
     Lunch: [
-        { label: "Early Lunch", timeRange: "11:00 AM - 12:00 PM" },
-        { label: "Midday", timeRange: "12:00 PM - 1:00 PM" },
-        { label: "Late Lunch", timeRange: "1:00 PM - 2:00 PM" },
+        {
+            label: "Early Lunch",
+            timeRange: "11:00 AM - 12:00 PM",
+            description: "Beat the rush with an early taste of the lunch menu.",
+        },
+        {
+            label: "Midday",
+            timeRange: "12:00 PM - 1:00 PM",
+            description: "Join the lunch crowd for a classic midday refuel.",
+        },
+        {
+            label: "Late Lunch",
+            timeRange: "1:00 PM - 2:00 PM",
+            description: "For those who lunch at their leisure, away from the crowds.",
+        },
     ],
     Dinner: [
-        { label: "Early Dinner", timeRange: "5:00 PM - 6:00 PM" },
-        { label: "Prime Dining", timeRange: "7:00 PM - 8:00 PM" },
-        { label: "Late Dinner", timeRange: "9:00 PM - 10:00 PM" },
+        {
+            label: "Early Dinner",
+            timeRange: "5:00 PM - 6:00 PM",
+            description: "Dine early with sunset views and the first pick of the night.",
+        },
+        {
+            label: "Prime Dining",
+            timeRange: "7:00 PM - 8:00 PM",
+            description: "Experience peak dining with prime slots for culinary adventures.",
+        },
+        {
+            label: "Late Dinner",
+            timeRange: "9:00 PM - 10:00 PM",
+            description: "Night owls and late shifters, this time's for you.",
+        },
     ],
 };
 
@@ -103,8 +141,11 @@ const TimeRangePreferences = () => {
                                         <h3 className="text-3xl font-semibold mb-4">
                                             {item.label}
                                         </h3>
-                                        <p className="text-sm text-center font-light">
+                                        <p className="text-sm text-center  font-semibold">
                                             {item.timeRange}
+                                        </p>
+                                        <p className="mt-3 text-sm text-center font-light">
+                                            {item.description}
                                         </p>
                                         {item.recommended && (
                                             <p className="mt-6 text-xs text-center font-light italic">
