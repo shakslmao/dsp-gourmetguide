@@ -28,12 +28,12 @@ const sliderValueToPriceRange: PriceRangeMapping = {
 };
 
 const sliderValueDescription: PriceRangeMapping = {
-    0: "You will be shown restaurants of all price ranges.",
-    20: "£0 - 25, you're looking for a budget meal",
-    40: "£25 - £50, you're looking for a mid-range meal.",
-    60: "£50 - £75, you're looking for a high-end meal.",
-    80: "£75 - £100, you're looking for a luxury meal.",
-    100: "£100+, you're looking for a very luxury meal.",
+    0: "You'll be shown restaurants of all price ranges, from the most affordable to the most exclusive dining options.",
+    20: "£0 - £25: Ideal for those who prefer dining at more affordable restaurants without compromising on quality.",
+    40: "£25 - £50: A range suited for enjoying meals at restaurants with moderate pricing, offering good value.",
+    60: "£50 - £75: Reflects a preference for dining at higher-end restaurants, where the experience and quality are prioritised.",
+    80: "£75 - £100: Caters to those who indulge in very high-end dining experiences, where the ambiance and culinary excellence are unmatched.",
+    100: "£100+: For the ultimate in luxury dining, where no expense is spared for exceptional food, service, and atmosphere.",
 };
 
 const PriceRangePreferences = () => {
@@ -55,7 +55,6 @@ const PriceRangePreferences = () => {
         },
         [updatePreferences]
     );
-    console.log(preferences);
 
     return (
         <div>
