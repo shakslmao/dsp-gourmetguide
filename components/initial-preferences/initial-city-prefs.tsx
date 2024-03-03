@@ -10,14 +10,12 @@ import { useUserLocation } from "@/hooks/useUserLocation";
 export const InitialCityLocatedPrefs = () => {
     const { preferences } = useUserPreferences();
     const { city, error } = useUserLocation();
-    console.log(city, error);
-
     const router = useRouter();
     const handleNextOnClick = () => {
         router.push("");
     };
     const handlePrevOnClick = () => {
-        router.push("");
+        router.push("/inital-preferences/timepreferences");
     };
 
     console.log(preferences);
@@ -31,11 +29,27 @@ export const InitialCityLocatedPrefs = () => {
                 </h1>
 
                 <p className="text-xs text-center font-light">
-                    Explore a curated selection of <span className="text-green-600"> cities</span>,
-                    distinct from your current location, where dining opportunities await your
-                    discovery. Feel free to choose multiple destinations that pique your interest.
+                    Explore a curated selection of popular{" "}
+                    <span className="text-green-600"> cities</span> people travel to, we will
+                    recommend you the best restaurants at your current location, as well as the
+                    cities you select. Feel free to choose multiple destinations that pique your
+                    interest.
                 </p>
                 <CityLocationCategories />
+                {preferences.preferredLocations.length > 0 && (
+                    <div>
+                        <h2 className="text-md text-center font-semibold">Selected Times</h2>
+                        <ul className="text-sm text-center">
+                            {preferences.preferredLocations.map((city, index) => (
+                                <Badge
+                                    key={index}
+                                    className="m-2 cursor-default">
+                                    <li key={index}>{city}</li>
+                                </Badge>
+                            ))}
+                        </ul>
+                    </div>
+                )}
 
                 <div className="flex justify-evenly gap-x-4">
                     <Button
@@ -49,11 +63,17 @@ export const InitialCityLocatedPrefs = () => {
                     </Button>
                     <Button
                         onClick={() => handleNextOnClick()}
-                        className={buttonVariants({
+                        disabled={preferences.preferredLocations.length === 0}
+                        className={`${buttonVariants({
                             variant: "default",
                             className: "w-full py-2 text-white bg-black rounded-lg",
                             size: "sm",
-                        })}>
+                        })}${
+                            preferences.preferredLocations.length === 0
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-green-600"
+                        }
+                    `}>
                         Next
                     </Button>
                 </div>

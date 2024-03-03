@@ -21,72 +21,82 @@ export const cityCategories = [
     {
         label: "My Current Location",
         flag: "",
-        description: "Im only interested in restaurants around my current location",
+        description: "I'm only interested in restaurants around my current location.",
     },
     {
         label: "London",
         flag: "",
-        description: "",
+        description:
+            "Explore a cosmopolitan culinary scene, from traditional British pubs to Michelin-starred dining.",
     },
     {
-        label: "Edingburgh",
+        label: "Edinburgh",
         flag: "",
-        description: "",
+        description: "Savor Scottish specialties like haggis and whisky, amidst historic settings.",
     },
     {
         label: "Manchester",
         flag: "",
-        description: "",
+        description:
+            "A vibrant food scene with a mix of traditional British fare and international cuisine.",
     },
     {
         label: "Birmingham",
         flag: "",
-        description: "",
+        description: "Known for its diverse culinary scene, including the famous Balti Triangle.",
     },
     {
         label: "Liverpool",
         flag: "",
-        description: "",
+        description:
+            "Enjoy waterfront dining with dishes ranging from British classics to international flavors.",
     },
     {
         label: "Glasgow",
         flag: "",
-        description: "",
+        description:
+            "Discover a dynamic food scene with innovative restaurants and traditional Scottish dishes.",
     },
     {
         label: "Bristol City",
         flag: "",
-        description: "",
+        description:
+            "A foodie's delight with a focus on sustainable and locally sourced ingredients.",
     },
     {
         label: "Oxford",
         flag: "",
-        description: "",
+        description:
+            "Classic British cuisine meets international flavors in this historic university city.",
     },
     {
-        label: "Cambdrige",
+        label: "Cambridge",
         flag: "",
-        description: "",
+        description:
+            "Indulge in a mix of traditional British eateries and contemporary dining experiences.",
     },
     {
         label: "Brighton",
         flag: "",
-        description: "",
+        description:
+            "A seaside culinary adventure with fresh seafood and vibrant vegetarian options.",
     },
     {
         label: "Bath",
         flag: "",
-        description: "",
+        description: "Enjoy Georgian elegance with afternoon teas, gastropubs, and fine dining.",
     },
     {
         label: "Newcastle upon Tyne",
         flag: "",
-        description: "",
+        description:
+            "Experience a lively food scene with hearty British meals and international cuisine.",
     },
     {
         label: "Leeds",
         flag: "",
-        description: "",
+        description:
+            "A bustling city with a thriving street food scene and diverse culinary offerings.",
     },
 ];
 
@@ -116,11 +126,14 @@ const CityLocationCategories = () => {
         const UserCuisineTypes = isSelected
             ? preferences.preferredLocations.filter((city) => city !== cityLabel)
             : [...preferences.preferredLocations, cityLabel];
-        updatePreferences({ preferredLocations: UserCuisineTypes });
+        updatePreferences({
+            preferredLocations: UserCuisineTypes,
+            currentLocation: city ?? undefined,
+        });
 
         const toastItem = cityCategories[index];
         toast({
-            title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} Cuisine ${
+            title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} ${
                 toastItem.flag
             }`,
             description: "Your Preferences Have Been Saved!",
@@ -171,7 +184,7 @@ const CityLocationCategories = () => {
                         );
                     })}
                 </CarouselContent>
-                <CarouselPrevious />;
+                <CarouselPrevious />
                 <CarouselNext />
             </Carousel>
             <div className="py-1 text-center text-xs text-muted-foreground">
