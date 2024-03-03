@@ -14,7 +14,8 @@ const defaultUserPrefs: UserCuisinePreferences = {
     priceRangePreference: PriceRange.NO_PREFERENCE, // enum for price range, initially unspecified.
     preferredTime: [], // Preferred dining time, initially unspecified.
     preferredLocations: [], // Preferred dining locations, initially unspecified.
-    recommendationRadius: 0, // Radius for recommendations, initially set to 0.
+    currentLocation: undefined, // Current location of the user, initially unspecified.
+    recommendationRadius: [], // Radius for recommendations, initially set to 0.
     prefersMichelinRated: false, // Whether the user prefers Michelin rated restaurants, initially false.
     ambienceTypes: [], // Preferred ambience types, initially unspecified.
     accessibilityFeatures: [], // Accessibility features required, initially unspecified.
