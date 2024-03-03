@@ -5,7 +5,7 @@ import {
     UserCuisinePreferences,
     UserCuisinePreferencesContextType,
 } from "@/types/UserPreferencesTypes";
-import { PriceRange } from "@prisma/client";
+import { PriceRange, PrismaClient } from "@prisma/client";
 
 // Define the default user preferences for the application.
 const defaultUserPrefs: UserCuisinePreferences = {

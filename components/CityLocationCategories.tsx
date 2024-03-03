@@ -19,6 +19,11 @@ import { useUserLocation } from "@/hooks/useUserLocation";
 // Labels and descriptions for different cuisine categories
 export const cityCategories = [
     {
+        label: "My Current Location",
+        flag: "",
+        description: "Im only interested in restaurants around my current location",
+    },
+    {
         label: "London",
         flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
         description: "",
@@ -106,12 +111,12 @@ const CityLocationCategories = () => {
     }, [api]);
 
     const handleCardClick = (index: number) => {
-        const cuisineLabel = cityCategories[index].label;
-        const isSelected = preferences.cuisineTypes.includes(cuisineLabel);
+        const cityLabel = cityCategories[index].label;
+        const isSelected = preferences.preferredLocations.includes(cityLabel);
         const UserCuisineTypes = isSelected
-            ? preferences.cuisineTypes.filter((cuisine) => cuisine !== cuisineLabel)
-            : [...preferences.cuisineTypes, cuisineLabel];
-        updatePreferences({ cuisineTypes: UserCuisineTypes });
+            ? preferences.preferredLocations.filter((city) => city !== cityLabel)
+            : [...preferences.preferredLocations, cityLabel];
+        updatePreferences({ preferredLocations: UserCuisineTypes });
 
         const toastItem = cityCategories[index];
         toast({
@@ -132,11 +137,11 @@ const CityLocationCategories = () => {
                     {cityCategories.map((item, index) => (
                         <CarouselItem
                             key={index}
-                            className="md:basis-2/2 lg:basis-3/3">
+                            className="md:basis-2/2 lg:basis-3/3 text-center">
                             <div className="p-1">
                                 <Card
                                     className={`cursor-pointer ${
-                                        preferences.currentLocation?.includes(item.label)
+                                        preferences.preferredLocations?.includes(item.label)
                                             ? "bg-green-600 text-white"
                                             : "bg-white"
                                     }`}
@@ -150,6 +155,9 @@ const CityLocationCategories = () => {
                                         </h3>
                                         <p className="text-sm text-center font-light">
                                             {item.description}
+                                        </p>
+                                        <p className="mt-4 text-sm text-center font-light">
+                                            {index === 0 && city ? `${city}` : ""}
                                         </p>
                                     </CardContent>
                                 </Card>
