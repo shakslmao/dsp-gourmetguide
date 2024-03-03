@@ -24,14 +24,9 @@ export const InitialCityLocatedPrefs = () => {
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-                {error && (
-                    <div className="text-center">
-                        <p>Failed to get city name {error}</p>
-                    </div>
-                )}
                 <h1 className="text-2xl font-bold text-center">
-                    Beyond your current location {city}, which{" "}
-                    <span className="text-green-600">cities</span> are on your dining wishlist?
+                    Beyond your current location of <span className="text-green-600">{city}</span>,
+                    which other <span className="text-green-600">cities</span> would you dine in
                 </h1>
 
                 <p className="text-xs text-center font-light">
