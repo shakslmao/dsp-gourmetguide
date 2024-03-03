@@ -26,7 +26,8 @@ export const InitialPricePrefs = () => {
                 </h1>
                 <PriceRangePreferences />
                 <p className="text-xs text-center font-light">
-                    Please drag the slider to your preferred price preference, this will help us
+                    Please drag the slider to your preferred
+                    <span className="text-green-600"> price</span> preference, this will help us
                     match you with the restaurants that fit your budget, you can change this at any
                     time.
                 </p>

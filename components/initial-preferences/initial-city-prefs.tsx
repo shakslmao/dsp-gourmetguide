@@ -20,12 +20,14 @@ export const InitialCityLocatedPrefs = () => {
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                 <h1 className="text-2xl font-bold text-center">
-                    What are your <span className="text-green-600">dietary</span> preferences.
+                    Beyond your current location, which{" "}
+                    <span className="text-green-600">cities</span> are on your dining wishlist?
                 </h1>
 
                 <p className="text-xs text-center font-light">
-                    Please click on the card that best describes your dietary preferences, if you
-                    have any.
+                    Explore a curated selection of <span className="text-green-600"> cities</span>,
+                    distinct from your current location, where dining opportunities await your
+                    discovery. Feel free to choose multiple destinations that pique your interest.
                 </p>
 
                 <div className="flex justify-evenly gap-x-4">

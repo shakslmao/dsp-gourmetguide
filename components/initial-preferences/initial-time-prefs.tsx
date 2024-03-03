@@ -25,9 +25,9 @@ export const InitialTimePrefs = () => {
                 </h1>
                 <TimeRangePreferences />
                 <p className="text-xs text-center font-light">
-                    Please select the times that best suits you, we will try find restaurants that
-                    align with these times, you can change this at any time. Any time is
-                    recommended.
+                    Please select the <span className="text-green-600">times</span> that best suits
+                    you, we will try find restaurants that align with these times, you can change
+                    this at any time. Any time is recommended.
                 </p>
                 {preferences.preferredTime.length > 0 && (
                     <div>

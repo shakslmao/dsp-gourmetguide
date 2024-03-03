@@ -35,7 +35,8 @@ export const InitialCusinePrefs = () => {
                 </h1>
                 <CuisineCategories />
                 <p className="text-xs text-center font-light">
-                    Please click on the card to select your cuisine preferences, you may choose as
+                    Please click on the card to select your{" "}
+                    <span className="text-green-600"> cuisine</span> preferences, you may choose as
                     many as you like
                 </p>
 

@@ -25,8 +25,8 @@ export const InitialDietaryPrefs = () => {
                 </h1>
                 <DietaryCategories />
                 <p className="text-xs text-center font-light">
-                    Please click on the card that best describes your dietary preferences, if you
-                    have any.
+                    Please click on the card that best describes your
+                    <span className="text-green-600"> dietary</span> preferences, if you have any.
                 </p>
 
                 {preferences.dietaryRestrictions.length > 0 && (
