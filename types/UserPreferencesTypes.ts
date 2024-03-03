@@ -6,6 +6,7 @@ export interface UserCuisinePreferences {
     priceRangePreference: PriceRange;
     preferredTime: string[]; //
     preferredLocations: string[]; // city names
+    currentLocation?: string;
     recommendationRadius: number; // in km
     ambienceTypes: string[];
     prefersMichelinRated: boolean;

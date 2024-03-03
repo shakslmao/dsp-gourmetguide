@@ -84,7 +84,8 @@ model Preferences {
     dietaryRestrictions         String[]
     priceRangePreference        PriceRange
     preferredTime               String[]
-    prefferedLocations          String[]
+    preferredLocations          String[]
+    currentLocation             String?
     recommendationRadius        Int
     ambienceTypes               String[]
     prefersMichelinRated        Boolean           @default(false)
