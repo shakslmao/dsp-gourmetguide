@@ -25,67 +25,67 @@ export const cityCategories = [
     },
     {
         label: "London",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Edingburgh",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Manchester",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Birmingham",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Liverpool",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Glasgow",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
-        label: "Bristol",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        label: "Bristol City",
+        flag: "",
         description: "",
     },
     {
         label: "Oxford",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Cambdrige",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Brighton",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Bath",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Newcastle upon Tyne",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
     {
         label: "Leeds",
-        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        flag: "",
         description: "",
     },
 ];
@@ -133,39 +133,45 @@ const CityLocationCategories = () => {
                 opts={{ align: "start" }}
                 setApi={setApi}
                 className="w-full max-w-sm">
+                {/* if the card is === to the users city, dont display that card. */}
                 <CarouselContent>
-                    {cityCategories.map((item, index) => (
-                        <CarouselItem
-                            key={index}
-                            className="md:basis-2/2 lg:basis-3/3 text-center">
-                            <div className="p-1">
-                                <Card
-                                    className={`cursor-pointer ${
-                                        preferences.preferredLocations?.includes(item.label)
-                                            ? "bg-green-600 text-white"
-                                            : "bg-white"
-                                    }`}
-                                    onClick={() => {
-                                        handleCardClick(index);
-                                    }}>
-                                    <CardContent className="flex flex-col aspect-square items-center justify-center p-6 mx-6">
-                                        <FlagAvatar src={item.flag} />
-                                        <h3 className="text-3xl font-semibold mb-4">
-                                            {item.label}
-                                        </h3>
-                                        <p className="text-sm text-center font-light">
-                                            {item.description}
-                                        </p>
-                                        <p className="mt-4 text-sm text-center font-light">
-                                            {index === 0 && city ? `${city}` : ""}
-                                        </p>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </CarouselItem>
-                    ))}
+                    {cityCategories.map((item, index) => {
+                        if (item.label === city) {
+                            return null;
+                        }
+                        return (
+                            <CarouselItem
+                                key={index}
+                                className="md:basis-2/2 lg:basis-3/3 text-center">
+                                <div className="p-1">
+                                    <Card
+                                        className={`cursor-pointer ${
+                                            preferences.preferredLocations?.includes(item.label)
+                                                ? "bg-green-600 text-white"
+                                                : "bg-white"
+                                        }`}
+                                        onClick={() => {
+                                            handleCardClick(index);
+                                        }}>
+                                        <CardContent className="flex flex-col aspect-square items-center justify-center p-6 mx-6">
+                                            <FlagAvatar src={item.flag} />
+                                            <h3 className="text-3xl font-semibold mb-4">
+                                                {item.label}
+                                            </h3>
+                                            <p className="text-sm text-center font-light">
+                                                {item.description}
+                                            </p>
+                                            <p className="mt-4 text-sm text-center font-light">
+                                                {index === 0 && city ? `${city}` : ""}
+                                            </p>
+                                        </CardContent>
+                                    </Card>
+                                </div>
+                            </CarouselItem>
+                        );
+                    })}
                 </CarouselContent>
-                <CarouselPrevious />
+                <CarouselPrevious />;
                 <CarouselNext />
             </Carousel>
             <div className="py-1 text-center text-xs text-muted-foreground">
