@@ -23,6 +23,66 @@ export const cityCategories = [
         flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
         description: "",
     },
+    {
+        label: "Edingburgh",
+        flag: countries.find((country) => country.name.common === "Scotland")?.flag,
+        description: "",
+    },
+    {
+        label: "Manchester",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Birmingham",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Liverpool",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Glasgow",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Bristol",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Oxford",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Cambdrige",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Brighton",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Bath",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Newcastle upon Tyne",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
+    {
+        label: "Leeds",
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
+        description: "",
+    },
 ];
 
 const CityLocationCategories = () => {
