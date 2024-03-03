@@ -10,7 +10,7 @@ type PriceRangeMapping = {
 };
 
 const priceRangeToSliderValue = {
-    NONE_SET: 0,
+    NO_PREFERENCE: 0,
     VERY_LOW: 20,
     LOW: 40,
     MEDIUM: 60,

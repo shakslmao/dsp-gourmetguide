@@ -19,7 +19,7 @@ datasource db {
 }
 
 enum PriceRange {
-    NONE_SET
+    NO_PREFERENCE
     VERY_LOW
     LOW
     MEDIUM

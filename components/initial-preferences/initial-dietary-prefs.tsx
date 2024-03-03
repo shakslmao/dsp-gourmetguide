@@ -57,11 +57,18 @@ export const InitialDietaryPrefs = () => {
                     </Button>
                     <Button
                         onClick={() => handleNextOnClick()}
-                        className={buttonVariants({
+                        disabled={preferences.dietaryRestrictions.length === 0}
+                        className={`${buttonVariants({
                             variant: "default",
                             className: "w-full py-2 text-white bg-black rounded-lg",
                             size: "sm",
-                        })}>
+                        })} ${
+                            preferences.dietaryRestrictions.length === 0
+                                ? "bg-gray-400 cursor-not-allowed"
+                                : "bg-green-600"
+                        }
+                        
+                        `}>
                         Next
                     </Button>
                 </div>

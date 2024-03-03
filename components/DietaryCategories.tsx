@@ -16,6 +16,11 @@ import { useEffect, useState } from "react";
 
 export const dietaryCategories = [
     {
+        label: "None",
+        icon: "",
+        description: "I dont have any restrictions or preferences.",
+    },
+    {
         label: "Vegetarian",
         icon: "",
         description: "Excludes meat and fish, but may include dairy products and eggs.",
