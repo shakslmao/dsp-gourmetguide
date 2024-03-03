@@ -25,7 +25,7 @@ export const cityCategories = [
     },
     {
         label: "Edingburgh",
-        flag: countries.find((country) => country.name.common === "Scotland")?.flag,
+        flag: countries.find((country) => country.name.common === "United Kingdom")?.flag,
         description: "",
     },
     {

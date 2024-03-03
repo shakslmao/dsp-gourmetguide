@@ -4,7 +4,6 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Badge } from "../ui/badge";
 import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "../ui/button";
-import CityLocatedPreferences from "@/app/inital-preferences/citylocationpreferences/page";
 import CityLocationCategories from "../CityLocationCategories";
 import { useUserLocation } from "@/hooks/useUserLocation";
 
