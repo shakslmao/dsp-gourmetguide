@@ -12,7 +12,7 @@ export const InitialCityLocatedPrefs = () => {
     const { city, error } = useUserLocation();
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("");
+        router.push("/inital-preferences/radiuspreferences");
     };
     const handlePrevOnClick = () => {
         router.push("/inital-preferences/timepreferences");
