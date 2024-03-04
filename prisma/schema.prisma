@@ -86,7 +86,7 @@ model Preferences {
     preferredTime               String[]
     preferredLocations          String[]
     currentLocation             String?
-    recommendationRadius        Int[]
+    recommendationRadius        Int
     ambienceTypes               String[]
     prefersMichelinRated        Boolean           @default(false)
     accessibilityFeatures       String[]

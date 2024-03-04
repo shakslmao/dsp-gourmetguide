@@ -15,7 +15,7 @@ const defaultUserPrefs: UserCuisinePreferences = {
     preferredTime: [], // Preferred dining time, initially unspecified.
     preferredLocations: [], // Preferred dining locations, initially unspecified.
     currentLocation: undefined, // Current location of the user, initially unspecified.
-    recommendationRadius: [], // Radius for recommendations, initially set to 0.
+    recommendationRadius: 0, // Radius for recommendations, initially set to 0.
     prefersMichelinRated: false, // Whether the user prefers Michelin rated restaurants, initially false.
     ambienceTypes: [], // Preferred ambience types, initially unspecified.
     accessibilityFeatures: [], // Accessibility features required, initially unspecified.
