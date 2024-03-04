@@ -4,15 +4,29 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Button, buttonVariants } from "../ui/button";
 import { useRouter } from "next/navigation";
 import MichelinStar from "../MichelinStar";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "../ui/form";
+import { Switch } from "../ui/switch";
+
+const FormSchema = z.object({
+    michelin_preference: z.boolean().default(false),
+});
 
 export const InitialMichelinPrefs = () => {
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
+    });
     const { preferences, updatePreferences } = useUserPreferences();
     const router = useRouter();
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/radiuspreferences");
-    };
-    const handleNextOnClick = () => {
         router.back();
+    };
+
+    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+        await updatePreferences({ prefersMichelinRated: data.michelin_preference });
+        router.push("/inital-preferences/accessibilitypreferences");
     };
 
     console.log(preferences);
@@ -24,33 +38,67 @@ export const InitialMichelinPrefs = () => {
                     Would you like to be recommended
                     <span className="text-green-600"> michelin star</span> rated restaurants.
                 </h1>
-                <MichelinStar />
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="w-full space-y-6">
+                        <div>
+                            <h3 className="mb-4 text-lg font-medium"></h3>
+                            <div className="space-y-4">
+                                <FormField
+                                    control={form.control}
+                                    name="michelin_preference"
+                                    render={({ field }) => (
+                                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                            <div className="space-y-0.5">
+                                                <FormLabel className="text-center">
+                                                    Michelin Rated Restaurants
+                                                </FormLabel>
+                                                <FormDescription className="text-xs font-light">
+                                                    Opt in to receive restaurnats that have been
+                                                    awarded michelin stars.
+                                                </FormDescription>
+                                            </div>
+                                            <FormControl>
+                                                <Switch
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
+                            </div>
+                        </div>
 
-                <p className="text-xs text-center font-light">
-                    Please choose if you would like to see restaurants that have been awarded
-                    <span className="text-green-600"> michelin</span> stars, this will help us match
-                    you with the restaurants that fit your preferences.
-                </p>
+                        <p className="text-xs text-center font-light">
+                            Please choose if you would like to see restaurants that have been
+                            awarded
+                            <span className="text-green-600"> michelin</span> stars, this will help
+                            us match you with the restaurants that fit your preferences.
+                        </p>
 
-                <div className="flex justify-evenly gap-x-4">
-                    <Button
-                        onClick={() => handlePrevOnClick()}
-                        className={buttonVariants({
-                            variant: "default",
-                            className: "w-full py-2 text-white bg-black rounded-lg",
-                            size: "sm",
-                        })}>
-                        Previous
-                    </Button>
-                    <Button
-                        className={buttonVariants({
-                            variant: "default",
-                            className: "w-full py-2 text-white bg-black rounded-lg",
-                            size: "sm",
-                        })}>
-                        Next
-                    </Button>
-                </div>
+                        <div className="flex justify-evenly gap-x-4">
+                            <Button
+                                onClick={() => handlePrevOnClick()}
+                                className={buttonVariants({
+                                    variant: "default",
+                                    className: "w-full py-2 text-white bg-black rounded-lg",
+                                    size: "sm",
+                                })}>
+                                Previous
+                            </Button>
+                            <Button
+                                className={buttonVariants({
+                                    variant: "default",
+                                    className: "w-full py-2 text-white bg-black rounded-lg",
+                                    size: "sm",
+                                })}>
+                                Next
+                            </Button>
+                        </div>
+                    </form>
+                </Form>
             </div>
         </div>
     );

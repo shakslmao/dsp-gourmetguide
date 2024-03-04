@@ -12,7 +12,7 @@ export const InitialTimePrefs = () => {
         router.push("/inital-preferences/citylocationpreferences");
     };
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/pricepreferences");
+        router.back();
     };
     const { preferences } = useUserPreferences();
     console.log(preferences);

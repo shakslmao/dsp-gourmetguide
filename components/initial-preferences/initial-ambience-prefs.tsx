@@ -10,7 +10,7 @@ export const InitialAmbiencePrefs = () => {
     const { preferences } = useUserPreferences();
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("/inital-preferences/accessibilitypreferences");
+        router.push("/inital-preferences/michelinpreferences");
     };
     const handlePrevOnClick = () => {
         router.back();

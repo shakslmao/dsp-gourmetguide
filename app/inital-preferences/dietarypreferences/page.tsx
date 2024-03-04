@@ -1,4 +1,4 @@
-import { InitialDietaryPrefs } from "@/components/initial-preferences/initial-dietary-preferences";
+import { InitialDietaryPrefs } from "@/components/initial-preferences/initial-dietary-prefs";
 
 const DietryPreferences = () => {
     return (
