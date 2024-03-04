@@ -9,6 +9,7 @@ export const publicRoutes = ["/", "/auth/new-verification", "/auth/new-password"
  * @type {string[]}
  */
 
+// Hide Routes that are used for authentication, they will be redirected to the home page if the user is already authenticated
 export const authenticatedRoutes = [
     "/auth/login",
     "/inital-preferences/cuisinepreferences",
@@ -18,6 +19,7 @@ export const authenticatedRoutes = [
     "/inital-preferences/citylocationpreferences",
     "/inital-preferences/radiuspreferences",
     "/inital-preferences/michelinpreferences",
+    "/inital-preferences/ambiencepreferences",
     "/inital-preferences/register",
     "/auth/error",
     "/auth/reset",

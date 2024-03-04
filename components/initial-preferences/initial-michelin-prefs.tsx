@@ -3,41 +3,44 @@
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Button, buttonVariants } from "../ui/button";
 import { useRouter } from "next/navigation";
-import MichelinStar from "../MichelinStar";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/components/ui/use-toast";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { MichelinStarValidationSchema, TMichelinStarOptionValidationSchema } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback } from "react";
 
 export const InitialMichelinPrefs = () => {
     const { preferences, updatePreferences } = useUserPreferences();
     const router = useRouter();
-
     const handlePrevOnClick = () => {
         router.push("/inital-preferences/radiuspreferences");
     };
     const form = useForm<TMichelinStarOptionValidationSchema>({
         resolver: zodResolver(MichelinStarValidationSchema),
+        defaultValues: {
+            type: preferences.prefersMichelinRated ? "yes" : "no",
+        },
     });
 
-    const onSubmit = useCallback(
-        (data: TMichelinStarOptionValidationSchema) => {
-            const prefersMichelinRated = data.type == "yes" ? true : false;
-            updatePreferences({ ...preferences, prefersMichelinRated });
-
+    const onSubmit: SubmitHandler<TMichelinStarOptionValidationSchema> = async (data) => {
+        console.log("Form data:", data);
+        const prefersMichelinRated = data.type === "yes";
+        try {
+            await updatePreferences({ ...preferences, prefersMichelinRated });
             toast({
-                title: "Preferences Updated",
-                description: "Your preferences have been updated successfully.",
+                title: "Success",
+                description: "Your preferences have been updated",
             });
-
-            router.push("/");
-        },
-        [preferences, updatePreferences, router]
-    );
+            router.push("/inital-preferences/ambiencepreferences");
+        } catch (error) {
+            console.error("Failed to update preferences:", error);
+            toast({
+                title: "Error",
+                description: "Failed to update your preferences. Please try again.",
+            });
+        }
+    };
 
     console.log(preferences);
 

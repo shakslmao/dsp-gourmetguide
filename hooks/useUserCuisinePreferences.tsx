@@ -41,7 +41,7 @@ export const UserCuisinePreferencesProvider = ({ children }: { children: ReactNo
     const [preferences, setPreferences] = useState<UserCuisinePreferences>(defaultUserPrefs); // Initialise state with default preferences.
 
     // Function to update user preferences with new values.
-    const updatePreferences = (newPreferences: Partial<UserCuisinePreferences>) => {
+    const updatePreferences = async (newPreferences: Partial<UserCuisinePreferences>) => {
         setPreferences((prevPreferences) => ({
             ...prevPreferences,
             ...newPreferences,
