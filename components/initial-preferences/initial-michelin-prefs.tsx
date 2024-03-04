@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "../ui/form";
 import { Switch } from "../ui/switch";
+import { toast } from "../ui/use-toast";
 
 const FormSchema = z.object({
     michelin_preference: z.boolean().default(false),
@@ -24,8 +25,19 @@ export const InitialMichelinPrefs = () => {
     };
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-        await updatePreferences({ prefersMichelinRated: data.michelin_preference });
-        router.push("/inital-preferences/accessibilitypreferences");
+        try {
+            await updatePreferences({ prefersMichelinRated: data.michelin_preference });
+            toast({
+                title: "Success",
+                description: "Michelin preferences updated",
+            });
+            router.push("/inital-preferences/accessibilitypreferences");
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "An error occurred, please try again later.",
+            });
+        }
     };
 
     console.log(preferences);

@@ -4,6 +4,7 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Slider } from "./ui/slider";
 import { useCallback, useEffect, useState } from "react";
 import { PriceRange } from "@prisma/client";
+import { toast } from "./ui/use-toast";
 
 type PriceRangeMapping = {
     [key: number]: string;
@@ -45,15 +46,25 @@ const PriceRangePreferences = () => {
     const selectedPriceRangeDescription = sliderValueDescription[sliderValue];
 
     const handleValueChange = useCallback(
-        (value: number[]) => {
+        async (value: number[]) => {
+            // Mark function as async
             const newSliderValue = value[0];
             setSliderValue(newSliderValue);
             const newPriceRange = sliderValueToPriceRange[newSliderValue];
+
             if (newPriceRange) {
-                updatePreferences({ priceRangePreference: newPriceRange as PriceRange });
+                try {
+                    await updatePreferences({ priceRangePreference: newPriceRange as PriceRange });
+                } catch (error) {
+                    toast({
+                        title: "Error Updating Preference",
+                        description:
+                            "There was an issue saving your preferences. Please try again.",
+                    });
+                }
             }
         },
-        [updatePreferences]
+        [updatePreferences] // Dependency array
     );
 
     return (

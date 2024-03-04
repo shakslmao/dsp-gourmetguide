@@ -104,39 +104,46 @@ const TimeRangePreferences = () => {
         });
     }, [api]);
 
-    const handleCardClick = (selectedTimeRangeLabel: string) => {
-        const currentPreferences = preferences.preferredTime;
-        let updatedPreferences;
-        let action; // To track whether a selection or deselection has occurred
+    const handleCardClick = async (selectedTimeRangeLabel: string) => {
+        try {
+            const currentPreferences = preferences.preferredTime;
+            let updatedPreferences;
+            let action; // To track whether a selection or deselection has occurred
 
-        if (currentPreferences.includes(selectedTimeRangeLabel)) {
-            updatedPreferences = currentPreferences.filter(
-                (label) => label !== selectedTimeRangeLabel
+            if (currentPreferences.includes(selectedTimeRangeLabel)) {
+                updatedPreferences = currentPreferences.filter(
+                    (label) => label !== selectedTimeRangeLabel
+                );
+                action = "deselected";
+            } else {
+                updatedPreferences = [...currentPreferences, selectedTimeRangeLabel];
+                action = "selected";
+            }
+
+            // Find the selected time range object from allTimeRanges
+            const selectedTimeRange = allTimeRanges.find(
+                (item) => item.label === selectedTimeRangeLabel
             );
-            action = "deselected";
-        } else {
-            updatedPreferences = [...currentPreferences, selectedTimeRangeLabel];
-            action = "selected";
-        }
 
-        // Find the selected time range object from allTimeRanges
-        const selectedTimeRange = allTimeRanges.find(
-            (item) => item.label === selectedTimeRangeLabel
-        );
+            if (selectedTimeRange) {
+                const toastMessage =
+                    action === "selected"
+                        ? `You have selected ${selectedTimeRange.label} (${selectedTimeRange.timeRange}) as your preferred time.`
+                        : `You have deselected ${selectedTimeRange.label}. It will no longer be considered as your preferred dining time.`;
 
-        if (selectedTimeRange) {
-            const toastMessage =
-                action === "selected"
-                    ? `You have selected ${selectedTimeRange.label} (${selectedTimeRange.timeRange}) as your preferred time.`
-                    : `You have deselected ${selectedTimeRange.label}. It will no longer be considered as your preferred dining time.`;
+                toast({
+                    title: action === "selected" ? "Preference Saved" : "Preference Removed",
+                    description: toastMessage,
+                });
+            }
 
+            await updatePreferences({ preferredTime: updatedPreferences });
+        } catch (error) {
             toast({
-                title: action === "selected" ? "Preference Saved" : "Preference Removed",
-                description: toastMessage,
+                title: "Error Updating Preference",
+                description: "There was an issue saving your preferences. Please try again.",
             });
         }
-
-        updatePreferences({ preferredTime: updatedPreferences });
     };
 
     return (
