@@ -47,11 +47,11 @@ model User {
     password               String?
     image                  String?
     contactNumber          String?
-    preferencesId          String?                  @db.ObjectId // OPTIONAL FOR NOW - TO BE MADE REQUIRED
+    preferencesId          String                   @db.ObjectId // OPTIONAL FOR NOW - TO BE MADE REQUIRED
     twoFactorEnabled       Boolean                  @default(false)
     twoFactorConfirmation  TwoFactorConfirmation?
     history                History[]
-    preferences            Preferences?             @relation(fields: [preferencesId], references: [id]) // OPTIONAL FOR NOW - TO BE MADE REQUIRED
+    preferences            Preferences              @relation(fields: [preferencesId], references: [id]) // OPTIONAL FOR NOW - TO BE MADE REQUIRED
     Ratings                Ratings[]
     Reviews                Reviews[]
     Account                Account[]

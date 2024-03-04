@@ -1,3 +1,4 @@
+import { PriceRange } from "@prisma/client";
 import exp from "constants";
 import * as z from "zod";
 
@@ -16,24 +17,30 @@ export const LoginValidationSchema = z.object({
 export const RegistrationValidationSchema = z
     .object({
         name: z.string().min(3, { message: "Name must be a minimum of 3 characters" }),
-
         email: z.string().email({ message: "Invalid Format" }),
         password: z
             .string()
             .min(8, { message: "Password must be at least 8 characters long" })
-            .regex(/[a-z]/, {
-                message: "Password must contain at least one lowercase letter",
-            })
-            .regex(/[A-Z]/, {
-                message: "Password must contain at least one uppercase letter",
-            })
-            .regex(/[0-9]/, {
-                message: "Password must contain at least one number",
-            })
+            .regex(/[a-z]/, { message: "Password must contain at least one lowercase letter" })
+            .regex(/[A-Z]/, { message: "Password must contain at least one uppercase letter" })
+            .regex(/[0-9]/, { message: "Password must contain at least one number" })
             .regex(/[@$!%*#?&]/, {
                 message: "Password must contain at least one special character",
             }),
         confirmPassword: z.string(),
+        preferences: z.object({
+            cuisineTypes: z.array(z.string()),
+            dietaryRestrictions: z.array(z.string()),
+            priceRangePreference: z.nativeEnum(PriceRange), // Assuming PriceRange is an enum and correctly imported
+            preferredTime: z.array(z.string()), // Assuming preferred times are strings; adjust as necessary
+            preferredLocations: z.array(z.string()), // Adjust according to your actual type
+            currentLocation: z.string().optional(), // Adjust according to your actual type
+            recommendationRadius: z.number(),
+            prefersMichelinRated: z.boolean(),
+            ambienceTypes: z.array(z.string()), // Adjust according to your actual type
+            accessibilityFeatures: z.boolean(),
+            socialVisibilityPreferences: z.union([z.null(), z.string()]), // Example for nullable field
+        }),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match",

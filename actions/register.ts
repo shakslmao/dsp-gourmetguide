@@ -5,9 +5,12 @@ import { db } from "@/db/prismadb";
 import { RegistrationValidationSchema, TRegistrationValidationSchema } from "@/schemas";
 import { createVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
+import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 
 // Define an async function to handle user registration.
-export const register = async (data: TRegistrationValidationSchema) => {
+export const register = async (
+    data: TRegistrationValidationSchema & { preferences: UserCuisinePreferences }
+) => {
     // Validate the incoming data against the RegistrationValidationSchema.
     const fieldsValidated = RegistrationValidationSchema.safeParse(data);
     // If validation fails, return an error object.
@@ -16,7 +19,7 @@ export const register = async (data: TRegistrationValidationSchema) => {
     }
 
     // Destructure the validated data to extract email, password, and firstName.
-    const { email, password, name } = fieldsValidated.data;
+    const { email, password, name, preferences } = fieldsValidated.data;
 
     // Define the number of salt rounds for bcrypt hashing.
     const saltRounds = 12;
@@ -29,10 +32,15 @@ export const register = async (data: TRegistrationValidationSchema) => {
         },
     });
 
-    // If a user with the same email is found, return an error object.
     if (existingUser) {
         return { error: "User already exists" };
     }
+    const createdPreferences = await db.preferences.create({
+        data: {
+            ...preferences,
+            socialVisibilityPreferences: null,
+        },
+    });
 
     // If no existing user is found, create a new user record in the database with the provided details.
     await db.user.create({
@@ -40,6 +48,7 @@ export const register = async (data: TRegistrationValidationSchema) => {
             name,
             email,
             password: hashedPassword,
+            preferencesId: createdPreferences.id,
         },
     });
 

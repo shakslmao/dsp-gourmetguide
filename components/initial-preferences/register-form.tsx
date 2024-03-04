@@ -48,17 +48,26 @@ export const RegisterForm = () => {
     const handlePrevOnClick = () => {
         router.back();
     };
-    // Function to handle form submission.
+    // Function to handle form submission
     const onSubmit = (data: TRegistrationValidationSchema) => {
+        console.log("submitted", data);
         setValidationError(""); // Reset any previous validation errors.
         setValidationSuccess(""); // Reset any previous validation success messages.
+
+        const dataWithPreferences = {
+            ...data,
+            preferences,
+        };
 
         // Use startTransition for non-urgent state updates, improving user experience during form submission
         startTransition(() => {
             // Attempt to register the user with provided data.
-            register(data).then((values) => {
-                setValidationError(values.error);
-                setValidationSuccess(values.success);
+            register(dataWithPreferences).then((response) => {
+                if (response.error) {
+                    setValidationError(response.error);
+                } else {
+                    setValidationSuccess(response.success);
+                }
             });
         });
     };
@@ -74,8 +83,6 @@ export const RegisterForm = () => {
                     <div className="flex flex-col items-center space-y-2 text-center">
                         {/* <!-- Logo -->  className="h-20 w-20"*/}
                         <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                            Final Step...
-                            <br />
                             Lets Finish Your
                             <br />
                             <span className="text-green-600">Personalised</span>
