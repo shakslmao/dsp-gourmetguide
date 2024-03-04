@@ -4,15 +4,14 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Badge } from "../ui/badge";
 import { Button, buttonVariants } from "../ui/button";
 import { useRouter } from "next/navigation";
-import RadiusPreference from "../RadiusPreferences";
 
-export const InitialRadiusPrefs = () => {
+export const InitialMichelinPrefs = () => {
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("/inital-preferences/michelinpreferences");
+        router.push("");
     };
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/citylocationpreferences");
+        router.push("/inital-preferences/radiuspreferences");
     };
     const { preferences } = useUserPreferences();
     console.log(preferences);
@@ -21,25 +20,16 @@ export const InitialRadiusPrefs = () => {
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                 <h1 className="text-2xl font-bold text-center">
-                    How far are you willing to <span className="text-green-600">travel</span> for a
-                    meal?
+                    Would you like to be recommended
+                    <span className="text-green-600"> michelin star</span> rated restaurants.
                 </h1>
 
-                <RadiusPreference />
                 <p className="text-xs text-center font-light">
-                    Set your preferred <span className="text-green-600">distance radius</span> to
-                    find restaurants. Slide to select the maximum distance you are comfortable
-                    traveling. This helps us tailor restaurant suggestions that are conveniently
-                    located. You can adjust this setting anytime to explore further or keep it
-                    close.
+                    Please choose if you would like to see restaurants that have been awarded
+                    <span className="text-green-600">michelin</span> stars, this will help us match
+                    you with the restaurants that fit your preferences.
                 </p>
-                {preferences.recommendationRadius > 0 && (
-                    <div>
-                        <ul className="text-sm text-center">
-                            <Badge>{preferences.recommendationRadius} Miles</Badge>
-                        </ul>
-                    </div>
-                )}
+
                 <div className="flex justify-evenly gap-x-4">
                     <Button
                         onClick={() => handlePrevOnClick()}
