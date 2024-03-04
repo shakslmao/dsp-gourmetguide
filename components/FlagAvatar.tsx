@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
+import { IconType } from "react-icons";
 
 interface FlagAvatarProps {
-    src: string | null | undefined;
+    src?: string | null | undefined;
+    icon?: IconType | undefined;
 }
 
-const FlagAvatar = ({ src }: FlagAvatarProps) => {
+const FlagAvatar = ({ src, icon }: FlagAvatarProps) => {
     // Assuming src is always a flag emoji or a path to a flag image
     const isEmoji = src && src.length <= 4;
 
@@ -22,7 +24,7 @@ const FlagAvatar = ({ src }: FlagAvatarProps) => {
     } else {
         // Placeholder for handling flag images, adjust as needed
         return (
-            <img
+            <Image
                 className="rounded-full"
                 alt=""
                 src={src || ""}
