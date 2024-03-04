@@ -56,6 +56,7 @@ export const RegisterForm = () => {
 
         const dataWithPreferences = {
             ...data,
+            ...form,
             preferences,
         };
 
