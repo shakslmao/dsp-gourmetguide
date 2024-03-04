@@ -12,7 +12,7 @@ export const InitialRadiusPrefs = () => {
         router.push("/inital-preferences/ambiencepreferences");
     };
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/citylocationpreferences");
+        router.back();
     };
     const { preferences } = useUserPreferences();
     console.log(preferences);

@@ -13,7 +13,7 @@ export const InitialAmbiencePrefs = () => {
         router.push("/inital-preferences/accessibilitypreferences");
     };
     const handlePrevOnClick = () => {
-        router.push("/initial-preferences/radiuspreferences");
+        router.back();
     };
     console.log(preferences);
 

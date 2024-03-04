@@ -12,7 +12,7 @@ export const InitialMichelinPrefs = () => {
         router.push("/inital-preferences/radiuspreferences");
     };
     const handleNextOnClick = () => {
-        router.push("/");
+        router.back();
     };
 
     console.log(preferences);

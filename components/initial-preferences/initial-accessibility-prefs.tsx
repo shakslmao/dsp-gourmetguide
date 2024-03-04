@@ -17,16 +17,20 @@ export const InitialAccessibilityPrefs = () => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
     });
-    const { preferences } = useUserPreferences();
+    const { updatePreferences, preferences } = useUserPreferences();
     const router = useRouter();
     const handleNextOnClick = () => {
         router.push("/inital-preferences/register");
     };
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/ambiencepreferences");
+        router.back();
     };
 
-    const onSubmit = (data: z.infer<typeof FormSchema>) => {};
+    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+        console.log(data.accessibility_preference);
+        await updatePreferences({ accessibilityFeatures: data.accessibility_preference });
+        router.push("/inital-preferences/register");
+    };
     console.log(preferences);
 
     return (
@@ -70,43 +74,41 @@ export const InitialAccessibilityPrefs = () => {
                                 />
                             </div>
                         </div>
+                        <p className="text-xs text-center font-light">
+                            We strive to ensure everyone can enjoy their dining experience. Please
+                            indicate if you require venues with specific{" "}
+                            <span className="text-green-600">accessibility features</span>. This
+                            helps us recommend restaurants that cater to your needs, making every
+                            dining out experience comfortable and enjoyable.
+                        </p>
+
+                        <div className="flex justify-evenly gap-x-4">
+                            <Button
+                                onClick={() => handlePrevOnClick()}
+                                className={buttonVariants({
+                                    variant: "default",
+                                    className: "w-full py-2 text-white bg-black rounded-lg",
+                                    size: "sm",
+                                })}>
+                                Previous
+                            </Button>
+                            <Button
+                                type="submit"
+                                onClick={() => handleNextOnClick()}
+                                className={`${buttonVariants({
+                                    variant: "default",
+                                    className: "w-full py-2 text-white bg-black rounded-lg",
+                                    size: "sm",
+                                })}${
+                                    preferences.accessibilityFeatures === null
+                                        ? "bg-gray-400 cursor-not-allowed"
+                                        : "bg-green-600"
+                                }`}>
+                                Next
+                            </Button>
+                        </div>
                     </form>
                 </Form>
-
-                <p className="text-xs text-center font-light">
-                    We strive to ensure everyone can enjoy their dining experience. Please indicate
-                    if you require venues with specific{" "}
-                    <span className="text-green-600">accessibility features</span>. This helps us
-                    recommend restaurants that cater to your needs, making every dining out
-                    experience comfortable and enjoyable.
-                </p>
-
-                <div className="flex justify-evenly gap-x-4">
-                    <Button
-                        onClick={() => handlePrevOnClick()}
-                        className={buttonVariants({
-                            variant: "default",
-                            className: "w-full py-2 text-white bg-black rounded-lg",
-                            size: "sm",
-                        })}>
-                        Previous
-                    </Button>
-                    <Button
-                        type="submit"
-                        onClick={() => handleNextOnClick()}
-                        className={`${buttonVariants({
-                            variant: "default",
-                            className: "w-full py-2 text-white bg-black rounded-lg",
-                            size: "sm",
-                        })}${
-                            preferences.preferredLocations.length === 0
-                                ? "bg-gray-400 cursor-not-allowed"
-                                : "bg-green-600"
-                        }
-                    `}>
-                        Next
-                    </Button>
-                </div>
             </div>
         </div>
     );

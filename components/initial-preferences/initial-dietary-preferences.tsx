@@ -1,20 +1,19 @@
 "use client";
 
-//
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import DietaryCategories from "../DietaryCategories";
 import { Badge } from "../ui/badge";
 import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "../ui/button";
-
-export const InitialDietaryPrefs = () => {
+//
+export const InitialDietaryPreferences = () => {
     const { preferences } = useUserPreferences();
     const router = useRouter();
     const handleNextOnClick = () => {
         router.push("/inital-preferences/pricepreferences");
     };
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/cuisinepreferences");
+        router.back();
     };
     console.log(preferences);
 

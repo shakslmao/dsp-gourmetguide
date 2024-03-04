@@ -12,7 +12,7 @@ export const InitialPricePrefs = () => {
         router.push("/inital-preferences/timepreferences");
     };
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/dietarypreferences");
+        router.back();
     };
     const { preferences } = useUserPreferences();
     console.log(preferences);

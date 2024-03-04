@@ -1,9 +1,9 @@
-import { InitialDietaryPrefs } from "@/components/initial-preferences/initial-dietary-prefs";
+import { InitialDietaryPrefs } from "@/components/initial-preferences/initial-dietary-preferences";
 
 const DietryPreferences = () => {
     return (
         <div>
-            <InitialDietaryPrefs />
+            <InitialDietaryPreferences />
         </div>
     );
 };

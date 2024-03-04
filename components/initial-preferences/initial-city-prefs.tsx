@@ -15,7 +15,7 @@ export const InitialCityLocatedPrefs = () => {
         router.push("/inital-preferences/radiuspreferences");
     };
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/timepreferences");
+        router.back();
     };
 
     console.log(preferences);

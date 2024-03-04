@@ -23,12 +23,16 @@ import { signIn } from "next-auth/react";
 import { Separator } from "@/components/ui/separator";
 import { register } from "@/actions/register";
 import { LOGIN_REDIRECT } from "@/routes";
+import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
+import { useRouter } from "next/navigation";
 
 export const RegisterForm = () => {
+    const router = useRouter();
     const [isSubmitting, startTransition] = useTransition(); // Use the useTransition hook to manage state transitions for submitting the form.
     const [validationError, setValidationError] = useState<string | undefined>(""); // State to hold any validation errors that might occur.
     const [validationSuccess, setValidationSuccess] = useState<string | undefined>(""); // State to hold a message upon successful validation.
-
+    const { preferences } = useUserPreferences();
+    console.log(preferences);
     // Initialise the form with useForm, setting up validation schema and default values.
     // Use Zod for form validation, based on a predefined schema.
     const form = useForm<TRegistrationValidationSchema>({
@@ -41,6 +45,9 @@ export const RegisterForm = () => {
         },
     });
 
+    const handlePrevOnClick = () => {
+        router.back();
+    };
     // Function to handle form submission.
     const onSubmit = (data: TRegistrationValidationSchema) => {
         setValidationError(""); // Reset any previous validation errors.
@@ -62,7 +69,7 @@ export const RegisterForm = () => {
 
     return (
         <>
-            <div className="flex items-center justify-center min-h-screen mx-auto">
+            <div className="flex items-center justify-center min-h-screen mt-10">
                 <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                     <div className="flex flex-col items-center space-y-2 text-center">
                         {/* <!-- Logo -->  className="h-20 w-20"*/}
@@ -205,6 +212,15 @@ export const RegisterForm = () => {
                         Already Signed Up? Sign-In
                         <ArrowRight className="h-4 w-4" />
                     </Link>
+                    <Button
+                        onClick={() => handlePrevOnClick()}
+                        className={buttonVariants({
+                            variant: "default",
+                            className: "w-full py-2 text-white bg-black rounded-lg",
+                            size: "sm",
+                        })}>
+                        Previous
+                    </Button>
                 </div>
             </div>
         </>
