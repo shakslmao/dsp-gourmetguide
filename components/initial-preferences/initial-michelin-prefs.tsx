@@ -3,7 +3,6 @@
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Button, buttonVariants } from "../ui/button";
 import { useRouter } from "next/navigation";
-import MichelinStar from "../MichelinStar";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

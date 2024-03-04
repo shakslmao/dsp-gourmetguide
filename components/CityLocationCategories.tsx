@@ -120,13 +120,13 @@ const CityLocationCategories = () => {
         });
     }, [api]);
 
-    const handleCardClick = (index: number) => {
+    const handleCardClick = async (index: number) => {
         const cityLabel = cityCategories[index].label;
         const isSelected = preferences.preferredLocations.includes(cityLabel);
         const UserCuisineTypes = isSelected
             ? preferences.preferredLocations.filter((city) => city !== cityLabel)
             : [...preferences.preferredLocations, cityLabel];
-        updatePreferences({
+        await updatePreferences({
             preferredLocations: UserCuisineTypes,
             currentLocation: city ?? undefined,
         });

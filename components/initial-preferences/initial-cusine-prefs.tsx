@@ -25,7 +25,7 @@ export const InitialCusinePrefs = () => {
             });
         }
     };
-    // ss
+    //
     console.log(preferences);
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">

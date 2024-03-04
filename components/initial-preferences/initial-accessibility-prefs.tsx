@@ -8,6 +8,7 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } fr
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Switch } from "../ui/switch";
+import { toast } from "../ui/use-toast";
 
 const FormSchema = z.object({
     accessibility_preference: z.boolean().default(false),
@@ -27,9 +28,20 @@ export const InitialAccessibilityPrefs = () => {
     };
 
     const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-        console.log(data.accessibility_preference);
-        await updatePreferences({ accessibilityFeatures: data.accessibility_preference });
-        router.push("/inital-preferences/register");
+        try {
+            console.log(data.accessibility_preference);
+            await updatePreferences({ accessibilityFeatures: data.accessibility_preference });
+            toast({
+                title: "Success",
+                description: "Accessibility preferences updated",
+            });
+            router.push("/inital-preferences/register");
+        } catch (error) {
+            toast({
+                title: "Error",
+                description: "An error occurred, please try again later.",
+            });
+        }
     };
     console.log(preferences);
 
