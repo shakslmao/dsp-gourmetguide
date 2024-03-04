@@ -1,7 +1,19 @@
 "use client";
 
-import countries from "world-countries";
-import { MdLunchDining, MdFamilyRestroom } from "react-icons/md";
+import { HiMiniPaintBrush } from "react-icons/hi2";
+import { RiPlantFill } from "react-icons/ri";
+import { GiModernCity, GiCook } from "react-icons/gi";
+import { FaLandmark, FaTree, FaUmbrellaBeach, FaWater } from "react-icons/fa";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { TbHeartShare, TbBuildingSkyscraper } from "react-icons/tb";
+import {
+    MdLunchDining,
+    MdFamilyRestroom,
+    MdDoNotDisturbOff,
+    MdSportsBar,
+    MdOutdoorGrill,
+    MdOutlinePets,
+} from "react-icons/md";
 import { IoIosRestaurant } from "react-icons/io";
 import { BsPersonHearts } from "react-icons/bs";
 import { Card, CardContent } from "./ui/card";
@@ -44,91 +56,80 @@ export const ambienceCategories = [
     },
     {
         label: "Trendy/Chic",
-        icon: undefined,
+        icon: TbHeartShare,
         description: "Fashionable and stylish, with a modern vibe and a young crowd.",
     },
     {
         label: "Quiet/Intimate",
-        icon: undefined,
+        icon: MdDoNotDisturbOff,
         description: "Reserved and serene, ideal for private conversations and peaceful meals.",
     },
     {
         label: "Lively/Bustling",
-        icon: undefined,
+        icon: FaPeopleGroup,
         description: "Energetic and vibrant, often with music or entertainment.",
     },
     {
         label: "Historic/Classic",
-        icon: undefined,
+        icon: FaLandmark,
         description: "Rich in history with classic décor, offering a timeless dining experience.",
     },
     {
         label: "Modern/Contemporary",
-        icon: undefined,
+        icon: GiModernCity,
         description: "Sleek and contemporary, with innovative designs and modern cuisine.",
     },
     {
         label: "Rustic/Country",
-        icon: undefined,
+        icon: FaTree,
         description: "A cozy, country vibe with traditional comfort foods and a warm atmosphere.",
     },
     {
         label: "Seaside/Beachfront",
-        icon: undefined,
+        icon: FaUmbrellaBeach,
         description: "Relaxed dining with sea views, often featuring seafood and breezy terraces.",
     },
     {
         label: "Rooftop/Garden",
-        icon: undefined,
+        icon: RiPlantFill,
         description: "Outdoor or semi-outdoor spaces with panoramic views or lush gardens.",
     },
     {
         label: "Artistic/Bohemian",
-        icon: undefined,
+        icon: HiMiniPaintBrush,
         description: "Unique and creative spaces filled with art and an eclectic atmosphere.",
     },
     {
         label: "Sports-Themed",
-        icon: undefined,
+        icon: MdSportsBar,
         description: "Decorated with sports memorabilia and often showing live sports events.",
     },
     {
         label: "Outdoor Dining",
-        icon: undefined,
+        icon: MdOutdoorGrill,
         description: "Enjoy meals in the open air, from patios to garden settings.",
     },
     {
         label: "Waterfront Dining",
-        icon: undefined,
+        icon: FaWater,
         description: "Dining by the water, offering picturesque views and a tranquil setting.",
     },
     {
         label: "Panoramic View",
-        icon: undefined,
+        icon: TbBuildingSkyscraper,
         description:
             "Restaurants with high vantage points for breathtaking city or landscape views.",
     },
     {
         label: "Chef’s Table",
-        icon: undefined,
+        icon: GiCook,
         description:
             "An exclusive dining experience near the kitchen for a closer look at the culinary process.",
     },
     {
-        label: "Interactive Dining",
-        icon: undefined,
-        description:
-            "Dining experiences where guests can engage with the cooking process or enjoy performances.",
-    },
-    {
         label: "Pet-Friendly",
-        icon: undefined,
+        icon: MdOutlinePets,
         description: "Welcomes pets, often with outdoor seating options.",
-    },
-    {
-        label: "Sustainability-Focused",
-        icon: undefined,
-        description: "Emphasises eco-friendly practices and locally sourced ingredients.",
     },
 ];
 
