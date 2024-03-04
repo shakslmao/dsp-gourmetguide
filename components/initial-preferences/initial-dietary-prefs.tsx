@@ -1,6 +1,5 @@
 "use client";
 
-//
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import DietaryCategories from "../DietaryCategories";
 import { Badge } from "../ui/badge";
@@ -14,7 +13,7 @@ export const InitialDietaryPrefs = () => {
         router.push("/inital-preferences/pricepreferences");
     };
     const handlePrevOnClick = () => {
-        router.push("/inital-preferences/cuisinepreferences");
+        router.back();
     };
     console.log(preferences);
 

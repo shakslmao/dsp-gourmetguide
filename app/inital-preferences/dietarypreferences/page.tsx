@@ -3,7 +3,7 @@ import { InitialDietaryPrefs } from "@/components/initial-preferences/initial-di
 const DietryPreferences = () => {
     return (
         <div>
-            <InitialDietaryPreferences />
+            <InitialDietaryPrefs />
         </div>
     );
 };
