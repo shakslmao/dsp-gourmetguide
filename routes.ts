@@ -20,6 +20,7 @@ export const authenticatedRoutes = [
     "/inital-preferences/radiuspreferences",
     "/inital-preferences/michelinpreferences",
     "/inital-preferences/ambiencepreferences",
+    "/inital-preferences/accessibilitypreferences",
     "/inital-preferences/register",
     "/auth/error",
     "/auth/reset",

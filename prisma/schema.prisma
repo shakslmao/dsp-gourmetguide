@@ -89,7 +89,7 @@ model Preferences {
     recommendationRadius        Int
     ambienceTypes               String[]
     prefersMichelinRated        Boolean           @default(false)
-    accessibilityFeatures       String[]
+    accessibilityFeatures       Boolean           @default(false)
     socialVisibilityPreferences SocialVisibility?
 }
 

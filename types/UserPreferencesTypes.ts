@@ -10,7 +10,7 @@ export interface UserCuisinePreferences {
     recommendationRadius: number; // in km
     ambienceTypes: string[];
     prefersMichelinRated: boolean;
-    accessibilityFeatures: string[];
+    accessibilityFeatures: boolean;
     socialVisibilityPreferences: SocialVisibility | null;
 }
 

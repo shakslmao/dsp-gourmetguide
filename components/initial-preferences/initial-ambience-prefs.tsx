@@ -10,7 +10,7 @@ export const InitialAmbiencePrefs = () => {
     const { preferences } = useUserPreferences();
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("/");
+        router.push("/inital-preferences/accessibilitypreferences");
     };
     const handlePrevOnClick = () => {
         router.push("/initial-preferences/radiuspreferences");

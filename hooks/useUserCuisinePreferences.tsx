@@ -18,7 +18,7 @@ const defaultUserPrefs: UserCuisinePreferences = {
     recommendationRadius: 0, // Radius for recommendations, initially set to 0.
     prefersMichelinRated: false, // Whether the user prefers Michelin rated restaurants, initially false.
     ambienceTypes: [], // Preferred ambience types, initially unspecified.
-    accessibilityFeatures: [], // Accessibility features required, initially unspecified.
+    accessibilityFeatures: false, // Accessibility features required, initially unspecified.
     socialVisibilityPreferences: null, // Preferences for social visibility, initially null.
 };
 
