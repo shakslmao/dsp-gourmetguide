@@ -181,7 +181,7 @@ const AmbienceCategories = () => {
                             <div className="p-1">
                                 <Card
                                     className={`cursor-pointer ${
-                                        preferences.cuisineTypes.includes(item.label)
+                                        preferences.ambienceTypes.includes(item.label)
                                             ? "bg-green-600 text-white"
                                             : "bg-white"
                                     }`}

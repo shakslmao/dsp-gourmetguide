@@ -23,12 +23,13 @@ export const InitialAmbiencePrefs = () => {
                 <h1 className="text-2xl font-bold text-center">
                     What are your <span className="text-green-600">ambience</span> preferences.
                 </h1>
+                <AmbienceCategories />
 
                 <p className="text-xs text-center font-light">
                     Please click on the card that best describes your
                     <span className="text-green-600"> ambience</span> preferences, if you have any.
                 </p>
-                <AmbienceCategories />
+
                 {preferences.ambienceTypes.length > 0 && (
                     <div>
                         <h2 className="text-md text-center font-semibold">
