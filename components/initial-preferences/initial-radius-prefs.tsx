@@ -34,6 +34,13 @@ export const InitialRadiusPrefs = () => {
                     located. You can adjust this setting anytime to explore further or keep it
                     close.
                 </p>
+                {preferences.recommendationRadius > 0 && (
+                    <div>
+                        <ul className="text-sm text-center">
+                            <Badge>{preferences.recommendationRadius} Miles</Badge>
+                        </ul>
+                    </div>
+                )}
                 <div className="flex justify-evenly gap-x-4">
                     <Button
                         onClick={() => handlePrevOnClick()}
