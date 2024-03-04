@@ -9,7 +9,7 @@ import RadiusPreference from "../RadiusPreferences";
 export const InitialRadiusPrefs = () => {
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("/inital-preferences/michelinpreferences");
+        router.push("/inital-preferences/ambiencepreferences");
     };
     const handlePrevOnClick = () => {
         router.push("/inital-preferences/citylocationpreferences");

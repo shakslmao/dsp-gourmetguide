@@ -12,10 +12,8 @@ const MichelinStar = () => {
     useEffect(() => {
         setSelectedValue(preferences.prefersMichelinRated ? "yes" : "no");
     }, [preferences.prefersMichelinRated]);
-
     const handleChange = (newValue: string) => {
-        // Ensure newValue is typed as string
-        const prefersMichelinRated = newValue === "yes";
+        const prefersMichelinRated = newValue === "yes" ? true : false;
         setSelectedValue(newValue); // Update local state
         updatePreferences({ ...preferences, prefersMichelinRated }); // Update global state
     };
@@ -23,8 +21,8 @@ const MichelinStar = () => {
     return (
         <RadioGroup
             value={selectedValue}
-            onChange={(newValue: FormEvent<HTMLDivElement>) =>
-                handleChange((newValue.currentTarget as HTMLInputElement).value)
+            onChange={(event: React.FormEvent<HTMLInputElement>) =>
+                handleChange((event.target as HTMLInputElement).value)
             }>
             <div className="flex justify-center items-center gap-4">
                 <div className="flex items-center space-x-2">
