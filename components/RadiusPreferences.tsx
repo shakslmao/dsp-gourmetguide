@@ -2,7 +2,6 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Slider } from "./ui/slider";
 import { useUserLocation } from "@/hooks/useUserLocation";
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "./ui/use-toast";
 
 const RadiusPreference = () => {
     const { preferences, updatePreferences } = useUserPreferences();
@@ -13,19 +12,12 @@ const RadiusPreference = () => {
     }, [preferences.recommendationRadius]);
 
     const handleValueChange = useCallback(
-        async (value: number) => {
+        (value: number) => {
             setSliderValue(value);
-            try {
-                updatePreferences({
-                    recommendationRadius: value,
-                    currentLocation: city ? city : undefined,
-                });
-            } catch (error) {
-                toast({
-                    title: "Error Updating Preference",
-                    description: "There was an issue saving your preferences. Please try again.",
-                });
-            }
+            updatePreferences({
+                recommendationRadius: value,
+                currentLocation: city ? city : undefined,
+            });
         },
         [updatePreferences, city]
     );

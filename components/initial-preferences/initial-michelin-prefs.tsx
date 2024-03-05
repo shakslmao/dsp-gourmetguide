@@ -24,20 +24,13 @@ export const InitialMichelinPrefs = () => {
         router.back();
     };
 
-    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-        try {
-            await updatePreferences({ prefersMichelinRated: data.michelin_preference });
-            toast({
-                title: "Success",
-                description: "Michelin preferences updated",
-            });
-            router.push("/inital-preferences/accessibilitypreferences");
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: "An error occurred, please try again later.",
-            });
-        }
+    const onSubmit = (data: z.infer<typeof FormSchema>) => {
+        updatePreferences({ prefersMichelinRated: data.michelin_preference });
+        toast({
+            title: "Success",
+            description: "Michelin preferences updated",
+        });
+        router.push("/inital-preferences/accessibilitypreferences");
     };
 
     console.log(preferences);

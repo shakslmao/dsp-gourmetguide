@@ -27,21 +27,14 @@ export const InitialAccessibilityPrefs = () => {
         router.back();
     };
 
-    const onSubmit = async (data: z.infer<typeof FormSchema>) => {
-        try {
-            console.log(data.accessibility_preference);
-            await updatePreferences({ accessibilityFeatures: data.accessibility_preference });
-            toast({
-                title: "Success",
-                description: "Accessibility preferences updated",
-            });
-            router.push("/inital-preferences/register");
-        } catch (error) {
-            toast({
-                title: "Error",
-                description: "An error occurred, please try again later.",
-            });
-        }
+    const onSubmit = (data: z.infer<typeof FormSchema>) => {
+        console.log(data.accessibility_preference);
+        updatePreferences({ accessibilityFeatures: data.accessibility_preference });
+        toast({
+            title: "Success",
+            description: "Accessibility preferences updated",
+        });
+        router.push("/inital-preferences/register");
     };
     console.log(preferences);
 

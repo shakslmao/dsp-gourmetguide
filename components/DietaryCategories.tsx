@@ -97,28 +97,21 @@ const DietaryCategories = () => {
         });
     }, [api]);
 
-    const handleCardClick = async (index: number) => {
-        try {
-            const dietaryLabel = dietaryCategories[index].label;
-            const isSelected = preferences.dietaryRestrictions.includes(dietaryLabel);
-            const UserDietaryTypes = isSelected
-                ? preferences.dietaryRestrictions.filter((dietary) => dietary !== dietaryLabel)
-                : [...preferences.dietaryRestrictions, dietaryLabel];
-            await updatePreferences({ dietaryRestrictions: UserDietaryTypes });
+    const handleCardClick = (index: number) => {
+        const dietaryLabel = dietaryCategories[index].label;
+        const isSelected = preferences.dietaryRestrictions.includes(dietaryLabel);
+        const UserDietaryTypes = isSelected
+            ? preferences.dietaryRestrictions.filter((dietary) => dietary !== dietaryLabel)
+            : [...preferences.dietaryRestrictions, dietaryLabel];
+        updatePreferences({ dietaryRestrictions: UserDietaryTypes });
 
-            const toastItem = dietaryCategories[index];
-            toast({
-                title: `You've ${isSelected ? "Unselected" : "Selected"} ${
-                    toastItem.label
-                } preference ${toastItem.icon}`,
-                description: "Your Preferences Have Been Saved!",
-            });
-        } catch (error) {
-            toast({
-                title: "Error Updating Preference",
-                description: "There was an issue saving your preferences. Please try again.",
-            });
-        }
+        const toastItem = dietaryCategories[index];
+        toast({
+            title: `You've ${isSelected ? "Unselected" : "Selected"} ${
+                toastItem.label
+            } preference ${toastItem.icon}`,
+            description: "Your Preferences Have Been Saved!",
+        });
     };
 
     return (

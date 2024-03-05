@@ -152,28 +152,21 @@ const AmbienceCategories = () => {
         });
     }, [api]);
 
-    const handleCardClick = async (index: number) => {
-        try {
-            const ambienceLabel = ambienceCategories[index].label;
-            const isSelected = preferences.ambienceTypes.includes(ambienceLabel);
-            const UserAmbienceTypes = isSelected
-                ? preferences.ambienceTypes.filter((ambience) => ambience !== ambienceLabel)
-                : [...preferences.ambienceTypes, ambienceLabel];
-            await updatePreferences({
-                ambienceTypes: UserAmbienceTypes,
-            });
+    const handleCardClick = (index: number) => {
+        const ambienceLabel = ambienceCategories[index].label;
+        const isSelected = preferences.ambienceTypes.includes(ambienceLabel);
+        const UserAmbienceTypes = isSelected
+            ? preferences.ambienceTypes.filter((ambience) => ambience !== ambienceLabel)
+            : [...preferences.ambienceTypes, ambienceLabel];
+        updatePreferences({
+            ambienceTypes: UserAmbienceTypes,
+        });
 
-            const toastItem = ambienceCategories[index];
-            toast({
-                title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label}`,
-                description: toastItem.description,
-            });
-        } catch (error) {
-            toast({
-                title: "Error Updating Preference",
-                description: "There was an issue saving your preferences. Please try again.",
-            });
-        }
+        const toastItem = ambienceCategories[index];
+        toast({
+            title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label}`,
+            description: toastItem.description,
+        });
     };
 
     return (

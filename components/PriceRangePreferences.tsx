@@ -46,23 +46,13 @@ const PriceRangePreferences = () => {
     const selectedPriceRangeDescription = sliderValueDescription[sliderValue];
 
     const handleValueChange = useCallback(
-        async (value: number[]) => {
+        (value: number[]) => {
             // Mark function as async
             const newSliderValue = value[0];
             setSliderValue(newSliderValue);
             const newPriceRange = sliderValueToPriceRange[newSliderValue];
 
-            if (newPriceRange) {
-                try {
-                    await updatePreferences({ priceRangePreference: newPriceRange as PriceRange });
-                } catch (error) {
-                    toast({
-                        title: "Error Updating Preference",
-                        description:
-                            "There was an issue saving your preferences. Please try again.",
-                    });
-                }
-            }
+            updatePreferences({ priceRangePreference: newPriceRange as PriceRange });
         },
         [updatePreferences] // Dependency array
     );

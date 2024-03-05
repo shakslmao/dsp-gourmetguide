@@ -120,31 +120,24 @@ const CityLocationCategories = () => {
         });
     }, [api]);
 
-    const handleCardClick = async (index: number) => {
-        try {
-            const cityLabel = cityCategories[index].label;
-            const isSelected = preferences.preferredLocations.includes(cityLabel);
-            const UserCuisineTypes = isSelected
-                ? preferences.preferredLocations.filter((city) => city !== cityLabel)
-                : [...preferences.preferredLocations, cityLabel];
-            await updatePreferences({
-                preferredLocations: UserCuisineTypes,
-                currentLocation: city ?? undefined,
-            });
+    const handleCardClick = (index: number) => {
+        const cityLabel = cityCategories[index].label;
+        const isSelected = preferences.preferredLocations.includes(cityLabel);
+        const UserCuisineTypes = isSelected
+            ? preferences.preferredLocations.filter((city) => city !== cityLabel)
+            : [...preferences.preferredLocations, cityLabel];
+        updatePreferences({
+            preferredLocations: UserCuisineTypes,
+            currentLocation: city ?? undefined,
+        });
 
-            const toastItem = cityCategories[index];
-            toast({
-                title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} ${
-                    toastItem.flag
-                }`,
-                description: "Your Preferences Have Been Saved!",
-            });
-        } catch (error) {
-            toast({
-                title: "Error Updating Preference",
-                description: "There was an issue saving your preferences. Please try again.",
-            });
-        }
+        const toastItem = cityCategories[index];
+        toast({
+            title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} ${
+                toastItem.flag
+            }`,
+            description: "Your Preferences Have Been Saved!",
+        });
     };
 
     return (

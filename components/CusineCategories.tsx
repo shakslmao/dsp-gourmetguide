@@ -236,28 +236,21 @@ const CuisineCategories = () => {
         });
     }, [api]);
 
-    const handleCardClick = async (index: number) => {
-        try {
-            const cuisineLabel = cuisineCategories[index].label;
-            const isSelected = preferences.cuisineTypes.includes(cuisineLabel);
-            const UserCuisineTypes = isSelected
-                ? preferences.cuisineTypes.filter((cuisine) => cuisine !== cuisineLabel)
-                : [...preferences.cuisineTypes, cuisineLabel];
-            await updatePreferences({ cuisineTypes: UserCuisineTypes });
+    const handleCardClick = (index: number) => {
+        const cuisineLabel = cuisineCategories[index].label;
+        const isSelected = preferences.cuisineTypes.includes(cuisineLabel);
+        const UserCuisineTypes = isSelected
+            ? preferences.cuisineTypes.filter((cuisine) => cuisine !== cuisineLabel)
+            : [...preferences.cuisineTypes, cuisineLabel];
+        updatePreferences({ cuisineTypes: UserCuisineTypes });
 
-            const toastItem = cuisineCategories[index];
-            toast({
-                title: `You've ${isSelected ? "Unselected" : "Selected"} ${
-                    toastItem.label
-                } Cuisine ${toastItem.flag}`,
-                description: "Your Preferences Have Been Saved!",
-            });
-        } catch (error) {
-            toast({
-                title: "Error Updating Preference",
-                description: "There was an issue saving your preferences. Please try again.",
-            });
-        }
+        const toastItem = cuisineCategories[index];
+        toast({
+            title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} Cuisine ${
+                toastItem.flag
+            }`,
+            description: "Your Preferences Have Been Saved!",
+        });
     };
     return (
         <div>

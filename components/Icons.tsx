@@ -6,7 +6,7 @@ interface IconProps {
     icon?: IconType; // This should be IconType or undefined
 }
 
-const Icons: React.FC<IconProps> = ({ icon: Icon }) => {
+const Icons = ({ icon: Icon }: IconProps) => {
     // Check if Icon is provided and render it
     return (
         <div className="icon-container">
