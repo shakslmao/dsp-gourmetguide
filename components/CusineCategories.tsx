@@ -252,6 +252,7 @@ const CuisineCategories = () => {
             description: "Your Preferences Have Been Saved!",
         });
     };
+
     return (
         <div>
             <Carousel
