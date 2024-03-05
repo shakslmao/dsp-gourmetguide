@@ -12,7 +12,7 @@ export default {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         }),
         Credentials({
-            async authorize(credentials, request) {
+            async authorize(credentials) {
                 const fieldsValidated = LoginValidationSchema.safeParse(credentials);
                 if (fieldsValidated.success) {
                     const { email, password } = fieldsValidated.data;

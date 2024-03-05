@@ -47,15 +47,31 @@ model User {
     password               String?
     image                  String?
     contactNumber          String?
-    preferencesId          String                   @db.ObjectId // OPTIONAL FOR NOW - TO BE MADE REQUIRED
     twoFactorEnabled       Boolean                  @default(false)
+    preferencesId          String?                  @unique @db.ObjectId
+    preferences            Preferences?             @relation(fields: [preferencesId], references: [id])
     twoFactorConfirmation  TwoFactorConfirmation?
     history                History[]
-    preferences            Preferences              @relation(fields: [preferencesId], references: [id]) // OPTIONAL FOR NOW - TO BE MADE REQUIRED
     Ratings                Ratings[]
     Reviews                Reviews[]
     Account                Account[]
     NotificationPreference NotificationPreference[]
+}
+
+model Preferences {
+    id                    String     @id @default(auto()) @map("_id") @db.ObjectId
+    userId                String?    @unique @db.ObjectId
+    cuisineTypes          String[]
+    dietaryRestrictions   String[]
+    priceRangePreference  PriceRange
+    preferredTime         String[]
+    preferredLocations    String[]
+    currentLocation       String?
+    recommendationRadius  Int
+    ambienceTypes         String[]
+    prefersMichelinRated  Boolean    @default(false)
+    accessibilityFeatures Boolean    @default(false)
+    User                  User?
 }
 
 model Account {
@@ -75,22 +91,6 @@ model Account {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
-}
-
-model Preferences {
-    id                          String            @id @default(auto()) @map("_id") @db.ObjectId
-    User                        User[]
-    cuisineTypes                String[]
-    dietaryRestrictions         String[]
-    priceRangePreference        PriceRange
-    preferredTime               String[]
-    preferredLocations          String[]
-    currentLocation             String?
-    recommendationRadius        Int
-    ambienceTypes               String[]
-    prefersMichelinRated        Boolean           @default(false)
-    accessibilityFeatures       Boolean           @default(false)
-    socialVisibilityPreferences SocialVisibility?
 }
 
 model History {

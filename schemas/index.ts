@@ -39,7 +39,6 @@ export const RegistrationValidationSchema = z
             prefersMichelinRated: z.boolean(),
             ambienceTypes: z.array(z.string()), // Adjust according to your actual type
             accessibilityFeatures: z.boolean(),
-            socialVisibilityPreferences: z.union([z.null(), z.string()]), // Example for nullable field
         }),
     })
     .refine((data) => data.password === data.confirmPassword, {

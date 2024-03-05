@@ -1,4 +1,4 @@
-import { PriceRange, SocialVisibility } from "@prisma/client";
+import { PriceRange } from "@prisma/client";
 
 export interface UserCuisinePreferences {
     cuisineTypes: string[];
@@ -11,7 +11,6 @@ export interface UserCuisinePreferences {
     ambienceTypes: string[];
     prefersMichelinRated: boolean;
     accessibilityFeatures: boolean;
-    socialVisibilityPreferences: SocialVisibility | null;
 }
 
 export interface UserCuisinePreferencesContextType {

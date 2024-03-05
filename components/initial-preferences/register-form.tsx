@@ -42,6 +42,18 @@ export const RegisterForm = () => {
             email: "",
             password: "",
             confirmPassword: "",
+            preferences: {
+                cuisineTypes: preferences.cuisineTypes,
+                dietaryRestrictions: preferences.dietaryRestrictions,
+                priceRangePreference: preferences.priceRangePreference,
+                preferredTime: preferences.preferredTime,
+                preferredLocations: preferences.preferredLocations,
+                currentLocation: preferences.currentLocation,
+                recommendationRadius: preferences.recommendationRadius,
+                ambienceTypes: preferences.ambienceTypes,
+                prefersMichelinRated: preferences.prefersMichelinRated,
+                accessibilityFeatures: preferences.accessibilityFeatures,
+            },
         },
     });
 

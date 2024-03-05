@@ -35,20 +35,28 @@ export const register = async (
     if (existingUser) {
         return { error: "User already exists" };
     }
+
     const createdPreferences = await db.preferences.create({
         data: {
             ...preferences,
-            socialVisibilityPreferences: null,
         },
     });
 
     // If no existing user is found, create a new user record in the database with the provided details.
-    await db.user.create({
+    const createdUser = await db.user.create({
         data: {
             name,
             email,
             password: hashedPassword,
-            preferencesId: createdPreferences.id,
+        },
+    });
+
+    await db.preferences.update({
+        where: {
+            id: createdPreferences.id,
+        },
+        data: {
+            userId: createdUser.id,
         },
     });
 
