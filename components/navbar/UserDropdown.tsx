@@ -22,10 +22,10 @@ const UserDropdown = () => {
             <DropdownMenu>
                 <DropdownMenuTrigger className="py-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition">
                     <AiOutlineMenu />
-                    <UserAvatar src={currentUser?.image} />
+                    <UserAvatar src={currentUser?.currentUser?.image} />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuLabel>{currentUser?.name}</DropdownMenuLabel>
+                    <DropdownMenuLabel>{currentUser?.currentUser?.name}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Profile</DropdownMenuItem>
                     <DropdownMenuSub>

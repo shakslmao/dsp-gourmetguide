@@ -10,7 +10,7 @@ import { PriceRange } from "@prisma/client";
 
 // Define an async function to handle user registration.
 export const register = async (
-    data: TRegistrationValidationSchema & { preferences: UserCuisinePreferences }
+    data: TRegistrationValidationSchema & { preferences?: UserCuisinePreferences }
 ) => {
     console.log("Recieved Data: ", JSON.stringify(data, null, 2));
     // Validate the incoming data against the RegistrationValidationSchema.
@@ -49,13 +49,17 @@ export const register = async (
                 },
             });
             console.log("New user created with ID:", user.id);
-            const preferencesResult = await prisma.preferences.create({
-                data: {
-                    ...data.preferences,
-                    userId: user.id,
-                },
-            });
-            console.log("Preferences Result: ", preferencesResult);
+            if (data.preferences) {
+                const preferencesResult = await prisma.preferences.create({
+                    data: {
+                        ...data.preferences,
+                        userId: user.id,
+                    },
+                });
+                console.log("Preferences Result: ", preferencesResult);
+            } else {
+                console.warn("No preferences provided for user");
+            }
 
             return user;
         });

@@ -3,7 +3,7 @@ import { useCurrentUser } from "@/hooks/get-user";
 import { Loader } from "lucide-react";
 
 const DashboardPage = () => {
-    const { currentUser, userPreferences } = useCurrentUser();
+    const { currentUser, userPreferences } = useCurrentUser() || {};
 
     return (
         <div className="flex items-center justify-center min-h-screen">

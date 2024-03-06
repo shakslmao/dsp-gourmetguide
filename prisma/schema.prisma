@@ -63,7 +63,7 @@ model Preferences {
     userId                String?    @unique @db.ObjectId
     cuisineTypes          String[]
     dietaryRestrictions   String[]
-    priceRangePreference  PriceRange
+    priceRangePreference  PriceRange @default(NO_PREFERENCE)
     preferredTime         String[]
     preferredLocations    String[]
     currentLocation       String?

@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/db/prismadb";
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -7,17 +9,18 @@ export default async function handler(
     res: NextApiResponse<UserCuisinePreferences | { error: string }>
 ) {
     if (req.method === "GET") {
-        const email = req.query.email as string;
+        const id = req.query.id as string;
 
-        if (!email) {
+        if (!id) {
             return res.status(400).json({ error: "Email is required" });
         }
 
         try {
             const user = await db.user.findUnique({
-                where: { email },
+                where: { id },
                 include: { preferences: true },
             });
+            console.log("User: ", user);
             if (user && user.preferences) {
                 res.status(200).json(user.preferences);
             } else {

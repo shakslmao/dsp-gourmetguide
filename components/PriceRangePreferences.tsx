@@ -4,7 +4,6 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Slider } from "./ui/slider";
 import { useCallback, useEffect, useState } from "react";
 import { PriceRange } from "@prisma/client";
-import { toast } from "./ui/use-toast";
 
 const stringToPriceRange: { [key: string]: PriceRange } = {
     "No Preference": PriceRange.NO_PREFERENCE,
