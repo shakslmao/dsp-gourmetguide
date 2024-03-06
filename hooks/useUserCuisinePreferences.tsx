@@ -5,7 +5,7 @@ import {
     UserCuisinePreferences,
     UserCuisinePreferencesContextType,
 } from "@/types/UserPreferencesTypes";
-import { PriceRange, PrismaClient } from "@prisma/client";
+import { PriceRange } from "@prisma/client";
 
 // Define the default user preferences for the application.
 const defaultUserPrefs: UserCuisinePreferences = {
@@ -19,7 +19,6 @@ const defaultUserPrefs: UserCuisinePreferences = {
     prefersMichelinRated: false, // Whether the user prefers Michelin rated restaurants, initially false.
     ambienceTypes: [], // Preferred ambience types, initially unspecified.
     accessibilityFeatures: false, // Accessibility features required, initially unspecified.
-    socialVisibilityPreferences: null, // Preferences for social visibility, initially null.
 };
 
 // Create a context for UserPreferences with an undefined default value.

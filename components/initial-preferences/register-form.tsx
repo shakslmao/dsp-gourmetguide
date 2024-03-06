@@ -62,25 +62,13 @@ export const RegisterForm = () => {
     };
     // Function to handle form submission
     const onSubmit = (data: TRegistrationValidationSchema) => {
-        console.log("submitted", data);
+        console.log("Form data:", data);
         setValidationError(""); // Reset any previous validation errors.
         setValidationSuccess(""); // Reset any previous validation success messages.
-
-        const dataWithPreferences = {
-            ...data,
-            ...form,
-            preferences,
-        };
-
-        // Use startTransition for non-urgent state updates, improving user experience during form submission
         startTransition(() => {
-            // Attempt to register the user with provided data.
-            register(dataWithPreferences).then((response) => {
-                if (response.error) {
-                    setValidationError(response.error);
-                } else {
-                    setValidationSuccess(response.success);
-                }
+            register(data).then((data) => {
+                setValidationError(data.error);
+                setValidationSuccess(data.success);
             });
         });
     };
