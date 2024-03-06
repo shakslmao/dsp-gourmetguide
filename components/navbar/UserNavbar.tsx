@@ -14,7 +14,7 @@ const UserNavbar = () => {
                 <div className="hidden md:block">{/* Placeholder for left side content */}</div>
 
                 {/* Centered navigation dropdown */}
-                {currentUser && (
+                {currentUser?.currentUser && (
                     <div className="flex justify-center">
                         <NavigationDropdown />
                     </div>
@@ -22,7 +22,7 @@ const UserNavbar = () => {
 
                 {/* Right side of the navbar: User dropdown or sign in and blog links */}
                 <div className="flex flex-row items-center gap-3">
-                    {!currentUser ? (
+                    {!currentUser?.currentUser ? (
                         <div className="py-4 md:py-1 md:px-2 border-[1px] border-neutral-200 flex flex-row items-center gap-3 rounded-full cursor-pointer hover:shadow-md transition">
                             <Link
                                 href="/"

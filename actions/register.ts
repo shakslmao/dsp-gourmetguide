@@ -8,6 +8,15 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { PriceRange } from "@prisma/client";
 
+const stringToPriceRange: { [key: string]: PriceRange } = {
+    "No Preference": PriceRange.NO_PREFERENCE,
+    "Very Low Prices": PriceRange.VERY_LOW,
+    "Low Prices": PriceRange.LOW,
+    "Medium Prices": PriceRange.MEDIUM,
+    "High Prices": PriceRange.HIGH,
+    "Very High Prices": PriceRange.VERY_HIGH,
+};
+
 // Define an async function to handle user registration.
 export const register = async (
     data: TRegistrationValidationSchema & { preferences?: UserCuisinePreferences }
@@ -50,11 +59,18 @@ export const register = async (
             });
             console.log("New user created with ID:", user.id);
             if (data.preferences) {
+                const priceRangeEnum = stringToPriceRange[data.preferences.priceRangePreference];
                 const preferencesResult = await prisma.preferences.create({
                     data: {
                         ...data.preferences,
+                        priceRangePreference: priceRangeEnum,
                         userId: user.id,
                     },
+                });
+
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: { preferencesId: preferencesResult.id },
                 });
                 console.log("Preferences Result: ", preferencesResult);
             } else {
