@@ -36,33 +36,29 @@ export const register = async (
         return { error: "User already exists" };
     }
 
-    const createdPreferences = await db.preferences.create({
-        data: {
-            ...preferences,
-        },
-    });
+    try {
+        const newUser = await db.$transaction(async (prisma) => {
+            const user = await prisma.user.create({
+                data: {
+                    name,
+                    email,
+                    password: hashedPassword,
+                },
+            });
+            await prisma.preferences.create({
+                data: {
+                    ...preferences,
+                    userId: user.id,
+                },
+            });
 
-    // If no existing user is found, create a new user record in the database with the provided details.
-    const createdUser = await db.user.create({
-        data: {
-            name,
-            email,
-            password: hashedPassword,
-        },
-    });
-
-    await db.preferences.update({
-        where: {
-            id: createdPreferences.id,
-        },
-        data: {
-            userId: createdUser.id,
-        },
-    });
-
-    const verificationToken = await createVerificationToken(email);
-    await sendVerificationEmail(verificationToken.email, verificationToken.token);
-
-    // Return a success message once the user is created and the verification email is sent.
-    return { success: "Email Confirmation Sent" };
+            return user;
+        });
+        const verificationToken = await createVerificationToken(email);
+        await sendVerificationEmail(verificationToken.email, verificationToken.token);
+        return { success: "User created successfully", user: newUser };
+    } catch (error) {
+        console.error("Error creating user:", error);
+        return { error: "An error occurred while creating the user" };
+    }
 };
