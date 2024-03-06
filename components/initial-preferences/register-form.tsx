@@ -31,7 +31,7 @@ export const RegisterForm = () => {
     const [isSubmitting, startTransition] = useTransition(); // Use the useTransition hook to manage state transitions for submitting the form.
     const [validationError, setValidationError] = useState<string | undefined>(""); // State to hold any validation errors that might occur.
     const [validationSuccess, setValidationSuccess] = useState<string | undefined>(""); // State to hold a message upon successful validation.
-    const { preferences, updatePreferences } = useUserPreferences();
+    const { preferences } = useUserPreferences();
     console.log(preferences);
     // Initialise the form with useForm, setting up validation schema and default values.
     // Use Zod for form validation, based on a predefined schema.
