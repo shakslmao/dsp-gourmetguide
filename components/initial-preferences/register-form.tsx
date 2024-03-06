@@ -31,7 +31,7 @@ export const RegisterForm = () => {
     const [isSubmitting, startTransition] = useTransition(); // Use the useTransition hook to manage state transitions for submitting the form.
     const [validationError, setValidationError] = useState<string | undefined>(""); // State to hold any validation errors that might occur.
     const [validationSuccess, setValidationSuccess] = useState<string | undefined>(""); // State to hold a message upon successful validation.
-    const { preferences } = useUserPreferences();
+    const { preferences, updatePreferences } = useUserPreferences();
     console.log(preferences);
     // Initialise the form with useForm, setting up validation schema and default values.
     // Use Zod for form validation, based on a predefined schema.
@@ -42,18 +42,6 @@ export const RegisterForm = () => {
             email: "",
             password: "",
             confirmPassword: "",
-            preferences: {
-                cuisineTypes: preferences.cuisineTypes,
-                dietaryRestrictions: preferences.dietaryRestrictions,
-                priceRangePreference: preferences.priceRangePreference,
-                preferredTime: preferences.preferredTime,
-                preferredLocations: preferences.preferredLocations,
-                currentLocation: preferences.currentLocation,
-                recommendationRadius: preferences.recommendationRadius,
-                ambienceTypes: preferences.ambienceTypes,
-                prefersMichelinRated: preferences.prefersMichelinRated,
-                accessibilityFeatures: preferences.accessibilityFeatures,
-            },
         },
     });
 
@@ -62,11 +50,14 @@ export const RegisterForm = () => {
     };
     // Function to handle form submission
     const onSubmit = (data: TRegistrationValidationSchema) => {
-        console.log("Form data:", data);
         setValidationError(""); // Reset any previous validation errors.
         setValidationSuccess(""); // Reset any previous validation success messages.
+        const dataWithPreferences = {
+            ...data,
+            preferences,
+        };
         startTransition(() => {
-            register(data).then((data) => {
+            register(dataWithPreferences).then((data) => {
                 setValidationError(data.error);
                 setValidationSuccess(data.success);
             });

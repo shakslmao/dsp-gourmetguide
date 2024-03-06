@@ -6,8 +6,13 @@ import { useCallback, useEffect, useState } from "react";
 import { PriceRange } from "@prisma/client";
 import { toast } from "./ui/use-toast";
 
-type PriceRangeMapping = {
-    [key: number]: string;
+const stringToPriceRange: { [key: string]: PriceRange } = {
+    "No Preference": PriceRange.NO_PREFERENCE,
+    "Very Low Prices": PriceRange.VERY_LOW,
+    "Low Prices": PriceRange.LOW,
+    "Medium Prices": PriceRange.MEDIUM,
+    "High Prices": PriceRange.HIGH,
+    "Very High Prices": PriceRange.VERY_HIGH,
 };
 
 const priceRangeToSliderValue = {
@@ -18,17 +23,7 @@ const priceRangeToSliderValue = {
     HIGH: 80,
     VERY_HIGH: 100,
 };
-
-const sliderValueToPriceRange: PriceRangeMapping = {
-    0: "No Preference",
-    20: "Very Low Prices",
-    40: "Low Prices ",
-    60: "Medium Prices",
-    80: "High Prices",
-    100: "Very High Prices",
-};
-
-const sliderValueDescription: PriceRangeMapping = {
+const sliderValueDescription: { [key: number]: string } = {
     0: "You'll be shown restaurants of all price ranges, from the most affordable to the most exclusive dining options.",
     20: "£0 - £25: Ideal for those who prefer dining at more affordable restaurants without compromising on quality.",
     40: "£25 - £50: A range suited for enjoying meals at restaurants with moderate pricing, offering good value.",
@@ -39,23 +34,35 @@ const sliderValueDescription: PriceRangeMapping = {
 
 const PriceRangePreferences = () => {
     const { preferences, updatePreferences } = useUserPreferences();
-    const [sliderValue, setSliderValue] = useState<number>(
-        priceRangeToSliderValue[preferences.priceRangePreference]
+    const initialSliderValue =
+        priceRangeToSliderValue[
+            stringToPriceRange[preferences.priceRangePreference as keyof typeof stringToPriceRange]
+        ] || 0;
+    const [sliderValue, setSliderValue] = useState<number>(initialSliderValue);
+    const sliderValueToPriceRangeKey = Object.fromEntries(
+        Object.entries(priceRangeToSliderValue).map(([key, value]) => [value, key])
     );
-    const selectedPriceRangeLabel = sliderValueToPriceRange[sliderValue];
-    const selectedPriceRangeDescription = sliderValueDescription[sliderValue];
 
     const handleValueChange = useCallback(
         (value: number[]) => {
-            // Mark function as async
             const newSliderValue = value[0];
             setSliderValue(newSliderValue);
-            const newPriceRange = sliderValueToPriceRange[newSliderValue];
-
-            updatePreferences({ priceRangePreference: newPriceRange as PriceRange });
+            const newPriceRangeKey = sliderValueToPriceRangeKey[newSliderValue];
+            const newPriceRangeString = Object.keys(stringToPriceRange).find(
+                (key) => stringToPriceRange[key] === newPriceRangeKey
+            );
+            updatePreferences({
+                priceRangePreference:
+                    (newPriceRangeString as PriceRange) || PriceRange.NO_PREFERENCE,
+            });
         },
-        [updatePreferences] // Dependency array
+        [updatePreferences, sliderValueToPriceRangeKey]
     );
+    const selectedPriceRangeLabel =
+        Object.keys(stringToPriceRange).find(
+            (key) => stringToPriceRange[key] === sliderValueToPriceRangeKey[sliderValue]
+        ) || "No Preference";
+    const selectedPriceRangeDescription = sliderValueDescription[sliderValue];
 
     return (
         <div>

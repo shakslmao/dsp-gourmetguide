@@ -28,18 +28,6 @@ export const RegistrationValidationSchema = z
                 message: "Password must contain at least one special character",
             }),
         confirmPassword: z.string(),
-        preferences: z.object({
-            cuisineTypes: z.array(z.string()),
-            dietaryRestrictions: z.array(z.string()),
-            priceRangePreference: z.nativeEnum(PriceRange), // Assuming PriceRange is an enum and correctly imported
-            preferredTime: z.array(z.string()), // Assuming preferred times are strings; adjust as necessary
-            preferredLocations: z.array(z.string()), // Adjust according to your actual type
-            currentLocation: z.string().optional(), // Adjust according to your actual type
-            recommendationRadius: z.number(),
-            prefersMichelinRated: z.boolean(),
-            ambienceTypes: z.array(z.string()), // Adjust according to your actual type
-            accessibilityFeatures: z.boolean(),
-        }),
     })
     .refine((data) => data.password === data.confirmPassword, {
         message: "Passwords do not match",
