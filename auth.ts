@@ -2,7 +2,52 @@ import NextAuth from "next-auth";
 import authConfig from "@/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/db/prismadb";
-import { fetchUserEmail, fetchUserId } from "./data/user";
+import { fetchUserId } from "./data/user";
+import { PriceRange, Prisma } from "@prisma/client";
+import { UserCuisinePreferences } from "./types/UserPreferencesTypes";
+
+const stringToPriceRange: { [key: string]: PriceRange } = {
+    "No Preference": PriceRange.NO_PREFERENCE,
+    "Very Low Prices": PriceRange.VERY_LOW,
+    "Low Prices": PriceRange.LOW,
+    "Medium Prices": PriceRange.MEDIUM,
+    "High Prices": PriceRange.HIGH,
+    "Very High Prices": PriceRange.VERY_HIGH,
+};
+
+const getPreferencesFromProfile = (
+    profile: any
+): UserCuisinePreferences & { priceRangePreference: PriceRange } => {
+    const {
+        cuisinePreference,
+        dietaryRestrictions,
+        priceRangePreference,
+        preferredTime,
+        preferredLocations,
+        currentLocation,
+        recommendationRadius,
+        ambienceTypes,
+        prefersMichelinRated,
+        accessibilityFeatures,
+    } = profile;
+
+    const priceRangeEnum = stringToPriceRange[priceRangePreference] || PriceRange.NO_PREFERENCE;
+
+    const userPreferences: UserCuisinePreferences & { priceRangePreference: PriceRange } = {
+        cuisineTypes: cuisinePreference || [],
+        dietaryRestrictions: dietaryRestrictions || [],
+        priceRangePreference: priceRangeEnum,
+        preferredTime: preferredTime || [],
+        preferredLocations: preferredLocations || [],
+        currentLocation: currentLocation || null,
+        recommendationRadius: recommendationRadius || 0,
+        ambienceTypes: ambienceTypes || [],
+        prefersMichelinRated: prefersMichelinRated || false,
+        accessibilityFeatures: accessibilityFeatures || false,
+    };
+
+    return userPreferences;
+};
 
 export const {
     handlers: { GET, POST },
@@ -15,16 +60,36 @@ export const {
         error: "/auth/error",
     },
     events: {
-        async linkAccount({ user }) {
-            await db.user.update({
-                where: { id: user.id },
-                data: { emailVerified: new Date() },
+        async linkAccount({ user, profile }) {
+            const preferences = await db.preferences.findUnique({
+                where: { userId: user.id },
             });
+
+            if (!preferences) {
+                const userPreferences: UserCuisinePreferences = getPreferencesFromProfile(profile);
+                const newPreferences = await db.preferences.create({
+                    data: {
+                        ...userPreferences,
+                        userId: user.id,
+                    },
+                });
+
+                await db.user.update({
+                    where: { id: user.id },
+                    data: { emailVerified: new Date(), preferencesId: newPreferences.id },
+                });
+            } else {
+                await db.user.update({
+                    where: { id: user.id },
+                    data: { emailVerified: new Date(), preferencesId: preferences.id },
+                });
+            }
         },
     },
+
     callbacks: {
         async signIn({ user, account }) {
-            if (account?.provider !== "credentials ") {
+            if (account?.provider !== "credentials") {
                 return true;
             }
             const UserExists = await fetchUserId(user.id);
