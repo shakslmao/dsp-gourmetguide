@@ -12,7 +12,7 @@ export default async function handler(
         const id = req.query.id as string;
 
         if (!id) {
-            return res.status(400).json({ error: "Email is required" });
+            return res.status(400).json({ error: "User ID is required" });
         }
 
         try {
@@ -20,7 +20,7 @@ export default async function handler(
                 where: { id },
                 include: { preferences: true },
             });
-            console.log("User: ", user);
+
             if (user && user.preferences) {
                 res.status(200).json(user.preferences);
             } else {
@@ -29,8 +29,31 @@ export default async function handler(
         } catch (err) {
             res.status(500).json({ error: "Failed to fetch user preferences" });
         }
+    } else if (req.method === "POST") {
+        const { userId, preferences } = req.body;
+
+        if (!userId || !preferences) {
+            return res.status(400).json({ error: "User ID and preferences are required" });
+        }
+
+        try {
+            await db.preferences.upsert({
+                where: { userId },
+                update: {
+                    ...preferences,
+                },
+                create: {
+                    ...preferences,
+                    userId,
+                },
+            });
+
+            res.status(200).json({ ...preferences });
+        } catch (err) {
+            res.status(500).json({ error: "Failed to update user preferences" });
+        }
     } else {
-        res.setHeader("Allow", ["GET"]);
+        res.setHeader("Allow", ["GET", "POST"]);
         res.status(405).end(`Method ${req.method} Not Allowed`);
     }
 }

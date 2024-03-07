@@ -1,5 +1,5 @@
 "use client";
-import { useCurrentUser } from "@/hooks/get-user";
+import { useCurrentUser } from "@/hooks/get-user-prefs";
 import Link from "next/link";
 import UserDropdown from "./UserDropdown";
 import { NavigationDropdown } from "./NavigationDropdown";

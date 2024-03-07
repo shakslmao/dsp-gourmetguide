@@ -1,5 +1,5 @@
 "use client";
-import { useCurrentUser } from "@/hooks/get-user";
+import { useCurrentUser } from "@/hooks/get-user-prefs";
 import { Loader } from "lucide-react";
 
 const DashboardPage = () => {
