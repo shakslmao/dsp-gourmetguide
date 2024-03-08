@@ -7,11 +7,11 @@ import { PriceRange } from "@prisma/client";
 
 const stringToPriceRange: { [key: string]: PriceRange } = {
     "No Preference": PriceRange.NO_PREFERENCE,
-    "Very Low Prices": PriceRange.VERY_LOW,
-    "Low Prices": PriceRange.LOW,
-    "Medium Prices": PriceRange.MEDIUM,
-    "High Prices": PriceRange.HIGH,
-    "Very High Prices": PriceRange.VERY_HIGH,
+    "Bargain ": PriceRange.VERY_LOW,
+    "Budget-Friendly": PriceRange.LOW, // Instead of "Economical"
+    "Moderate ": PriceRange.MEDIUM,
+    "Premium ": PriceRange.HIGH,
+    "Luxury ": PriceRange.VERY_HIGH,
 };
 
 const priceRangeToSliderValue = {
@@ -22,6 +22,7 @@ const priceRangeToSliderValue = {
     HIGH: 80,
     VERY_HIGH: 100,
 };
+
 const sliderValueDescription: { [key: number]: string } = {
     0: "You'll be shown restaurants of all price ranges, from the most affordable to the most exclusive dining options.",
     20: "£0 - £25: Ideal for those who prefer dining at more affordable restaurants without compromising on quality.",

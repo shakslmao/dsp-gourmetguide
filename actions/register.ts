@@ -10,11 +10,11 @@ import { PriceRange } from "@prisma/client";
 
 const stringToPriceRange: { [key: string]: PriceRange } = {
     "No Preference": PriceRange.NO_PREFERENCE,
-    "Very Low Prices": PriceRange.VERY_LOW,
-    "Low Prices": PriceRange.LOW,
-    "Medium Prices": PriceRange.MEDIUM,
-    "High Prices": PriceRange.HIGH,
-    "Very High Prices": PriceRange.VERY_HIGH,
+    "Bargain ": PriceRange.VERY_LOW,
+    "Budget-Friendly": PriceRange.LOW, // Instead of "Economical"
+    "Moderate ": PriceRange.MEDIUM,
+    "Premium ": PriceRange.HIGH,
+    "Luxury ": PriceRange.VERY_HIGH,
 };
 
 // Define an async function to handle user registration.

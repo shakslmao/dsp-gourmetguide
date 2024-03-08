@@ -31,22 +31,7 @@ const getPreferencesFromProfile = (
         accessibilityFeatures,
     } = profile;
 
-    const priceRangeEnum = stringToPriceRange[priceRangePreference] || PriceRange.NO_PREFERENCE;
-
-    const userPreferences: UserCuisinePreferences & { priceRangePreference: PriceRange } = {
-        cuisineTypes: cuisinePreference || [],
-        dietaryRestrictions: dietaryRestrictions || [],
-        priceRangePreference: priceRangeEnum,
-        preferredTime: preferredTime || [],
-        preferredLocations: preferredLocations || [],
-        currentLocation: currentLocation || null,
-        recommendationRadius: recommendationRadius || 0,
-        ambienceTypes: ambienceTypes || [],
-        prefersMichelinRated: prefersMichelinRated || false,
-        accessibilityFeatures: accessibilityFeatures || false,
-    };
-
-    return userPreferences;
+    return profile;
 };
 
 export const {
