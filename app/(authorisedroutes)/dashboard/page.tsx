@@ -1,6 +1,17 @@
 "use client";
 import { useCurrentUser } from "@/hooks/get-user-prefs";
-import { Loader } from "lucide-react";
+
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Button, buttonVariants } from "@/components/ui/button";
 
 const DashboardPage = () => {
     const { currentUser, userPreferences } = useCurrentUser() || {};
@@ -15,11 +26,30 @@ const DashboardPage = () => {
                 <p className="mt-6 text-lg max-w-prose text-muted-foreground text-gray-900"></p>
                 <div className="flex flex-col sm:flex-row gap-6 mt-8">
                     <div className="flex flex-col sm:flex-row gap-6 mt-8">
-                        {userPreferences ? (
-                            JSON.stringify(userPreferences)
-                        ) : (
-                            <p>Loading user preferences...</p>
-                        )}
+                        <Drawer>
+                            <DrawerTrigger>
+                                <Button className={buttonVariants({ size: "sm" })}>
+                                    Check your preferences
+                                </Button>
+                            </DrawerTrigger>
+                            <DrawerContent>
+                                <DrawerHeader>
+                                    <DrawerTitle>Your Current Preferences</DrawerTitle>
+                                    <DrawerDescription>
+                                        {userPreferences ? (
+                                            JSON.stringify(userPreferences)
+                                        ) : (
+                                            <p>Loading user preferences...</p>
+                                        )}
+                                    </DrawerDescription>
+                                </DrawerHeader>
+                                <DrawerFooter>
+                                    <DrawerClose>
+                                        <Button variant="outline">Cancel</Button>
+                                    </DrawerClose>
+                                </DrawerFooter>
+                            </DrawerContent>
+                        </Drawer>
                     </div>
                 </div>
             </div>
