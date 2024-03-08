@@ -6,6 +6,10 @@ import { fetchUserId } from "./data/user";
 import { PriceRange, Prisma } from "@prisma/client";
 import { UserCuisinePreferences } from "./types/UserPreferencesTypes";
 
+/**
+ * NOT YET WORKING!!
+ */
+
 const stringToPriceRange: { [key: string]: PriceRange } = {
     "No Preference": PriceRange.NO_PREFERENCE,
     "Very Low Prices": PriceRange.VERY_LOW,
