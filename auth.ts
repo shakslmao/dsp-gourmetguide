@@ -7,7 +7,7 @@ import { PriceRange, Prisma } from "@prisma/client";
 import { UserCuisinePreferences } from "./types/UserPreferencesTypes";
 
 /**
- * NOT YET WORKING!!
+ * NOT YET WORKING!! YET.
  */
 
 const stringToPriceRange: { [key: string]: PriceRange } = {
