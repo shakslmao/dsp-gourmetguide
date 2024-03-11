@@ -45,7 +45,13 @@ const DashboardPage = () => {
                                 </DrawerHeader>
                                 <DrawerFooter>
                                     <DrawerClose>
-                                        <Button variant="outline">Cancel</Button>
+                                        <Button
+                                            className={buttonVariants({
+                                                size: "sm",
+                                                variant: "ghost",
+                                            })}>
+                                            Close
+                                        </Button>
                                     </DrawerClose>
                                 </DrawerFooter>
                             </DrawerContent>
