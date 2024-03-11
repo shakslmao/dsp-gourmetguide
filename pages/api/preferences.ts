@@ -14,7 +14,6 @@ export default async function handler(
         if (!id) {
             return res.status(400).json({ error: "User ID is required" });
         }
-
         try {
             const user = await db.user.findUnique({
                 where: { id },
