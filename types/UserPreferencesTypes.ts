@@ -2,15 +2,15 @@ import { PriceRange } from "@prisma/client";
 
 export interface UserCuisinePreferences {
     cuisineTypes: string[];
-    dietaryRestrictions: string[];
+    dietaryRestrictions?: string[];
     priceRangePreference: PriceRange;
-    preferredTime: string[]; //
-    preferredLocations: string[]; // city names
+    preferredTime?: string[]; //
+    preferredLocations?: string[]; // city names
     currentLocation?: string | null;
-    recommendationRadius: number; // in km
-    ambienceTypes: string[];
-    prefersMichelinRated: boolean;
-    accessibilityFeatures: boolean;
+    recommendationRadius?: number; // in km
+    ambienceTypes?: string[];
+    prefersMichelinRated?: boolean;
+    accessibilityFeatures?: boolean;
 }
 
 export interface UserCuisinePreferencesContextType {
