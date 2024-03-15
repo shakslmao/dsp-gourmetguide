@@ -7,7 +7,7 @@ export interface UserCuisinePreferences {
     preferredTime?: string[]; //
     preferredLocations?: string[]; // city names
     currentLocation?: string | null;
-    recommendationRadius?: number; // in km
+    recommendationRadius: number; // in km
     ambienceTypes?: string[];
     prefersMichelinRated?: boolean;
     accessibilityFeatures?: boolean;

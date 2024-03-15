@@ -4,8 +4,6 @@ import { db } from "@/db/prismadb";
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { NextApiRequest, NextApiResponse } from "next";
 
-// GET USER PREFERENCES
-
 // Define the default async handler function for API requests.
 export default async function handler(
     req: NextApiRequest, // The incoming HTTP request.

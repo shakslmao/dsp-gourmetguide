@@ -7,6 +7,7 @@ import { createVerificationToken } from "@/lib/tokens";
 import { sendVerificationEmail } from "@/lib/mail";
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { PriceRange } from "@prisma/client";
+import { YelpAPIWithPrefs } from "@/lib/yelpAPIPrefs";
 
 const stringToPriceRange: { [key: string]: PriceRange } = {
     "No Preference": PriceRange.NO_PREFERENCE,
@@ -75,6 +76,13 @@ export const register = async (
                 console.log("Preferences Result: ", preferencesResult);
             } else {
                 console.warn("No preferences provided for user");
+            }
+
+            // Call the Yelp API with the user's preferences.
+            if (data.preferences) {
+                const yelpResponse = await YelpAPIWithPrefs(data.preferences);
+                // for now, just log the response, will send to recommendation engine
+                console.log("Yelp Response: ", JSON.stringify(yelpResponse, null, 2));
             }
 
             return user;
