@@ -2,8 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
-import { Button, buttonVariants } from "../ui/button";
-import { PacmanLoader, DotLoader } from "react-spinners";
+import { buttonVariants } from "../ui/button";
+import { DotLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
 import { newVerificationToken } from "@/actions/new-verification";
 import { FormMessageError } from "../formError";
@@ -13,7 +13,7 @@ const VerificationPageCard = () => {
     const [error, setError] = useState<string | undefined>();
     const [success, setSuccess] = useState<string | undefined>();
     const searchParams = useSearchParams();
-    const token = searchParams.get("token");
+    const token = searchParams?.get("token");
 
     const onSubmit = useCallback(() => {
         if (success || error) return;

@@ -26,7 +26,7 @@ const NewPassword = () => {
     const [validationError, setValidationError] = useState<string | undefined>("");
     const [validationSuccess, setValidationSuccess] = useState<string | undefined>("");
     const searchParams = useSearchParams();
-    const token = searchParams.get("token");
+    const token = searchParams?.get("token");
 
     const form = useForm<TNewPasswordValidationSchema>({
         resolver: zodResolver(NewPasswordValidationSchema),
@@ -41,7 +41,8 @@ const NewPassword = () => {
         setValidationSuccess("");
 
         startTransition(() => {
-            newUserPassword(form.getValues(), token).then((values) => {
+            const tokenValue = token ?? null; // Add null check to ensure token is not undefined
+            newUserPassword(form.getValues(), tokenValue).then((values) => {
                 setValidationError(values.error);
                 setValidationSuccess(values.success);
             });
