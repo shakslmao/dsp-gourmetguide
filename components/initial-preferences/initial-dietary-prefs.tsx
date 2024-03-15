@@ -29,13 +29,13 @@ export const InitialDietaryPrefs = () => {
                     <span className="text-green-600"> dietary</span> preferences, if you have any.
                 </p>
 
-                {preferences.dietaryRestrictions.length > 0 && (
+                {preferences.dietaryRestrictions!.length > 0 && (
                     <div>
                         <h2 className="text-md text-center font-semibold">
                             Selected Dietary Preferences
                         </h2>
                         <ul className="text-sm text-center">
-                            {preferences.dietaryRestrictions.map((dietary, index) => (
+                            {preferences.dietaryRestrictions!.map((dietary, index) => (
                                 <Badge
                                     key={index}
                                     className="m-2 cursor-default">
@@ -57,13 +57,13 @@ export const InitialDietaryPrefs = () => {
                     </Button>
                     <Button
                         onClick={() => handleNextOnClick()}
-                        disabled={preferences.dietaryRestrictions.length === 0}
+                        disabled={preferences.dietaryRestrictions!.length === 0}
                         className={`${buttonVariants({
                             variant: "default",
                             className: "w-full py-2 text-white bg-black rounded-lg",
                             size: "sm",
                         })} ${
-                            preferences.dietaryRestrictions.length === 0
+                            preferences.dietaryRestrictions!.length === 0
                                 ? "bg-gray-400 cursor-not-allowed"
                                 : "bg-green-600"
                         }

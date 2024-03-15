@@ -33,7 +33,7 @@ export const InitialRadiusPrefs = () => {
                     located. You can adjust this setting anytime to explore further or keep it
                     close.
                 </p>
-                {preferences.recommendationRadius > 0 && (
+                {preferences.recommendationRadius! > 0 && (
                     <div>
                         <ul className="text-sm text-center">
                             <Badge>{preferences.recommendationRadius} Miles</Badge>

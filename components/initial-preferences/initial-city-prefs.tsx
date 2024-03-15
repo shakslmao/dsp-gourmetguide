@@ -36,11 +36,11 @@ export const InitialCityLocatedPrefs = () => {
                     interest.
                 </p>
                 <CityLocationCategories />
-                {preferences.preferredLocations.length > 0 && (
+                {preferences.preferredLocations!.length > 0 && (
                     <div>
                         <h2 className="text-md text-center font-semibold">Selected Times</h2>
                         <ul className="text-sm text-center">
-                            {preferences.preferredLocations.map((city, index) => (
+                            {preferences.preferredLocations!.map((city, index) => (
                                 <Badge
                                     key={index}
                                     className="m-2 cursor-default">
@@ -63,13 +63,13 @@ export const InitialCityLocatedPrefs = () => {
                     </Button>
                     <Button
                         onClick={() => handleNextOnClick()}
-                        disabled={preferences.preferredLocations.length === 0}
+                        disabled={preferences.preferredLocations!.length === 0}
                         className={`${buttonVariants({
                             variant: "default",
                             className: "w-full py-2 text-white bg-black rounded-lg",
                             size: "sm",
                         })}${
-                            preferences.preferredLocations.length === 0
+                            preferences.preferredLocations!.length === 0
                                 ? "bg-gray-400 cursor-not-allowed"
                                 : "bg-green-600"
                         }

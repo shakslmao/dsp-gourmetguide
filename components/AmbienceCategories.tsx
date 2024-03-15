@@ -154,10 +154,10 @@ const AmbienceCategories = () => {
 
     const handleCardClick = (index: number) => {
         const ambienceLabel = ambienceCategories[index].label;
-        const isSelected = preferences.ambienceTypes.includes(ambienceLabel);
+        const isSelected = preferences.ambienceTypes?.includes(ambienceLabel);
         const UserAmbienceTypes = isSelected
-            ? preferences.ambienceTypes.filter((ambience) => ambience !== ambienceLabel)
-            : [...preferences.ambienceTypes, ambienceLabel];
+            ? preferences.ambienceTypes?.filter((ambience) => ambience !== ambienceLabel)
+            : [...(preferences.ambienceTypes ?? []), ambienceLabel];
         updatePreferences({
             ambienceTypes: UserAmbienceTypes,
         });
@@ -183,7 +183,7 @@ const AmbienceCategories = () => {
                             <div className="p-1">
                                 <Card
                                     className={`cursor-pointer ${
-                                        preferences.ambienceTypes.includes(item.label)
+                                        preferences.ambienceTypes?.includes(item.label)
                                             ? "bg-green-600 text-white"
                                             : "bg-white"
                                     }`}

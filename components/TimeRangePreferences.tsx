@@ -109,13 +109,13 @@ const TimeRangePreferences = () => {
         let updatedPreferences;
         let action; // To track whether a selection or deselection has occurred
 
-        if (currentPreferences.includes(selectedTimeRangeLabel)) {
+        if (currentPreferences?.includes(selectedTimeRangeLabel)) {
             updatedPreferences = currentPreferences.filter(
                 (label) => label !== selectedTimeRangeLabel
             );
             action = "deselected";
         } else {
-            updatedPreferences = [...currentPreferences, selectedTimeRangeLabel];
+            updatedPreferences = [...(currentPreferences ?? []), selectedTimeRangeLabel];
             action = "selected";
         }
 
@@ -153,7 +153,7 @@ const TimeRangePreferences = () => {
                             <div className="p-1">
                                 <Card
                                     className={`cursor-pointer ${
-                                        preferences.preferredTime.includes(item.label)
+                                        preferences.preferredTime?.includes(item.label)
                                             ? "bg-green-600 text-white"
                                             : "bg-white"
                                     }`}

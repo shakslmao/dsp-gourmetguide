@@ -30,13 +30,13 @@ export const InitialAmbiencePrefs = () => {
                     <span className="text-green-600"> ambience</span> preferences, if you have any.
                 </p>
 
-                {preferences.ambienceTypes.length > 0 && (
+                {preferences.ambienceTypes!.length > 0 && (
                     <div>
                         <h2 className="text-md text-center font-semibold">
                             Selected Ambience Preferences
                         </h2>
                         <ul className="text-sm text-center">
-                            {preferences.ambienceTypes.map((ambience, index) => (
+                            {preferences.ambienceTypes?.map((ambience, index) => (
                                 <Badge
                                     key={index}
                                     className="m-2 cursor-default">
@@ -59,13 +59,13 @@ export const InitialAmbiencePrefs = () => {
                     </Button>
                     <Button
                         onClick={() => handleNextOnClick()}
-                        disabled={preferences.ambienceTypes.length === 0}
+                        disabled={preferences.ambienceTypes!.length === 0}
                         className={`${buttonVariants({
                             variant: "default",
                             className: "w-full py-2 text-white bg-black rounded-lg",
                             size: "sm",
                         })} ${
-                            preferences.ambienceTypes.length === 0
+                            preferences.ambienceTypes!.length === 0
                                 ? "bg-gray-400 cursor-not-allowed"
                                 : "bg-green-600"
                         }

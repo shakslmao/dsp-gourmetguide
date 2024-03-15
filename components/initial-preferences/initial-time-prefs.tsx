@@ -29,11 +29,11 @@ export const InitialTimePrefs = () => {
                     you, we will try find restaurants that align with these times, you can change
                     this at any time. Any time is recommended.
                 </p>
-                {preferences.preferredTime.length > 0 && (
+                {preferences.preferredTime!.length > 0 && (
                     <div>
                         <h2 className="text-md text-center font-semibold">Selected Times</h2>
                         <ul className="text-sm text-center">
-                            {preferences.preferredTime.map((time, index) => (
+                            {preferences.preferredTime!.map((time, index) => (
                                 <Badge
                                     key={index}
                                     className="m-2 cursor-default">
@@ -56,13 +56,13 @@ export const InitialTimePrefs = () => {
                     </Button>
                     <Button
                         onClick={() => handleNextOnClick()}
-                        disabled={preferences.preferredTime.length === 0}
+                        disabled={preferences.preferredTime!.length === 0}
                         className={`${buttonVariants({
                             variant: "default",
                             className: "w-full py-2 text-white bg-black rounded-lg",
                             size: "sm",
                         })}${
-                            preferences.preferredTime.length === 0
+                            preferences.preferredTime!.length === 0
                                 ? "bg-gray-400 cursor-not-allowed"
                                 : "bg-green-600"
                         }

@@ -99,10 +99,10 @@ const DietaryCategories = () => {
 
     const handleCardClick = (index: number) => {
         const dietaryLabel = dietaryCategories[index].label;
-        const isSelected = preferences.dietaryRestrictions.includes(dietaryLabel);
+        const isSelected = preferences.dietaryRestrictions?.includes(dietaryLabel);
         const UserDietaryTypes = isSelected
-            ? preferences.dietaryRestrictions.filter((dietary) => dietary !== dietaryLabel)
-            : [...preferences.dietaryRestrictions, dietaryLabel];
+            ? preferences.dietaryRestrictions?.filter((dietary) => dietary !== dietaryLabel)
+            : [...(preferences.dietaryRestrictions ?? []), dietaryLabel];
         updatePreferences({ dietaryRestrictions: UserDietaryTypes });
 
         const toastItem = dietaryCategories[index];
@@ -128,7 +128,7 @@ const DietaryCategories = () => {
                             <div className="p-1">
                                 <Card
                                     className={`cursor-pointer ${
-                                        preferences.dietaryRestrictions.includes(item.label)
+                                        preferences.dietaryRestrictions?.includes(item.label)
                                             ? "bg-green-600 text-white"
                                             : "bg-white"
                                     }`}

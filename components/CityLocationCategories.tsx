@@ -102,7 +102,7 @@ export const cityCategories = [
 
 const CityLocationCategories = () => {
     const { preferences, updatePreferences } = useUserPreferences();
-    const { city, error } = useUserLocation();
+    const { city } = useUserLocation();
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
@@ -122,10 +122,10 @@ const CityLocationCategories = () => {
 
     const handleCardClick = (index: number) => {
         const cityLabel = cityCategories[index].label;
-        const isSelected = preferences.preferredLocations.includes(cityLabel);
+        const isSelected = preferences.preferredLocations?.includes(cityLabel) ?? false;
         const UserCuisineTypes = isSelected
-            ? preferences.preferredLocations.filter((city) => city !== cityLabel)
-            : [...preferences.preferredLocations, cityLabel];
+            ? preferences.preferredLocations?.filter((city) => city !== cityLabel) ?? []
+            : [...(preferences.preferredLocations ?? []), cityLabel];
         updatePreferences({
             preferredLocations: UserCuisineTypes,
             currentLocation: city ?? undefined,
