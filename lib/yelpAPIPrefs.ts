@@ -39,7 +39,7 @@ export const YelpAPIWithPrefs = async (preferences: UserCuisinePreferences) => {
             : "30000", // Default radius if not provided
         categories: categories,
         price: price,
-        limit: "20", // Limiting the results to 20.
+        limit: "50",
     });
 
     try {
@@ -51,8 +51,14 @@ export const YelpAPIWithPrefs = async (preferences: UserCuisinePreferences) => {
             },
             params,
         });
+
+        // Filtering out restaurants with low ratings if the user prefers Michelin rated restaurants.
+        let businesses = response.data.businesses;
+        if (preferences.prefersMichelinRated) {
+            businesses = businesses.filter((business: any) => business.rating >= 4.5);
+        }
         // Returning the response data directly.
-        return response.data;
+        return { ...response.data, businesses };
     } catch (error) {
         // Logging and throwing an error if the API call fails.
         console.error("Error fetching data from Yelp:", error);

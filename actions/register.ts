@@ -12,7 +12,7 @@ import { YelpAPIWithPrefs } from "@/lib/yelpAPIPrefs";
 const stringToPriceRange: { [key: string]: PriceRange } = {
     "No Preference": PriceRange.NO_PREFERENCE,
     "Bargain ": PriceRange.VERY_LOW,
-    "Budget-Friendly": PriceRange.LOW, // Instead of "Economical"
+    "Budget-Friendly": PriceRange.LOW,
     "Moderate ": PriceRange.MEDIUM,
     "Premium ": PriceRange.HIGH,
     "Luxury ": PriceRange.VERY_HIGH,
@@ -49,7 +49,9 @@ export const register = async (
         return { error: "User already exists" };
     }
 
+    // If the user does not exist, create a new user and preferences record in the database.
     try {
+        // Use Prisma's $transaction method to create a new user and preferences record in a single transaction.
         const newUser = await db.$transaction(async (prisma) => {
             const user = await prisma.user.create({
                 data: {
@@ -59,16 +61,19 @@ export const register = async (
                 },
             });
             console.log("New user created with ID:", user.id);
+            // If user preferences are provided, create a new preferences record and associate it with the user.
             if (data.preferences) {
                 const priceRangeEnum = stringToPriceRange[data.preferences.priceRangePreference];
                 const preferencesResult = await prisma.preferences.create({
                     data: {
+                        // Spread the preferences object and add the userId.
                         ...data.preferences,
                         priceRangePreference: priceRangeEnum,
                         userId: user.id,
                     },
                 });
 
+                // Update the user record with the preferencesId.
                 await prisma.user.update({
                     where: { id: user.id },
                     data: { preferencesId: preferencesResult.id },

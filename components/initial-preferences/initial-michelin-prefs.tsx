@@ -28,7 +28,7 @@ export const InitialMichelinPrefs = () => {
         updatePreferences({ prefersMichelinRated: data.michelin_preference });
         toast({
             title: "Success",
-            description: "Michelin preferences updated",
+            description: "Preferences updated",
         });
         router.push("/inital-preferences/accessibilitypreferences");
     };
@@ -40,7 +40,8 @@ export const InitialMichelinPrefs = () => {
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                 <h1 className="text-2xl font-bold text-center">
                     Would you like to be recommended
-                    <span className="text-green-600"> michelin star</span> rated restaurants.
+                    <span className="text-green-600"> higher rated</span> &
+                    <span className="text-green-600"> michelin star</span> restaurants.
                 </h1>
                 <Form {...form}>
                     <form
@@ -56,11 +57,11 @@ export const InitialMichelinPrefs = () => {
                                         <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
                                             <div className="space-y-0.5">
                                                 <FormLabel className="text-center">
-                                                    Michelin Rated Restaurants
+                                                    High & Michelin Rated Restaurants
                                                 </FormLabel>
                                                 <FormDescription className="text-xs font-light">
                                                     Opt in to receive restaurnats that have been
-                                                    awarded michelin stars.
+                                                    awarded michelin stars and high reviews
                                                 </FormDescription>
                                             </div>
                                             <FormControl>
