@@ -24,19 +24,17 @@ function convertPriceRange(priceRange: PriceRange) {
 
 // async fetches restaurants from Yelp API based on user preferences.
 export const YelpAPIWithPrefs = async (preferences: UserCuisinePreferences) => {
-    // Constructing categories string from cuisine types array.
     const categories = preferences.cuisineTypes.join(",");
-    // Converting price range preference to a string value.
     const price = convertPriceRange(preferences.priceRangePreference);
+    const location = preferences.currentLocation || "default_location";
+
     // Setting up query parameters for Yelp API request.
     const params = new URLSearchParams({
         term: "restaurants",
-        // Use current location or a default value if not provided.
-        location: preferences.currentLocation || "default_location",
-        // Convert recommendation radius to meters, or use default value.
+        location: location,
         radius: preferences.recommendationRadius
             ? String(preferences.recommendationRadius * 1000)
-            : "30000", // Default radius if not provided
+            : "30000",
         categories: categories,
         price: price,
         limit: "50",

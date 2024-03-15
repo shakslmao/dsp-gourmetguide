@@ -1,6 +1,5 @@
 "use client";
 
-import countries from "world-countries";
 import { Card, CardContent } from "./ui/card";
 import {
     Carousel,

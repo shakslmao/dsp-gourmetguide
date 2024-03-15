@@ -8,6 +8,8 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { PriceRange } from "@prisma/client";
 import { YelpAPIWithPrefs } from "@/lib/yelpAPIPrefs";
+import fs from "fs";
+import { fetchYelpDataForLocations } from "@/lib/yelpMultipleLocations";
 
 const stringToPriceRange: { [key: string]: PriceRange } = {
     "No Preference": PriceRange.NO_PREFERENCE,
@@ -87,7 +89,19 @@ export const register = async (
             if (data.preferences) {
                 const yelpResponse = await YelpAPIWithPrefs(data.preferences);
                 // for now, just log the response, will send to recommendation engine
+                fs.writeFileSync("YelpResponse.json", JSON.stringify(yelpResponse, null, 2));
                 console.log("Yelp Response: ", JSON.stringify(yelpResponse, null, 2));
+            }
+
+            // Call the Yelp API with the user's preferred locations
+            if (data.preferences?.preferredLocations) {
+                const yelpLocations = await fetchYelpDataForLocations(data.preferences);
+                // for now, just log the response, will send to recommendation engine
+                fs.writeFileSync(
+                    "YelpMultipleLocationResponse.json",
+                    JSON.stringify(yelpLocations, null, 2)
+                );
+                console.log("Yelp Locations: ", JSON.stringify(yelpLocations, null, 2));
             }
 
             return user;

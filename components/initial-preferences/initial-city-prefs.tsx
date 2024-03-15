@@ -9,7 +9,7 @@ import { useUserLocation } from "@/hooks/useUserLocation";
 
 export const InitialCityLocatedPrefs = () => {
     const { preferences } = useUserPreferences();
-    const { city, error } = useUserLocation();
+    const { city } = useUserLocation();
     const router = useRouter();
     const handleNextOnClick = () => {
         router.push("/inital-preferences/radiuspreferences");
