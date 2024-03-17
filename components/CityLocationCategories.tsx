@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { useUserLocation } from "@/hooks/useUserLocation";
+import Modal from "./Modal/modal";
 
 // Labels and descriptions for different cuisine categories
 export const cityCategories = [
@@ -51,12 +52,6 @@ export const cityCategories = [
             "Enjoy waterfront dining with dishes ranging from British classics to international flavors.",
     },
     {
-        label: "Glasgow",
-        flag: "",
-        description:
-            "Discover a dynamic food scene with innovative restaurants and traditional Scottish dishes.",
-    },
-    {
         label: "Bristol City",
         flag: "",
         description:
@@ -69,42 +64,39 @@ export const cityCategories = [
             "Classic British cuisine meets international flavors in this historic university city.",
     },
     {
-        label: "Cambridge",
-        flag: "",
-        description:
-            "Indulge in a mix of traditional British eateries and contemporary dining experiences.",
-    },
-    {
-        label: "Brighton",
-        flag: "",
-        description:
-            "A seaside culinary adventure with fresh seafood and vibrant vegetarian options.",
-    },
-    {
         label: "Bath",
         flag: "",
         description: "Enjoy Georgian elegance with afternoon teas, gastropubs, and fine dining.",
-    },
-    {
-        label: "Newcastle upon Tyne",
-        flag: "",
-        description:
-            "Experience a lively food scene with hearty British meals and international cuisine.",
-    },
-    {
-        label: "Leeds",
-        flag: "",
-        description:
-            "A bustling city with a thriving street food scene and diverse culinary offerings.",
     },
 ];
 
 const CityLocationCategories = () => {
     const { preferences, updatePreferences } = useUserPreferences();
-    const { city } = useUserLocation();
+    const { city, permission, requestLocationPermission } = useUserLocation();
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
+    const [showLocationModal, setShowLocationModal] = useState(false);
+
+    const handleLocationPermissionAllow = async () => {
+        await requestLocationPermission();
+        setShowLocationModal(false); // Close the modal
+    };
+
+    // Handler for when user denies location access
+    const handleLocationPermissionDenied = () => {
+        setShowLocationModal(false); // Close the modal
+        toast({
+            title: "Location permission denied",
+            description: "You can change your location preferences in the settings.",
+        });
+    };
+
+    useEffect(() => {
+        if (permission === "prompt") {
+            setShowLocationModal(true);
+        }
+    }, [permission]);
 
     useEffect(() => {
         if (!api) {
@@ -141,6 +133,25 @@ const CityLocationCategories = () => {
 
     return (
         <div>
+            {showLocationModal && (
+                <Modal
+                    isOpen={showLocationModal}
+                    onClose={handleLocationPermissionDenied}
+                    onSubmit={handleLocationPermissionAllow}
+                    title="Share Your Location ?"
+                    body={
+                        <p>
+                            We will like to use your current location to enhance your experience by
+                            showing you restaurants and cuisines nearby. Your location will not be
+                            used for any other purposes. You can choose to deny this request and
+                            manually select your preferred city from the list.{" "}
+                        </p>
+                    }
+                    actionLabel="Allow"
+                    secondaryAction={handleLocationPermissionDenied}
+                    secondaryActionLabel="Deny"
+                />
+            )}
             <Carousel
                 opts={{ align: "start" }}
                 setApi={setApi}
