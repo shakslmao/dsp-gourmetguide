@@ -8,6 +8,7 @@ CORS(app, origins=["http://localhost:3000"])
 print("Server is running")
 
 
+# Route to receive data from the frontend
 @app.route("/receive_data", methods=["POST"])
 def receive_data():
     try:
@@ -21,6 +22,7 @@ def receive_data():
         return jsonify({"error": str(e)}), 500
 
 
+# Route to receive preferred lcoation data from the frontend
 @app.route("/receive_preferred_loc", methods=["POST"])
 def receive_preferred_loc():
     try:
