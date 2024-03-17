@@ -77,14 +77,17 @@ const CityLocationCategories = () => {
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
     const [showLocationModal, setShowLocationModal] = useState(false);
+    const [locationPermissionGranted, setLocationPermissionGranted] = useState(false);
 
     const handleLocationPermissionAllow = async () => {
         await requestLocationPermission();
+        setLocationPermissionGranted(true); // Update state to show permission sgranted.
         setShowLocationModal(false); // Close the modal
     };
 
     // Handler for when user denies location access
     const handleLocationPermissionDenied = () => {
+        setLocationPermissionGranted(false);
         setShowLocationModal(false); // Close the modal
         toast({
             title: "Location permission denied",
@@ -113,6 +116,16 @@ const CityLocationCategories = () => {
 
     const handleCardClick = (index: number) => {
         const cityLabel = cityCategories[index].label;
+
+        if (cityLabel === cityCategories[0].label && !locationPermissionGranted) {
+            setLocationPermissionGranted(false);
+            toast({
+                title: "Location Needed for Current Location",
+                description: "Please allow location permission to use this feature.",
+            });
+            return;
+        }
+
         const isSelected = preferences.preferredLocations?.includes(cityLabel) ?? false;
         const UserCuisineTypes = isSelected
             ? preferences.preferredLocations?.filter((city) => city !== cityLabel) ?? []
@@ -152,6 +165,7 @@ const CityLocationCategories = () => {
                     secondaryActionLabel="Deny"
                 />
             )}
+
             <Carousel
                 opts={{ align: "start" }}
                 setApi={setApi}
@@ -159,9 +173,12 @@ const CityLocationCategories = () => {
                 {/* if the card is === to the users city, dont display that card. */}
                 <CarouselContent>
                     {cityCategories.map((item, index) => {
+                        // Logic to skip rendering the current location card if it matches the user's city
                         if (item.label === city) {
                             return null;
                         }
+                        const isCurrentLocationCard = item.label === "My Current Location";
+                        const isDisabled = isCurrentLocationCard && !locationPermissionGranted;
                         return (
                             <CarouselItem
                                 key={index}
@@ -172,9 +189,21 @@ const CityLocationCategories = () => {
                                             preferences.preferredLocations?.includes(item.label)
                                                 ? "bg-green-600 text-white"
                                                 : "bg-white"
+                                        } ${
+                                            isDisabled
+                                                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                                : ""
                                         }`}
                                         onClick={() => {
-                                            handleCardClick(index);
+                                            if (!isDisabled) {
+                                                handleCardClick(index);
+                                            } else {
+                                                toast({
+                                                    title: "Location Permission Needed",
+                                                    description:
+                                                        "Please allow location permission to use this feature.",
+                                                });
+                                            }
                                         }}>
                                         <CardContent className="flex flex-col aspect-square items-center justify-center p-6 mx-6">
                                             <FlagAvatar src={item.flag} />
@@ -185,7 +214,7 @@ const CityLocationCategories = () => {
                                                 {item.description}
                                             </p>
                                             <p className="mt-4 text-sm text-center font-light">
-                                                {index === 0 && city ? `${city}` : ""}
+                                                {isCurrentLocationCard && city ? `${city}` : ""}
                                             </p>
                                         </CardContent>
                                     </Card>
