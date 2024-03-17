@@ -8,7 +8,6 @@ import { sendVerificationEmail } from "@/lib/mail";
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { PriceRange } from "@prisma/client";
 import { YelpAPIWithPrefs } from "@/lib/yelpAPIPrefs";
-import fs from "fs";
 import { fetchYelpDataForLocations } from "@/lib/yelpMultipleLocations";
 
 const stringToPriceRange: { [key: string]: PriceRange } = {
@@ -19,6 +18,9 @@ const stringToPriceRange: { [key: string]: PriceRange } = {
     "Premium ": PriceRange.HIGH,
     "Luxury ": PriceRange.VERY_HIGH,
 };
+
+const flaskEndPoint = "http://127.0.0.1:5000/receive_data";
+const flaskEndPointForLocations = "http://127.0.0.1:5000/receive_preferred_loc";
 
 // Define an async function to handle user registration.
 export const register = async (
@@ -88,8 +90,9 @@ export const register = async (
             // Call the Yelp API with the user's preferences.
             if (data.preferences) {
                 const yelpResponse = await YelpAPIWithPrefs(data.preferences);
-                // send data to Flask end point for data preprocessing
-                const response = await fetch("http://localhost:5000/receive_data", {
+                // Send data to Django endpoint for data preprocessing
+                const response = await fetch(flaskEndPoint, {
+                    // Note the change in URL
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -105,14 +108,14 @@ export const register = async (
                 } else {
                     console.error("Error in response from Flask: ", response);
                 }
-
-                fs.writeFileSync("YelpResponse.json", JSON.stringify(yelpResponse, null, 2));
             }
 
             // Call the Second Yelp API with the user's preferred locations if it exists.
             if (data.preferences?.preferredLocations) {
                 const yelpLocations = await fetchYelpDataForLocations(data.preferences);
-                const response = await fetch("http://localhost:5000/receive_data", {
+                // Send data to Django endpoint for data preprocessing
+                const response = await fetch(flaskEndPointForLocations, {
+                    // Note the change in URL
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -126,13 +129,8 @@ export const register = async (
                     const responseData = await response.json();
                     console.log("Response from Flask: ", responseData);
                 } else {
+                    console.error("Error in response from Flask: ", response);
                 }
-
-                // for now, just log the response, will send to recommendation engine
-                fs.writeFileSync(
-                    "YelpMultipleLocationResponse.json",
-                    JSON.stringify(yelpLocations, null, 2)
-                );
             }
 
             return user;
