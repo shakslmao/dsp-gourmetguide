@@ -8,6 +8,10 @@ CORS(app, origins=["http://localhost:3000"])
 print("Server is running")
 
 
+def preprocess_data(entry):
+    pass
+
+
 # Route to receive data from the frontend
 @app.route("/receive_data", methods=["POST"])
 def receive_data():

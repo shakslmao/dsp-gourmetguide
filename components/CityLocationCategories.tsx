@@ -70,72 +70,89 @@ export const cityCategories = [
     },
 ];
 
+// Initialises a component to manage city location categories.
 const CityLocationCategories = () => {
+    // Hooks for managing user preferences and location.
     const { preferences, updatePreferences } = useUserPreferences();
     const { city, permission, requestLocationPermission } = useUserLocation();
+
+    // State management for the Carousel API, current index, count, and modal visibility.
     const [api, setApi] = useState<CarouselApi>();
     const [current, setCurrent] = useState(0);
     const [count, setCount] = useState(0);
     const [showLocationModal, setShowLocationModal] = useState(false);
     const [locationPermissionGranted, setLocationPermissionGranted] = useState(false);
 
+    // Function to handle permission being granted for location access.
     const handleLocationPermissionAllow = async () => {
-        await requestLocationPermission();
-        setLocationPermissionGranted(true); // Update state to show permission sgranted.
-        setShowLocationModal(false); // Close the modal
+        await requestLocationPermission(); // Requests location permission from the user.
+        setLocationPermissionGranted(true); // Updates state to indicate permission has been granted.
+        setShowLocationModal(false); // Closes the modal window.
     };
 
-    // Handler for when user denies location access
+    // Function to handle the user denying location access.
     const handleLocationPermissionDenied = () => {
-        setLocationPermissionGranted(false);
-        setShowLocationModal(false); // Close the modal
+        setLocationPermissionGranted(false); // Updates state to indicate permission has not been granted.
+        setShowLocationModal(false); // Closes the modal window.
         toast({
+            // Displays a message to the user regarding denied location permission.
             title: "Location permission denied",
             description: "You can change your location preferences in the settings.",
         });
     };
 
+    // Effect hook to show location modal based on permission state.
     useEffect(() => {
         if (permission === "prompt") {
-            setShowLocationModal(true);
+            setShowLocationModal(true); // Shows the modal if permission is set to 'prompt'.
         }
     }, [permission]);
 
+    // Effect hook for Carousel API updates.
     useEffect(() => {
         if (!api) {
+            // Checks if the API is initialised.
             return;
         }
 
-        setCount(api.scrollSnapList().length);
-        setCurrent(api.selectedScrollSnap() + 1);
+        setCount(api.scrollSnapList().length); // Sets the count of items.
+        setCurrent(api.selectedScrollSnap() + 1); // Updates the current selection.
 
         api.on("select", () => {
-            setCurrent(api.selectedScrollSnap() + 1);
+            // Listens for a selection event.
+            setCurrent(api.selectedScrollSnap() + 1); // Updates the current selection upon event.
         });
     }, [api]);
 
+    // Handler for card clicks within the component.
     const handleCardClick = (index: number) => {
-        const cityLabel = cityCategories[index].label;
+        const cityLabel = cityCategories[index].label; // Retrieves the label of the clicked city.
 
+        // Checks for location permission when selecting the first city category.
         if (cityLabel === cityCategories[0].label && !locationPermissionGranted) {
             setLocationPermissionGranted(false);
             toast({
+                // Notifies the user to allow location permission for this feature.
                 title: "Location Needed for Current Location",
                 description: "Please allow location permission to use this feature.",
             });
             return;
         }
 
+        // Determines if the clicked city is already selected.
         const isSelected = preferences.preferredLocations?.includes(cityLabel) ?? false;
+        // Updates the user's preferred locations based on the selection.
         const UserCuisineTypes = isSelected
             ? preferences.preferredLocations?.filter((city) => city !== cityLabel) ?? []
             : [...(preferences.preferredLocations ?? []), cityLabel];
+        // Saves the updated preferences.
         updatePreferences({
             preferredLocations: UserCuisineTypes,
             currentLocation: city ?? undefined,
         });
 
         const toastItem = cityCategories[index];
+        // Notifies the user of the saved preference change.
         toast({
             title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} ${
                 toastItem.flag
@@ -199,6 +216,7 @@ const CityLocationCategories = () => {
                                                 handleCardClick(index);
                                             } else {
                                                 toast({
+                                                    variant: "destructive",
                                                     title: "Location Permission Needed",
                                                     description:
                                                         "Please allow location permission to use this feature.",
