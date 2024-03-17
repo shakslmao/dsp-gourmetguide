@@ -44,7 +44,7 @@ export const YelpAPIWithPrefs = async (preferences: UserCuisinePreferences) => {
         // Making a GET request to Yelp API.
         const response = await axios.get("https://api.yelp.com/v3/businesses/search", {
             headers: {
-                Authorization: `Bearer ${process.env.NEXT_PUBLIC_YELP_API_KEY}`,
+                Authorization: `Bearer ${process.env.YELP_API_KEY}`,
                 "Content-Type": "application/json",
             },
             params,

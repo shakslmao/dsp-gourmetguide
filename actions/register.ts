@@ -88,20 +88,51 @@ export const register = async (
             // Call the Yelp API with the user's preferences.
             if (data.preferences) {
                 const yelpResponse = await YelpAPIWithPrefs(data.preferences);
-                // for now, just log the response, will send to recommendation engine
+                // send data to Flask end point for data preprocessing
+                const response = await fetch("http://localhost:5000/receive_data", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(yelpResponse),
+                });
+                if (
+                    response.ok &&
+                    response.headers.get("content-type")?.includes("application/json")
+                ) {
+                    const responseData = await response.json();
+                    console.log("Response from Flask: ", responseData);
+                } else {
+                    console.error("Error in response from Flask: ", response);
+                }
+
                 fs.writeFileSync("YelpResponse.json", JSON.stringify(yelpResponse, null, 2));
-                console.log("Yelp Response: ", JSON.stringify(yelpResponse, null, 2));
             }
 
-            // Call the Yelp API with the user's preferred locations
+            // Call the Second Yelp API with the user's preferred locations if it exists.
             if (data.preferences?.preferredLocations) {
                 const yelpLocations = await fetchYelpDataForLocations(data.preferences);
+                const response = await fetch("http://localhost:5000/receive_data", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(yelpLocations),
+                });
+                if (
+                    response.ok &&
+                    response.headers.get("content-type")?.includes("application/json")
+                ) {
+                    const responseData = await response.json();
+                    console.log("Response from Flask: ", responseData);
+                } else {
+                }
+
                 // for now, just log the response, will send to recommendation engine
                 fs.writeFileSync(
                     "YelpMultipleLocationResponse.json",
                     JSON.stringify(yelpLocations, null, 2)
                 );
-                console.log("Yelp Locations: ", JSON.stringify(yelpLocations, null, 2));
             }
 
             return user;
