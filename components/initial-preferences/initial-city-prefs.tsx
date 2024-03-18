@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "../ui/button";
 import CityLocationCategories from "../CityLocationCategories";
 import { useUserLocation } from "@/hooks/useUserLocation";
+import { Progress } from "../ui/progress";
 
 export const InitialCityLocatedPrefs = () => {
     const { preferences } = useUserPreferences();
@@ -23,6 +24,10 @@ export const InitialCityLocatedPrefs = () => {
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+                <Progress
+                    value={50}
+                    className="w-full"
+                />
                 <h1 className="text-2xl font-bold text-center">
                     Beyond your current location of <span className="text-green-600">{city}</span>,
                     which other <span className="text-green-600">cities</span> would you dine in
@@ -38,7 +43,7 @@ export const InitialCityLocatedPrefs = () => {
                 <CityLocationCategories />
                 {preferences.preferredLocations!.length > 0 && (
                     <div>
-                        <h2 className="text-md text-center font-semibold">Selected Times</h2>
+                        <h2 className="text-md text-center font-semibold">Selected Cities</h2>
                         <ul className="text-sm text-center">
                             {preferences.preferredLocations!.map((city, index) => (
                                 <Badge

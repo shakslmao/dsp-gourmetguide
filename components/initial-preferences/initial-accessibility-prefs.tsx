@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Switch } from "../ui/switch";
 import { toast } from "../ui/use-toast";
+import { Progress } from "../ui/progress";
+import { useEffect } from "react";
 
 const FormSchema = z.object({
     accessibility_preference: z.boolean().default(false),
@@ -26,7 +28,6 @@ export const InitialAccessibilityPrefs = () => {
     const handlePrevOnClick = () => {
         router.back();
     };
-
     const onSubmit = (data: z.infer<typeof FormSchema>) => {
         console.log(data.accessibility_preference);
         updatePreferences({ accessibilityFeatures: data.accessibility_preference });
@@ -41,6 +42,10 @@ export const InitialAccessibilityPrefs = () => {
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+                <Progress
+                    value={90}
+                    className="w-full"
+                />
                 <h1 className="text-2xl font-bold text-center">
                     Let us know your <span className="text-green-600">accessibility</span>{" "}
                     requirements

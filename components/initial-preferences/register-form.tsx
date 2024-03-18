@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
@@ -25,6 +25,7 @@ import { register } from "@/actions/register";
 import { LOGIN_REDIRECT } from "@/routes";
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { useRouter } from "next/navigation";
+import { Progress } from "../ui/progress";
 
 export const RegisterForm = () => {
     const router = useRouter();

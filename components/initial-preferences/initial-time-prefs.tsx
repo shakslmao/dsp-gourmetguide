@@ -5,6 +5,7 @@ import { Badge } from "../ui/badge";
 import { Button, buttonVariants } from "../ui/button";
 import { useRouter } from "next/navigation";
 import TimeRangePreferences from "../TimeRangePreferences";
+import { Progress } from "../ui/progress";
 
 export const InitialTimePrefs = () => {
     const router = useRouter();
@@ -20,6 +21,10 @@ export const InitialTimePrefs = () => {
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+                <Progress
+                    value={40}
+                    className="w-full"
+                />
                 <h1 className="text-2xl font-bold text-center">
                     Tell us when is your ideal <span className="text-green-600">dining</span> time.
                 </h1>
