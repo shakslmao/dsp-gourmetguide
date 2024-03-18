@@ -1,3 +1,5 @@
+"use server";
+
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { YelpAPIWithPrefs } from "./yelpAPIPrefs";
 

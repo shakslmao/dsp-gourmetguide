@@ -1,3 +1,5 @@
+"use server";
+
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { PriceRange } from "@prisma/client";
 import axios from "axios";
@@ -44,7 +46,7 @@ export const YelpAPIWithPrefs = async (preferences: UserCuisinePreferences) => {
         // Making a GET request to Yelp API.
         const response = await axios.get("https://api.yelp.com/v3/businesses/search", {
             headers: {
-                Authorization: `Bearer ${process.env.YELP_API_KEY}`,
+                Authorization: `Bearer ${process.env.NEXT_PUBLIC_YELP_API_KEY}`,
                 "Content-Type": "application/json",
             },
             params,
@@ -57,9 +59,17 @@ export const YelpAPIWithPrefs = async (preferences: UserCuisinePreferences) => {
         }
         // Returning the response data directly.
         return { ...response.data, businesses };
-    } catch (error) {
-        // Logging and throwing an error if the API call fails.
-        console.error("Error fetching data from Yelp:", error);
+    } catch (error: any) {
+        if (error.response) {
+            // Logs more detailed response from Yelp in case of error
+            console.error(
+                `Yelp API responded with status ${error.response.status}: ${error.response.statusText}`
+            );
+            console.error(`Response data:`, error.response.data);
+        } else {
+            // Logs generic error if no response is available from Yelp
+            console.error("Error fetching data from Yelp:", error);
+        }
         throw new Error("An error occurred while fetching data from Yelp.");
     }
 };

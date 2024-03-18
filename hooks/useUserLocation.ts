@@ -77,7 +77,10 @@ export const useUserLocation = () => {
                     component.types.includes("administrative_area_level_1")
                 );
             }
-            return cityObj ? cityObj.long_name : "Not Found";
+
+            let cityName = cityObj ? cityObj.long_name : "Not Found";
+            cityName = cityName.replace(/ City$/, "");
+            return cityName;
         } else {
             console.error("API response status:", data.status);
             throw new Error("Failed to fetch city name");
