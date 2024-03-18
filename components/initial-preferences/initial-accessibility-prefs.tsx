@@ -42,10 +42,6 @@ export const InitialAccessibilityPrefs = () => {
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-                <Progress
-                    value={90}
-                    className="w-full"
-                />
                 <h1 className="text-2xl font-bold text-center">
                     Let us know your <span className="text-green-600">accessibility</span>{" "}
                     requirements

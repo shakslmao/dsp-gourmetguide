@@ -24,15 +24,11 @@ export const InitialCityLocatedPrefs = () => {
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-                <Progress
-                    value={50}
-                    className="w-full"
-                />
                 <h1 className="text-2xl font-bold text-center">
-                    Beyond your current location of <span className="text-green-600">{city}</span>,
-                    which other <span className="text-green-600">cities</span> would you dine in
+                    Where are you interested in dining?
                 </h1>
 
+                <CityLocationCategories />
                 <p className="text-xs text-center font-light">
                     Explore a curated selection of popular{" "}
                     <span className="text-green-600"> cities</span> people travel to, we will
@@ -40,7 +36,6 @@ export const InitialCityLocatedPrefs = () => {
                     cities you select. Feel free to choose multiple destinations that pique your
                     interest.
                 </p>
-                <CityLocationCategories />
                 {preferences.preferredLocations!.length > 0 && (
                     <div>
                         <h2 className="text-md text-center font-semibold">Selected Cities</h2>

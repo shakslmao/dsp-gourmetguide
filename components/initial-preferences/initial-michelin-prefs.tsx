@@ -39,10 +39,6 @@ export const InitialMichelinPrefs = () => {
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-                <Progress
-                    value={80}
-                    className="w-full"
-                />
                 <h1 className="text-2xl font-bold text-center">
                     Would you like to be recommended
                     <span className="text-green-600"> higher rated</span> &
