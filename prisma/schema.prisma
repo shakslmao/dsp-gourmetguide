@@ -50,12 +50,14 @@ model User {
     twoFactorEnabled       Boolean                  @default(false)
     preferencesId          String?                  @unique @db.ObjectId
     preferences            Preferences?             @relation(fields: [preferencesId], references: [id])
+    restaurantId           String[]                 @db.ObjectId
     twoFactorConfirmation  TwoFactorConfirmation?
     history                History[]
-    Ratings                Ratings[]
-    Reviews                Reviews[]
+    userRatings            UserRatings[]
+    userReviews            UserReviews[]
     Account                Account[]
     NotificationPreference NotificationPreference[]
+    UserRestaurant         UserRestaurant[]
 }
 
 model Preferences {
@@ -73,6 +75,56 @@ model Preferences {
     accessibilityFeatures Boolean    @default(false)
     locationFeatureUsed   Boolean    @default(false)
     User                  User?
+}
+
+model Restaurant {
+    id              String           @id @default(auto()) @map("_id") @db.ObjectId
+    yelpId          String?          @unique
+    alias           String?
+    restaurantName  String?
+    imageUrl        String?
+    url             String?
+    isClosed        Boolean?
+    categories      String[]
+    reviewCount     Int?
+    coordinates     Json?
+    price           Int?
+    phone           String?
+    displayPhone    String?
+    customerRatings Float?
+    location        Location?        @relation(fields: [locationId], references: [id])
+    locationId      String?          @unique @db.ObjectId
+    reviewsId       String?          @db.ObjectId
+    userRatings     UserRatings?     @relation(fields: [ratingsId], references: [id])
+    ratingsId       String?          @db.ObjectId
+    userReviews     UserReviews[]
+    MenuItem        MenuItem[]
+    UserRestaurant  UserRestaurant[]
+}
+
+model Location {
+    id             String      @id @default(auto()) @map("_id") @db.ObjectId
+    address1       String
+    address2       String?
+    address3       String?
+    city           String
+    zipCode        String
+    country        String
+    state          String
+    displayAddress String
+    longitude      Float
+    latitude       Float
+    Restaurant     Restaurant?
+}
+
+model UserRestaurant {
+    id           String     @id @default(auto()) @map("_id") @db.ObjectId
+    userId       String     @db.ObjectId
+    restaurantId String     @db.ObjectId
+    User         User       @relation(fields: [userId], references: [id])
+    Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+    @@unique([userId, restaurantId])
 }
 
 model Account {
@@ -112,35 +164,7 @@ enum ActionType {
     MARKED_FAVOURITE
 }
 
-model Restaurant {
-    id                  String     @id @default(auto()) @map("_id") @db.ObjectId
-    restaurantName      String
-    location            Location   @relation(fields: [locationId], references: [id])
-    locationId          String     @db.ObjectId
-    cuisineType         String[]
-    michelinStars       Int?
-    michelinBibGourmand Boolean    @default(false)
-    michelinGreenStar   Boolean    @default(false)
-    priceRange          PriceRange
-    restaurantMenu      MenuItem[]
-    reviewsId           String     @db.ObjectId
-    Ratings             Ratings?   @relation(fields: [ratingsId], references: [id])
-    ratingsId           String?    @db.ObjectId
-    Reviews             Reviews[]
-}
-
-model Location {
-    id         String       @id @default(auto()) @map("_id") @db.ObjectId
-    address    String
-    longitude  Float
-    latitude   Float
-    city       String
-    zipCode    String
-    country    String
-    Restaurant Restaurant[]
-}
-
-model Ratings {
+model UserRatings {
     id              String       @id @default(auto()) @map("_id") @db.ObjectId
     averageRating   Float
     numberOfRatings Int
@@ -149,7 +173,7 @@ model Ratings {
     Restaurant      Restaurant[]
 }
 
-model Reviews {
+model UserReviews {
     id           String     @id @default(auto()) @map("_id") @db.ObjectId
     Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
     restaurantId String     @db.ObjectId
