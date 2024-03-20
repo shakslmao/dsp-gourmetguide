@@ -71,6 +71,7 @@ model Preferences {
     ambienceTypes         String[]
     prefersMichelinRated  Boolean    @default(false)
     accessibilityFeatures Boolean    @default(false)
+    locationFeatureUsed   Boolean    @default(false)
     User                  User?
 }
 

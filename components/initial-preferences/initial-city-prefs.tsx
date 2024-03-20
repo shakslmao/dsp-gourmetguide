@@ -8,8 +8,8 @@ import CityLocationCategories from "../CityLocationCategories";
 import { useUserLocation } from "@/hooks/useUserLocation";
 
 export const InitialCityLocatedPrefs = () => {
-    const { preferences } = useUserPreferences();
     const { city } = useUserLocation();
+    const { preferences } = useUserPreferences();
     const router = useRouter();
     const handleNextOnClick = () => {
         router.push("/inital-preferences/ambiencepreferences");
@@ -18,16 +18,15 @@ export const InitialCityLocatedPrefs = () => {
         router.back();
     };
 
-    console.log(preferences);
-
     return (
         <div className="flex items-center justify-center min-h-screen mx-auto">
             <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
                 <h1 className="text-2xl font-bold text-center">
-                    Where are you interested in dining?
+                    Where are you interested in <span className="text-green-600">dining?</span>{" "}
                 </h1>
 
                 <CityLocationCategories />
+
                 <p className="text-xs text-center font-light">
                     Explore a curated selection of popular{" "}
                     <span className="text-green-600"> cities</span> people travel to, we will

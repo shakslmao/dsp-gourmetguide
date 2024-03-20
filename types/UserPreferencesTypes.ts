@@ -11,6 +11,7 @@ export interface UserCuisinePreferences {
     ambienceTypes?: string[];
     prefersMichelinRated?: boolean;
     accessibilityFeatures?: boolean;
+    locationFeatureUsed: boolean;
 }
 
 export interface UserCuisinePreferencesContextType {

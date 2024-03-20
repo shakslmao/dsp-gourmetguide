@@ -15,6 +15,7 @@ import { toast } from "./ui/use-toast";
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { useUserLocation } from "@/hooks/useUserLocation";
 import Modal from "./Modal/modal";
+import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 
 // Labels and descriptions for different cuisine categories
 export const cityCategories = [
@@ -88,6 +89,10 @@ const CityLocationCategories = () => {
         requestLocationPermission(); // Requests location permission from the user.
         setLocationPermissionGranted(true); // Updates state to indicate permission has been granted.
         setShowLocationModal(false); // Closes the modal window.
+        updatePreferences({
+            ...preferences,
+            locationFeatureUsed: true,
+        });
     };
 
     // Function to handle the user denying location access.
@@ -190,7 +195,11 @@ const CityLocationCategories = () => {
                     secondaryActionLabel="Deny"
                 />
             )}
-
+            <p className="text-xs text-center font-light mb-2">
+                {" "}
+                We have pre-selected your current location of{" "}
+                <span className="text-green-600">{city}</span>
+            </p>
             <Carousel
                 opts={{ align: "start" }}
                 setApi={setApi}
@@ -203,7 +212,9 @@ const CityLocationCategories = () => {
                             return null;
                         }
                         const isCurrentLocationCard = item.label === "My Current Location";
-                        const isDisabled = isCurrentLocationCard && !locationPermissionGranted;
+                        const isDisabled =
+                            isCurrentLocationCard &&
+                            (locationPermissionGranted || preferences.locationFeatureUsed);
                         return (
                             <CarouselItem
                                 key={index}

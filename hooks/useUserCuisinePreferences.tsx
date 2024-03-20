@@ -19,6 +19,7 @@ const defaultUserPrefs: UserCuisinePreferences = {
     prefersMichelinRated: false, // Whether the user prefers Michelin rated restaurants, initially false.
     ambienceTypes: [], // Preferred ambience types, initially unspecified.
     accessibilityFeatures: false, // Accessibility features required, initially unspecified.
+    locationFeatureUsed: false, // Whether location feature is used, initially false.
 };
 
 // Create a context for UserPreferences with an undefined default value.
