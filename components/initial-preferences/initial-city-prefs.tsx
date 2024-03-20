@@ -6,14 +6,13 @@ import { useRouter } from "next/navigation";
 import { Button, buttonVariants } from "../ui/button";
 import CityLocationCategories from "../CityLocationCategories";
 import { useUserLocation } from "@/hooks/useUserLocation";
-import { Progress } from "../ui/progress";
 
 export const InitialCityLocatedPrefs = () => {
     const { preferences } = useUserPreferences();
     const { city } = useUserLocation();
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("/inital-preferences/radiuspreferences");
+        router.push("/inital-preferences/ambiencepreferences");
     };
     const handlePrevOnClick = () => {
         router.back();

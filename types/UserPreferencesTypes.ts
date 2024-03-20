@@ -6,7 +6,7 @@ export interface UserCuisinePreferences {
     priceRangePreference: PriceRange;
     preferredTime?: string[]; //
     preferredLocations?: string[]; // city names
-    currentLocation?: string | null;
+    currentLocation: string | null;
     recommendationRadius: number; // in km
     ambienceTypes?: string[];
     prefersMichelinRated?: boolean;

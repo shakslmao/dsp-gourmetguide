@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import { Toaster } from "@/components/ui/toaster";
 import { UserCuisinePreferencesProvider } from "@/hooks/useUserCuisinePreferences";
+import { LocationProvider } from "@/hooks/LocationContext";
 
 const figtree = Figtree({ subsets: ["latin"], adjustFontFallback: false });
 
@@ -25,18 +26,23 @@ export default async function RootLayout({
     return (
         <SessionProvider session={session}>
             <UserCuisinePreferencesProvider>
-                <html lang="en">
-                    <body
-                        className={cn("relative h-full font-sans antialiased", figtree.className)}>
-                        <main className="relative flex flex-col min-h-screen">
-                            <div className="flex-grow flex-1">
-                                <Toaster />
-                                <Navbar />
-                                {children}
-                            </div>
-                        </main>
-                    </body>
-                </html>
+                <LocationProvider>
+                    <html lang="en">
+                        <body
+                            className={cn(
+                                "relative h-full font-sans antialiased",
+                                figtree.className
+                            )}>
+                            <main className="relative flex flex-col min-h-screen">
+                                <div className="flex-grow flex-1">
+                                    <Toaster />
+                                    <Navbar />
+                                    {children}
+                                </div>
+                            </main>
+                        </body>
+                    </html>
+                </LocationProvider>
             </UserCuisinePreferencesProvider>
         </SessionProvider>
     );

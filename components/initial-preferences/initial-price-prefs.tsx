@@ -10,7 +10,7 @@ import { Progress } from "../ui/progress";
 export const InitialPricePrefs = () => {
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("/inital-preferences/timepreferences");
+        router.push("/inital-preferences/radiuspreferences");
     };
     const handlePrevOnClick = () => {
         router.back();

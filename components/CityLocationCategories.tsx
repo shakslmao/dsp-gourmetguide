@@ -52,7 +52,7 @@ export const cityCategories = [
             "Enjoy waterfront dining with dishes ranging from British classics to international flavors.",
     },
     {
-        label: "Bristol City",
+        label: "Bristol",
         flag: "",
         description:
             "A foodie's delight with a focus on sustainable and locally sourced ingredients.",
@@ -84,8 +84,8 @@ const CityLocationCategories = () => {
     const [locationPermissionGranted, setLocationPermissionGranted] = useState(false);
 
     // Function to handle permission being granted for location access.
-    const handleLocationPermissionAllow = async () => {
-        await requestLocationPermission(); // Requests location permission from the user.
+    const handleLocationPermissionAllow = () => {
+        requestLocationPermission(); // Requests location permission from the user.
         setLocationPermissionGranted(true); // Updates state to indicate permission has been granted.
         setShowLocationModal(false); // Closes the modal window.
     };
@@ -126,15 +126,24 @@ const CityLocationCategories = () => {
 
     // Handler for card clicks within the component.
     const handleCardClick = (index: number) => {
-        const cityLabel = cityCategories[index].label; // Retrieves the label of the clicked city.
+        // const cityLabel = cityCategories[index].label; // Retrieves the label of the clicked city.
+        let cityLabel = cityCategories[index].label;
+        if (cityLabel === "My Current Location") {
+            if (city) {
+                cityLabel = city;
+            } else {
+                toast({
+                    title: "Location Needed for Current Location",
+                    description: "Please allow location permission to use this feature.",
+                });
+                return;
+            }
+        }
 
-        // Checks for location permission when selecting the first city category.
-        if (cityLabel === cityCategories[0].label && !locationPermissionGranted) {
-            setLocationPermissionGranted(false);
+        if (cityLabel === preferences.currentLocation) {
             toast({
-                // Notifies the user to allow location permission for this feature.
-                title: "Location Needed for Current Location",
-                description: "Please allow location permission to use this feature.",
+                title: "Location Already Selected",
+                description: "You have already selected this location.",
             });
             return;
         }
@@ -142,22 +151,21 @@ const CityLocationCategories = () => {
         // Determines if the clicked city is already selected.
         const isSelected = preferences.preferredLocations?.includes(cityLabel) ?? false;
         // Updates the user's preferred locations based on the selection.
-        const UserCuisineTypes = isSelected
-            ? preferences.preferredLocations?.filter((city) => city !== cityLabel) ?? []
+        const UserPreferredLocations = isSelected
+            ? preferences.preferredLocations?.filter((location) => location !== cityLabel) ?? []
             : [...(preferences.preferredLocations ?? []), cityLabel];
         // Saves the updated preferences.
         updatePreferences({
-            preferredLocations: UserCuisineTypes,
-            currentLocation: city ?? undefined,
+            preferredLocations: UserPreferredLocations,
+            currentLocation: city,
         });
 
-        const toastItem = cityCategories[index];
         // Notifies the user of the saved preference change.
+
+        const toastMessage = isSelected ? "removed from" : "added to";
         toast({
-            title: `You've ${isSelected ? "Unselected" : "Selected"} ${toastItem.label} ${
-                toastItem.flag
-            }`,
-            description: "Your Preferences Have Been Saved!",
+            title: `Location ${toastMessage} your preferences`,
+            description: `${cityLabel} has been ${toastMessage} your preferred locations.`,
         });
     };
 
@@ -245,7 +253,7 @@ const CityLocationCategories = () => {
                 <CarouselNext />
             </Carousel>
             <div className="py-1 text-center text-xs text-muted-foreground">
-                Cuisine {current} of {count}
+                City {current} of {count}
             </div>
         </div>
     );

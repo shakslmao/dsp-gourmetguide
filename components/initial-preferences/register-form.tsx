@@ -4,7 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Currency } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
     Form,
