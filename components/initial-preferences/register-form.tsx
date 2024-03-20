@@ -26,6 +26,7 @@ import { LOGIN_REDIRECT } from "@/routes";
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { useRouter } from "next/navigation";
 import { Progress } from "../ui/progress";
+import { ClipLoader } from "react-spinners";
 
 export const RegisterForm = () => {
     const router = useRouter();
@@ -177,6 +178,14 @@ export const RegisterForm = () => {
                                             </FormItem>
                                         )}
                                     />
+                                </div>
+                                <div className="mt-8 flex items-center w-full justify-center">
+                                    {!validationError && !validationSuccess && isSubmitting && (
+                                        <ClipLoader
+                                            color="#16A34A"
+                                            speedMultiplier={0.5}
+                                        />
+                                    )}
                                 </div>
                                 <FormMessageError errorMessage={validationError} />
                                 <FormMessageSuccess successMessage={validationSuccess} />

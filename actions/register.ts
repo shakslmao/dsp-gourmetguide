@@ -19,6 +19,25 @@ const stringToPriceRange: { [key: string]: PriceRange } = {
     "Luxury ": PriceRange.VERY_HIGH,
 };
 
+function convertPriceRange(priceRange: PriceRange) {
+    switch (priceRange) {
+        case PriceRange.NO_PREFERENCE:
+            return "1,2,3,4";
+        case PriceRange.VERY_LOW:
+            return "1";
+        case PriceRange.LOW:
+            return "2";
+        case PriceRange.MEDIUM:
+            return "3";
+        case PriceRange.HIGH:
+        case PriceRange.VERY_HIGH:
+            return "4";
+        default:
+            // Default case to handle undefined or unexpected values, returns all price ranges.
+            return "1,2,3,4";
+    }
+}
+
 const flaskEndPoint = "http://127.0.0.1:5000/receive_data";
 const flaskEndPointForLocations = "http://127.0.0.1:5000/receive_preferred_loc";
 
@@ -95,6 +114,8 @@ export const register = async (
             for (const business of yelpResponse.businesses) {
                 const { id } = business;
 
+                const yelpPriceParams = convertPriceRange(data.preferences.priceRangePreference);
+
                 // Check if the restaurant already exists, and if not, create it
                 const restaurant = await db.restaurant.upsert({
                     where: { yelpId: id },
@@ -116,7 +137,7 @@ export const register = async (
                                 longitude: business.coordinates.longitude,
                             },
                         },
-                        price: business.price ? business.price.length : null,
+                        price: yelpPriceParams ? yelpPriceParams.length : null,
                         phone: business.phone,
                         displayPhone: business.display_phone,
                         location: {
