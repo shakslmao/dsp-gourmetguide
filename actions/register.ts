@@ -90,7 +90,6 @@ export const register = async (
         // Call the Yelp API with the user's preferences.
         if (data.preferences) {
             const yelpResponse = await YelpAPIWithPrefs(data.preferences);
-
             const restaurantId = []; // Initialise an empty array to collect restaurant IDs
 
             for (const business of yelpResponse.businesses) {
@@ -167,6 +166,65 @@ export const register = async (
         // Call the Second Yelp API with the user's preferred locations if it exists.
         if (data.preferences?.preferredLocations) {
             const yelpLocations = await fetchYelpDataForLocations(data.preferences);
+            const restaurantId = [];
+
+            for (const [location, data] of Object.entries(yelpLocations)) {
+                const restaurants = data.businesses;
+                if (!Array.isArray(restaurants)) {
+                    console.error(
+                        `Expected restaurants to be an array, got: ${typeof restaurants}`
+                    );
+                    continue;
+                }
+                for (const item of restaurants) {
+                    const preferredRestaurants = await db.restaurant.upsert({
+                        where: { yelpId: item.id },
+                        update: {},
+                        create: {
+                            yelpId: item.id,
+                            alias: item.alias,
+                            restaurantName: item.name,
+                            imageUrl: item.image_url,
+                            isClosed: item.is_closed,
+                            categories: item.categories.map(
+                                (cat: any) => cat.title + ", " + cat.alias
+                            ),
+                            reviewCount: item.review_count,
+                            customerRatings: item.rating,
+                            coordinates: {
+                                create: {
+                                    latitude: item.coordinates.latitude,
+                                    longitude: item.coordinates.longitude,
+                                },
+                            },
+                            price: item.price ? item.price.length : null,
+                            phone: item.phone,
+                            displayPhone: item.display_phone,
+                            location: {
+                                create: {
+                                    address1: item.location.address1,
+                                    address2: item.location.address2,
+                                    address3: item.location.address3,
+                                    city: item.location.city,
+                                    zipCode: item.location.zip_code,
+                                    country: item.location.country,
+                                    state: item.location.state,
+                                    displayAddress: item.location.display_address.join(", "),
+                                    longitude: item.coordinates.longitude,
+                                    latitude: item.coordinates.latitude,
+                                },
+                            },
+                        },
+                    });
+                    restaurantId.push(preferredRestaurants.id);
+                }
+            }
+            await db.user.update({
+                where: { id: user.id },
+                data: {
+                    restaurantId: { set: [...restaurantId, ...user.restaurantId] },
+                },
+            });
 
             // Send data to Django endpoint for data preprocessing
             const response = await fetch(flaskEndPointForLocations, {

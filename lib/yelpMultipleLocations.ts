@@ -2,11 +2,41 @@
 
 import { UserCuisinePreferences } from "@/types/UserPreferencesTypes";
 import { YelpAPIWithPrefs } from "./yelpAPIPrefs";
+type Restaurant = {
+    alias: string;
+    id: string;
+    name: string;
+    categories: { alias: string; title: string }[];
+    rating: number;
+    is_closed: boolean;
+    review_count: number;
+    display_phone: string;
+    coordinates: { latitude: number; longitude: number };
+    price: string;
+    phone: string;
+    image_url: string;
+    location: {
+        address1: string;
+        address2?: string;
+        address3?: string;
+        city: string;
+        zip_code: string;
+        country: string;
+        state: string;
+        display_address: string[];
+    };
+};
 
-type YelpApiResponse = string;
+type YelpApiResponse = {
+    total: number;
+    businesses: Restaurant[];
+    region: { center: { longitude: number; latitude: number } };
+};
 
 // Function to fetch Yelp data for locations based on user cuisine preferences.
-export const fetchYelpDataForLocations = async (preferences: UserCuisinePreferences) => {
+export const fetchYelpDataForLocations = async (
+    preferences: UserCuisinePreferences
+): Promise<Record<string, YelpApiResponse>> => {
     // Explicitly declares 'results' as an object with string keys and YelpApiResponse as values.
     const results: Record<string, YelpApiResponse> = {};
 
