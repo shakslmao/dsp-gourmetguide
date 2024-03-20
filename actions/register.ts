@@ -91,47 +91,61 @@ export const register = async (
         if (data.preferences) {
             const yelpResponse = await YelpAPIWithPrefs(data.preferences);
 
-            for (const business of yelpResponse.businesses) {
-                const { id, name, categories, rating, coordinates, price, location, phone } =
-                    business;
+            const restaurantId = []; // Initialise an empty array to collect restaurant IDs
 
-                const restaurantData = {
-                    yelpId: id,
-                    alias: business.alias,
-                    restaurantName: name,
-                    imageUrl: business.image_url,
-                    isClosed: business.is_closed,
-                    categories: categories.map((cat: any) => cat.title + ", " + cat.alias),
-                    reviewCount: business.review_count,
-                    customerRatings: rating,
-                    coordinates: coordinates
-                        ? { latitude: coordinates.latitude, longitude: coordinates.longitude }
-                        : { latitude: null, longitude: null },
-                    price: price ? price.length : null,
-                    phone: phone,
-                    displayPhone: business.display_phone,
-                    location: {
-                        create: {
-                            address1: location.address1,
-                            address2: location.address2,
-                            address3: location.address3,
-                            city: location.city,
-                            zipCode: location.zip_code,
-                            country: location.country,
-                            state: location.state,
-                            displayAddress: location.display_address.join(", "),
-                            longitude: coordinates ? coordinates.longitude : null,
-                            latitude: coordinates ? coordinates.latitude : null,
+            for (const business of yelpResponse.businesses) {
+                const { id } = business;
+
+                // Check if the restaurant already exists, and if not, create it
+                const restaurant = await db.restaurant.upsert({
+                    where: { yelpId: id },
+                    update: {}, // TODO: --> Handle Duplicate Entries
+                    create: {
+                        yelpId: id,
+                        alias: business.alias,
+                        restaurantName: business.name,
+                        imageUrl: business.image_url,
+                        isClosed: business.is_closed,
+                        categories: business.categories.map(
+                            (cat: any) => cat.title + ", " + cat.alias
+                        ),
+                        reviewCount: business.review_count,
+                        customerRatings: business.rating,
+                        coordinates: {
+                            create: {
+                                latitude: business.coordinates.latitude,
+                                longitude: business.coordinates.longitude,
+                            },
+                        },
+                        price: business.price ? business.price.length : null,
+                        phone: business.phone,
+                        displayPhone: business.display_phone,
+                        location: {
+                            create: {
+                                address1: business.location.address1,
+                                address2: business.location.address2,
+                                address3: business.location.address3,
+                                city: business.location.city,
+                                zipCode: business.location.zip_code,
+                                country: business.location.country,
+                                state: business.location.state,
+                                displayAddress: business.location.display_address.join(", "),
+                                longitude: business.coordinates.longitude,
+                                latitude: business.coordinates.latitude,
+                            },
                         },
                     },
-                };
-
-                await db.restaurant.upsert({
-                    where: { yelpId: business.id },
-                    update: restaurantData,
-                    create: restaurantData,
                 });
+
+                // Collect the created or found restaurant's ID
+                restaurantId.push(restaurant.id);
             }
+
+            // Now, update the user record with the collected restaurant IDs
+            await db.user.update({
+                where: { id: user.id },
+                data: { restaurantId },
+            });
 
             // Send data to Django endpoint for data preprocessing
             const response = await fetch(flaskEndPoint, {
