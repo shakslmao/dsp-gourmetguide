@@ -17,6 +17,7 @@ export const useUserLocation = () => {
     const [city, setCity] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [permission, setPermission] = useState<"granted" | "denied" | "prompt">("prompt");
+    const flaskEndPoint = "http://127.0.0.1:5000/getuserlocation";
 
     const updatePermissionState = () => {
         navigator.permissions.query({ name: "geolocation" }).then((result) => {
@@ -33,6 +34,13 @@ export const useUserLocation = () => {
                         const fetchedCity = await fetchCityName(latitude, longitude);
                         setCity(fetchedCity);
                         updatePermissionState(); // Update permission state after successful location fetch
+                        fetch(flaskEndPoint, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({ city: fetchedCity }),
+                        });
                     } catch (err) {
                         setError(`Error: ${(err as Error).message}`);
                     }

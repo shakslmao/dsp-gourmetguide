@@ -164,7 +164,7 @@ export const register = async (
             // Now, update the user record with the collected restaurant IDs
             await db.user.update({
                 where: { id: user.id },
-                data: { restaurantId },
+                data: { restaurantId: { set: [...restaurantId, ...user.restaurantId] } },
             });
 
             // Send data to Django endpoint for data preprocessing
