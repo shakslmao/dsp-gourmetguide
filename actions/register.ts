@@ -110,6 +110,7 @@ export const register = async (
         if (data.preferences) {
             const yelpResponse = await YelpAPIWithPrefs(data.preferences);
             const restaurantId = []; // Initialise an empty array to collect restaurant IDs
+            const restaurntName = [];
 
             for (const business of yelpResponse.businesses) {
                 const { id } = business;
@@ -159,12 +160,20 @@ export const register = async (
 
                 // Collect the created or found restaurant's ID
                 restaurantId.push(restaurant.id);
+                restaurntName.push(restaurant.restaurantName);
             }
 
             // Now, update the user record with the collected restaurant IDs
             await db.user.update({
                 where: { id: user.id },
-                data: { restaurantId: { set: [...restaurantId, ...user.restaurantId] } },
+                data: {
+                    restaurantId: { set: [...restaurantId, ...user.restaurantId] },
+                    restaurantName: {
+                        set: [...restaurntName, ...restaurntName].filter(
+                            (name): name is string => name !== null
+                        ),
+                    },
+                },
             });
 
             // Send data to Django endpoint for data preprocessing
@@ -188,6 +197,7 @@ export const register = async (
         if (data.preferences?.preferredLocations) {
             const yelpLocations = await fetchYelpDataForLocations(data.preferences);
             const restaurantId = [];
+            const restaurantName = [];
 
             for (const [location, data] of Object.entries(yelpLocations)) {
                 const restaurants = data.businesses;
@@ -238,12 +248,18 @@ export const register = async (
                         },
                     });
                     restaurantId.push(preferredRestaurants.id);
+                    restaurantName.push(preferredRestaurants.restaurantName);
                 }
             }
             await db.user.update({
                 where: { id: user.id },
                 data: {
                     restaurantId: { set: [...restaurantId, ...user.restaurantId] },
+                    restaurantName: {
+                        set: [...restaurantName, ...restaurantName].filter(
+                            (name): name is string => name !== null
+                        ),
+                    },
                 },
             });
 

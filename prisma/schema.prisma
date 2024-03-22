@@ -51,6 +51,7 @@ model User {
     preferencesId          String?                  @unique @db.ObjectId
     preferences            Preferences?             @relation(fields: [preferencesId], references: [id])
     restaurantId           String[]                 @db.ObjectId
+    restaurantName         String[]
     twoFactorConfirmation  TwoFactorConfirmation?
     history                History[]
     userRatings            UserRatings[]
