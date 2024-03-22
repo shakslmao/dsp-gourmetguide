@@ -1,18 +1,8 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
-import pandas as pd
-from geopy.distance import geodesic
-from nltk.sentiment import SentimentIntensityAnalyzer
-import nltk
-from pymongo import MongoClient
-from dotenv import load_dotenv
-import os
-from geopy.geocoders import Nominatim
 
 app = Flask(__name__)
-
-
 print("Server is running")
 CORS(app, origins=["http://localhost:3000"])
 
