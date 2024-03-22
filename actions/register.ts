@@ -114,8 +114,8 @@ export const register = async (
 
             for (const business of yelpResponse.businesses) {
                 const { id } = business;
-
-                const yelpPriceParams = convertPriceRange(data.preferences.priceRangePreference);
+                const yelpPrice = business.price;
+                const customPriceRange = convertPriceRange(yelpPrice);
 
                 // Check if the restaurant already exists, and if not, create it
                 const restaurant = await db.restaurant.upsert({
@@ -138,7 +138,7 @@ export const register = async (
                                 longitude: business.coordinates.longitude,
                             },
                         },
-                        price: yelpPriceParams ? yelpPriceParams.length : null,
+                        price: Number(customPriceRange as PriceRange),
                         phone: business.phone,
                         displayPhone: business.display_phone,
                         location: {

@@ -7,6 +7,7 @@ from geopy.distance import geodesic
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics.pairwise import cosine_similarity
 from bson.objectid import ObjectId
+import numpy as np
 
 
 MONGO_URI = os.getenv("MONGO_URI")
@@ -79,6 +80,7 @@ restaurant_data = restaurant_collection.find({}, {
 
 
 restaurant_df = pd.DataFrame(list(restaurant_data))
+restaurant_df.rename(columns={'customerRatings': 'ratings'}, inplace=True)
 print(restaurant_df['categories'].head(3))
 
 # Preprocess and normalize restaurant data
@@ -87,10 +89,13 @@ restaurant_df['categories'] = restaurant_df['categories'].apply(
 
 # restaurant_df["price_level"] = restaurant_df["price"].apply(len)
 
-scaler = MinMaxScaler()
+scaler_restaurants = MinMaxScaler()
+scaler_preferences = MinMaxScaler()
 
-restaurant_df[["ratings", "review_count"]] = scaler.fit_transform(  # ADD PRICE BACK HERE.
-    restaurant_df[["customerRatings", "reviewCount"]].astype(float))  # ADD PRICE BACK HERE
+restaurant_features_to_scale = ["ratings", "reviewCount"]
+restaurant_df[restaurant_features_to_scale] = scaler_restaurants.fit_transform(
+    restaurant_df[restaurant_features_to_scale].astype(float))
+
 
 restaurant_df["latitude"] = restaurant_df["coordinates"].apply(
     lambda x: x.get("latitude"))
@@ -106,6 +111,10 @@ for category in unique_categories:
     restaurant_df[f"category_{category}"] = restaurant_df["categories"].apply(
         lambda x: 1 if category in x else 0)
 
+restaurant_features = restaurant_df[[
+    'ratings'] + [f'category_{category}' for category in unique_categories]]
+
+
 # Load and transform the preferences data
 
 user_profile = {f"category_{category}": (1 if category in preferences_data.get(
@@ -114,9 +123,11 @@ user_profile = {f"category_{category}": (1 if category in preferences_data.get(
 # user_profile["price_level"] = scaler.transform(
 # [[len(preferences_data.get("priceRangePreference", "£"))]])[0][0]
 
-# if user has a preference for Michelin rated restaurants, set the rating to 4.5
-user_profile["ratings"] = scaler.transform(
-    [[4.5 if preferences_data.get("preferredMichelinRated", False) else 0]])[0][0]
+michelin_preference = np.array(
+    [[4.5 if preferences_data.get("preferredMichelinRated", False) else 0]])
+user_profile["ratings"] = scaler_preferences.fit_transform(michelin_preference)[
+    0][0]
+
 
 # Convert user profile to DataFrame for compatibility with similarity calculation
 user_profile_df = pd.DataFrame([user_profile])

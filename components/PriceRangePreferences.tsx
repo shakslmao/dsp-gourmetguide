@@ -8,7 +8,7 @@ import { PriceRange } from "@prisma/client";
 const stringToPriceRange: { [key: string]: PriceRange } = {
     "No Preference": PriceRange.NO_PREFERENCE,
     "Bargain ": PriceRange.VERY_LOW,
-    "Budget-Friendly": PriceRange.LOW, // Instead of "Economical"
+    "Budget-Friendly": PriceRange.LOW,
     "Moderate ": PriceRange.MEDIUM,
     "Premium ": PriceRange.HIGH,
     "Luxury ": PriceRange.VERY_HIGH,
