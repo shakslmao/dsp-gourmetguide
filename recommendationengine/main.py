@@ -6,13 +6,19 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics.pairwise import cosine_similarity
+from bson.objectid import ObjectId
+
 
 MONGO_URI = os.getenv("MONGO_URI")
-client = MongoClient(MONGO_URI)
+con_string = "mongodb+srv://shaaqzak:akram101@cluster0.lrls17a.mongodb.net/test"
+client = MongoClient(con_string)
 
-db = client.restaurantrecommendation
-restaurant_collection = db.restaurant
-preferences_collection = db.preferences
+
+db = client.get_database()
+print("Database Name", db.name)
+print("Collections", db.list_collection_names())
+restaurant_collection = db['Restaurant']
+preferences_collection = db['Preferences']
 
 
 def get_loc_coord(location_name):
@@ -31,49 +37,60 @@ def get_loc_coord(location_name):
 
 def calculate_distance(coord1, coord2):
     """
-        Calculate the distance in km between two coordinates
+        Calculate the distance in miles between two coordinates
         Params:
             - coord1: Tuple of latitude and longitude of the first location
             - coord2: Tuple of latitude and longitude of the second location
         Returns:
-            - distance: Distance in km as a float
+            - distance: Distance in miles as a float
     """
 
     try:
-        distance = geodesic(coord1, coord2).kilometers
+        distance = geodesic(coord1, coord2).miles
         return distance
     except Exception as e:
         print(f"Error calculating distance: {e}")
         return None
 
 
-preferences_data = preferences_collection.find_one({"userId": 1})
-user_location_name = preferences_data['currentLocation']
-user_location_coords = get_loc_coord(user_location_name)
+print("Querying preferences data:")
+preferences_data = preferences_collection.find_one(
+    {"userId": ObjectId("65fb73de9fd0864aa3eb3944")})
+print("Preferences data:", preferences_data)
 
 
-# Feature Extraction from SQL Database
+if preferences_data is not None:
+    user_location_name = preferences_data['currentLocation']
+    user_location_coords = get_loc_coord(user_location_name)
+else:
+    # Or some default coordinates if preferences are None
+    user_location_coords = (0, 0)
+    preferences_data = {}
+
+
+# Feature Extraction from SQL Database // ADD PRICE BACK HERE
 restaurant_data = restaurant_collection.find({}, {
     "yelpId": 1,
     "restaurantName": 1,
     "categories": 1,
     "customerRatings": 1,
     "reviewCount": 1,
-    "price": 1,
     "coordinates": 1, })
 
+
 restaurant_df = pd.DataFrame(list(restaurant_data))
+print(restaurant_df['categories'].head(3))
 
 # Preprocess and normalize restaurant data
-restaurant_df["categories"] = restaurant_df["categories"].apply(
-    lambda x: [item for category in x for item in (category["title"], category["alias"])])
+restaurant_df['categories'] = restaurant_df['categories'].apply(
+    lambda x: list(set([item.lower() for item in x])))
 
-restaurant_df["price_level"] = restaurant_df["price"].apply(len)
+# restaurant_df["price_level"] = restaurant_df["price"].apply(len)
 
 scaler = MinMaxScaler()
 
-restaurant_df[["ratings", "price_level", "review_count"]] = scaler.fit_transform(
-    restaurant_df[["customerRatings", "price_level", "reviewCount"]].astype(float))
+restaurant_df[["ratings", "review_count"]] = scaler.fit_transform(  # ADD PRICE BACK HERE.
+    restaurant_df[["customerRatings", "reviewCount"]].astype(float))  # ADD PRICE BACK HERE
 
 restaurant_df["latitude"] = restaurant_df["coordinates"].apply(
     lambda x: x.get("latitude"))
@@ -94,8 +111,8 @@ for category in unique_categories:
 user_profile = {f"category_{category}": (1 if category in preferences_data.get(
     "cuisineTypes", []) else 0) for category in unique_categories}
 
-user_profile["price_level"] = scaler.transform(
-    [[len(preferences_data.get("priceRangePreference", "£"))]])[0][0]
+# user_profile["price_level"] = scaler.transform(
+# [[len(preferences_data.get("priceRangePreference", "£"))]])[0][0]
 
 # if user has a preference for Michelin rated restaurants, set the rating to 4.5
 user_profile["ratings"] = scaler.transform(
@@ -110,7 +127,7 @@ similarity_scores = cosine_similarity(user_profile_df, restaurant_features)
 
 restaurant_df['similarity_score'] = similarity_scores[0]
 
-PROXIMITY_THRESHOLD = 32  # 32 km or 20 miles
+PROXIMITY_THRESHOLD = 20  # 32 km or 20 miles
 restaurant_df['distance_to_user'] = restaurant_df.apply(
     lambda row: calculate_distance(user_location_coords, (row['latitude'], row['longitude'])), axis=1
 )
