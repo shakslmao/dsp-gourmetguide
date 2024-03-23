@@ -27,6 +27,7 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { useRouter } from "next/navigation";
 import { Progress } from "../ui/progress";
 import { ClipLoader } from "react-spinners";
+import { FormLoadingState } from "../formLoading";
 
 export const RegisterForm = () => {
     const router = useRouter();
@@ -181,10 +182,7 @@ export const RegisterForm = () => {
                                 </div>
                                 <div className="mt-8 flex items-center w-full justify-center">
                                     {!validationError && !validationSuccess && isSubmitting && (
-                                        <ClipLoader
-                                            color="#16A34A"
-                                            speedMultiplier={0.5}
-                                        />
+                                        <FormLoadingState loadingMessage="We're submitting your preferences" />
                                     )}
                                 </div>
                                 <FormMessageError errorMessage={validationError} />
