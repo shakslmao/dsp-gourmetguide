@@ -153,7 +153,7 @@ recommended_restaurants = filtered_restaurants.sort_values(
 
 # Display top N Recommendations
 print(recommended_restaurants[['restaurantName',
-      'similarity_score', 'distance_to_user']].head(3))
+      'similarity_score', 'distance_to_user']])
 
 
 # Futher Implementation: Store the recommended restaurants in a new collection in the MongoDB
