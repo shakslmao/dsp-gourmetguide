@@ -12,6 +12,10 @@ export interface UserCuisinePreferences {
     prefersMichelinRated?: boolean;
     accessibilityFeatures?: boolean;
     locationFeatureUsed: boolean;
+    userCoordinates?: {
+        latitude: number;
+        longitude: number;
+    };
 }
 
 export interface UserCuisinePreferencesContextType {

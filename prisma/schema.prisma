@@ -70,6 +70,7 @@ model Preferences {
     preferredTime         String[]
     preferredLocations    String[]
     currentLocation       String?
+    userCoordinates       Json?
     recommendationRadius  Int
     ambienceTypes         String[]
     prefersMichelinRated  Boolean    @default(false)
