@@ -20,6 +20,7 @@ const defaultUserPrefs: UserCuisinePreferences = {
     ambienceTypes: [], // Preferred ambience types, initially unspecified.
     accessibilityFeatures: false, // Accessibility features required, initially unspecified.
     locationFeatureUsed: false, // Whether location feature is used, initially false.
+    userCoordinates: { latitude: 0, longitude: 0 }, // User coordinates, initially set to 0,0.
 };
 
 // Create a context for UserPreferences with an undefined default value.

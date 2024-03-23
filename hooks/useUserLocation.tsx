@@ -16,6 +16,8 @@ interface GeocodeResult {
 export const useUserLocation = () => {
     const [city, setCity] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [latitude, setLatitude] = useState<number | null>(null);
+    const [longitude, setLongitude] = useState<number | null>(null);
     const [permission, setPermission] = useState<"granted" | "denied" | "prompt">("prompt");
     const flaskEndPoint = "http://127.0.0.1:5000/getuserlocation";
 
@@ -25,37 +27,54 @@ export const useUserLocation = () => {
         });
     };
 
-    const requestLocationPermission = () => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const { latitude, longitude } = position.coords;
-                    try {
-                        const fetchedCity = await fetchCityName(latitude, longitude);
-                        setCity(fetchedCity);
-                        updatePermissionState(); // Update permission state after successful location fetch
-                        fetch(flaskEndPoint, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({ city: fetchedCity }),
-                        });
-                    } catch (err) {
-                        setError(`Error: ${(err as Error).message}`);
+    const requestLocationPermission = (): Promise<{ latitude: number; longitude: number }> => {
+        return new Promise((resolve, reject) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const { latitude: currentLatitude, longitude: currentLogitude } =
+                            position.coords;
+                        setLatitude(currentLatitude);
+                        setLongitude(currentLogitude);
+                        try {
+                            const fetchedCity = await fetchCityName(
+                                currentLatitude,
+                                currentLogitude
+                            );
+                            setCity(fetchedCity);
+                            updatePermissionState(); // Update permission state after successful location fetch
+                            resolve({ latitude: currentLatitude, longitude: currentLogitude });
+                            fetch(flaskEndPoint, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    city: fetchedCity,
+                                    latitude: currentLatitude,
+                                    longitude: currentLogitude,
+                                }),
+                            });
+                        } catch (err) {
+                            setError(`Error: ${(err as Error).message}`);
+                            updatePermissionState(); // Update permission state after failed location fetch
+                            reject(err);
+                        }
+                    },
+                    (error) => {
+                        setError(`Error: ${error.message}`);
+                        updatePermissionState(); // Update permission state after failed location fetch
+                        reject(error);
                     }
-                },
-                (error) => {
-                    setError(`Error: ${error.message}`);
-                    updatePermissionState(); // Update permission state after failed location fetch
-                }
-            );
-        } else {
-            toast({
-                title: "Geolocation not supported",
-                description: "Your device does not support geolocation",
-            });
-        }
+                );
+            } else {
+                toast({
+                    title: "Geolocation not supported",
+                    description: "Your device does not support geolocation",
+                });
+                reject(new Error("Geolocation not supported"));
+            }
+        });
     };
 
     useEffect(() => {
@@ -95,5 +114,5 @@ export const useUserLocation = () => {
         }
     };
 
-    return { city, error, permission, requestLocationPermission }; // Return both city and any potential error for use in your component
+    return { city, latitude, longitude, error, permission, requestLocationPermission }; // Return both city and any potential error for use in your component
 };

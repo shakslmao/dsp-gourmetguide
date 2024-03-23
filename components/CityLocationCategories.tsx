@@ -75,7 +75,7 @@ export const cityCategories = [
 const CityLocationCategories = () => {
     // Hooks for managing user preferences and location.
     const { preferences, updatePreferences } = useUserPreferences();
-    const { city, permission, requestLocationPermission } = useUserLocation();
+    const { city, permission, longitude, latitude, requestLocationPermission } = useUserLocation();
 
     // State management for the Carousel API, current index, count, and modal visibility.
     const [api, setApi] = useState<CarouselApi>();
@@ -85,14 +85,29 @@ const CityLocationCategories = () => {
     const [locationPermissionGranted, setLocationPermissionGranted] = useState(false);
 
     // Function to handle permission being granted for location access.
-    const handleLocationPermissionAllow = () => {
-        requestLocationPermission(); // Requests location permission from the user.
-        setLocationPermissionGranted(true); // Updates state to indicate permission has been granted.
-        setShowLocationModal(false); // Closes the modal window.
-        updatePreferences({
-            ...preferences,
-            locationFeatureUsed: true,
-        });
+    const handleLocationPermissionAllow = async () => {
+        try {
+            await requestLocationPermission().then(({ latitude, longitude }) => {
+                // Assume requestLocationPermission now returns a promise that resolves with these values
+                setLocationPermissionGranted(true);
+                setShowLocationModal(false);
+                if (latitude !== null && longitude !== null) {
+                    updatePreferences({
+                        ...preferences,
+                        userCoordinates: { latitude, longitude },
+                        locationFeatureUsed: true,
+                    });
+                }
+            });
+        } catch (error) {
+            console.error(error);
+            setLocationPermissionGranted(false);
+            setShowLocationModal(false);
+            toast({
+                title: "Location permission denied",
+                description: "You can change your location preferences in the settings.",
+            });
+        }
     };
 
     // Function to handle the user denying location access.
@@ -159,11 +174,19 @@ const CityLocationCategories = () => {
         const UserPreferredLocations = isSelected
             ? preferences.preferredLocations?.filter((location) => location !== cityLabel) ?? []
             : [...(preferences.preferredLocations ?? []), cityLabel];
-        // Saves the updated preferences.
-        updatePreferences({
+
+        const updatedPreferences = {
+            ...preferences,
             preferredLocations: UserPreferredLocations,
             currentLocation: city,
-        });
+        };
+
+        if (cityLabel === city && longitude !== null && latitude !== null) {
+            updatedPreferences.userCoordinates = { longitude, latitude };
+        }
+
+        // Saves the updated preferences.
+        updatePreferences(updatedPreferences);
 
         // Notifies the user of the saved preference change.
 

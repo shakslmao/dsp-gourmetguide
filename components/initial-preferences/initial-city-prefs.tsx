@@ -61,7 +61,6 @@ export const InitialCityLocatedPrefs = () => {
                     </Button>
                     <Button
                         onClick={() => handleNextOnClick()}
-                        disabled={preferences.preferredLocations!.length === 0}
                         className={`${buttonVariants({
                             variant: "default",
                             className: "w-full py-2 text-white bg-black rounded-lg",
