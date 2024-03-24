@@ -9,7 +9,7 @@ export interface UserCuisinePreferences {
     currentLocation: string | null;
     recommendationRadius: number; // in km
     ambienceTypes?: string[];
-    prefersMichelinRated?: boolean;
+    prefersHigherRated?: boolean;
     accessibilityFeatures?: boolean;
     locationFeatureUsed: boolean;
     userCoordinates?: {

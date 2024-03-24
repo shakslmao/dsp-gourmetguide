@@ -11,7 +11,7 @@ export const InitialAmbiencePrefs = () => {
     const { preferences } = useUserPreferences();
     const router = useRouter();
     const handleNextOnClick = () => {
-        router.push("/inital-preferences/michelinpreferences");
+        router.push("/inital-preferences/higherratedpreferences");
     };
     const handlePrevOnClick = () => {
         router.back();

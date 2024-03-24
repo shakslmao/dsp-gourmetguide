@@ -73,7 +73,7 @@ model Preferences {
     userCoordinates       Json?
     recommendationRadius  Int
     ambienceTypes         String[]
-    prefersMichelinRated  Boolean    @default(false)
+    prefersHigherRated    Boolean    @default(false)
     accessibilityFeatures Boolean    @default(false)
     locationFeatureUsed   Boolean    @default(false)
     User                  User?

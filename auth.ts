@@ -31,7 +31,7 @@ const getPreferencesFromProfile = (
         currentLocation,
         recommendationRadius,
         ambienceTypes,
-        prefersMichelinRated,
+        prefersHigherRated,
         accessibilityFeatures,
     } = profile;
 

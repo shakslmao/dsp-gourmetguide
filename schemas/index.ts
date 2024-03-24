@@ -68,7 +68,7 @@ export const CuisinePrefsValidationSchema = z.object({
         .nonempty({ message: "Please select at least one cuisine" }),
 });
 
-export const MichelinStarValidationSchema = z.object({
+export const HigherRatedValidationSchema = z.object({
     type: z.enum(["yes", "no"], {
         required_error: "Please select an option",
     }),
@@ -79,4 +79,4 @@ export type TRegistrationValidationSchema = z.infer<typeof RegistrationValidatio
 export type TResetValidationSchema = z.infer<typeof ResetPasswordValidationSchema>;
 export type TNewPasswordValidationSchema = z.infer<typeof NewPasswordValidationSchema>;
 export type TCuisinePreferencesValidationSchema = z.infer<typeof CuisinePrefsValidationSchema>;
-export type TMichelinStarOptionValidationSchema = z.infer<typeof MichelinStarValidationSchema>;
+export type THigherRatedValidationschema = z.infer<typeof HigherRatedValidationSchema>;

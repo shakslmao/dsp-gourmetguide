@@ -52,9 +52,9 @@ export const YelpAPIWithPrefs = async (preferences: UserCuisinePreferences) => {
             params,
         });
 
-        // Filtering out restaurants with low ratings if the user prefers Michelin rated restaurants.
+        // Filtering out restaurants with low ratings if the user prefers high rated restaurants.
         let businesses = response.data.businesses;
-        if (preferences.prefersMichelinRated) {
+        if (preferences.prefersHigherRated) {
             businesses = businesses.filter((business: any) => business.rating >= 4.5);
         }
         // Returning the response data directly.
