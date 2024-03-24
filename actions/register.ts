@@ -133,10 +133,8 @@ export const register = async (
                         reviewCount: business.review_count,
                         customerRatings: business.rating,
                         coordinates: {
-                            create: {
-                                latitude: business.coordinates.latitude,
-                                longitude: business.coordinates.longitude,
-                            },
+                            latitude: business.coordinates.latitude,
+                            longitude: business.coordinates.longitude,
                         },
                         price: Number(customPriceRange as PriceRange),
                         phone: business.phone,
@@ -223,10 +221,8 @@ export const register = async (
                             reviewCount: item.review_count,
                             customerRatings: item.rating,
                             coordinates: {
-                                create: {
-                                    latitude: item.coordinates.latitude,
-                                    longitude: item.coordinates.longitude,
-                                },
+                                latitude: item.coordinates.latitude,
+                                longitude: item.coordinates.longitude,
                             },
                             price: item.price ? item.price.length : null,
                             phone: item.phone,

@@ -866,52 +866,6 @@
             "distance": 1012.3379829728416
         },
         {
-            "id": "7H0saU3yvCf6moInt6XJkg",
-            "alias": "cedars-express-bristol",
-            "name": "Cedars Express",
-            "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/OjwUi_hYn_5de0HS_LXLng/o.jpg",
-            "is_closed": false,
-            "url": "https://www.yelp.com/biz/cedars-express-bristol?adjust_creative=ImUHYSBVrPIY6GpsG5AOBQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ImUHYSBVrPIY6GpsG5AOBQ",
-            "review_count": 20,
-            "categories": [
-                {
-                    "alias": "mideastern",
-                    "title": "Middle Eastern"
-                },
-                {
-                    "alias": "hotdogs",
-                    "title": "Fast Food"
-                },
-                {
-                    "alias": "pizza",
-                    "title": "Pizza"
-                }
-            ],
-            "rating": 4.5,
-            "coordinates": {
-                "latitude": 51.4554928667333,
-                "longitude": -2.60317792883609
-            },
-            "transactions": [],
-            "location": {
-                "address1": "60 Park Row",
-                "address2": "",
-                "address3": "",
-                "city": "Bristol",
-                "zip_code": "BS1 5LE",
-                "country": "GB",
-                "state": "BST",
-                "display_address": [
-                    "60 Park Row",
-                    "Bristol BS1 5LE",
-                    "United Kingdom"
-                ]
-            },
-            "phone": "+441179256085",
-            "display_phone": "+44 117 925 6085",
-            "distance": 1283.8596146575183
-        },
-        {
             "id": "vcPlbnXRJmh7qVG74f858w",
             "alias": "cosmo-bristol",
             "name": "Cosmo",
@@ -1618,42 +1572,50 @@
             "distance": 1539.8079681149054
         },
         {
-            "id": "tn0_hd7vqj0a3peV7X1JAA",
-            "alias": "mission-burrito-bristol",
-            "name": "Mission Burrito",
-            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/r5T2_dOrBST5uo6R4OaOeQ/o.jpg",
+            "id": "7H0saU3yvCf6moInt6XJkg",
+            "alias": "cedars-express-bristol",
+            "name": "Cedars Express",
+            "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/OjwUi_hYn_5de0HS_LXLng/o.jpg",
             "is_closed": false,
-            "url": "https://www.yelp.com/biz/mission-burrito-bristol?adjust_creative=ImUHYSBVrPIY6GpsG5AOBQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ImUHYSBVrPIY6GpsG5AOBQ",
-            "review_count": 15,
+            "url": "https://www.yelp.com/biz/cedars-express-bristol?adjust_creative=ImUHYSBVrPIY6GpsG5AOBQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ImUHYSBVrPIY6GpsG5AOBQ",
+            "review_count": 20,
             "categories": [
                 {
-                    "alias": "mexican",
-                    "title": "Mexican"
+                    "alias": "mideastern",
+                    "title": "Middle Eastern"
+                },
+                {
+                    "alias": "hotdogs",
+                    "title": "Fast Food"
+                },
+                {
+                    "alias": "pizza",
+                    "title": "Pizza"
                 }
             ],
-            "rating": 3.9,
+            "rating": 4.5,
             "coordinates": {
-                "latitude": 51.454786,
-                "longitude": -2.6029
+                "latitude": 51.4554928667333,
+                "longitude": -2.60317792883609
             },
             "transactions": [],
             "location": {
-                "address1": "65 Park Street",
+                "address1": "60 Park Row",
                 "address2": "",
                 "address3": "",
                 "city": "Bristol",
-                "zip_code": "BS1 5JN",
+                "zip_code": "BS1 5LE",
                 "country": "GB",
                 "state": "BST",
                 "display_address": [
-                    "65 Park Street",
-                    "Bristol BS1 5JN",
+                    "60 Park Row",
+                    "Bristol BS1 5LE",
                     "United Kingdom"
                 ]
             },
-            "phone": "+441179273339",
-            "display_phone": "+44 117 927 3339",
-            "distance": 1309.3070610141344
+            "phone": "+441179256085",
+            "display_phone": "+44 117 925 6085",
+            "distance": 1283.8596146575183
         },
         {
             "id": "5YEJt1zl8vQIpKPBEyT6Mg",
@@ -1692,6 +1654,44 @@
             "phone": "+441179221333",
             "display_phone": "+44 117 922 1333",
             "distance": 981.5549760948251
+        },
+        {
+            "id": "tn0_hd7vqj0a3peV7X1JAA",
+            "alias": "mission-burrito-bristol",
+            "name": "Mission Burrito",
+            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/r5T2_dOrBST5uo6R4OaOeQ/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/mission-burrito-bristol?adjust_creative=ImUHYSBVrPIY6GpsG5AOBQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ImUHYSBVrPIY6GpsG5AOBQ",
+            "review_count": 15,
+            "categories": [
+                {
+                    "alias": "mexican",
+                    "title": "Mexican"
+                }
+            ],
+            "rating": 3.9,
+            "coordinates": {
+                "latitude": 51.454786,
+                "longitude": -2.6029
+            },
+            "transactions": [],
+            "location": {
+                "address1": "65 Park Street",
+                "address2": "",
+                "address3": "",
+                "city": "Bristol",
+                "zip_code": "BS1 5JN",
+                "country": "GB",
+                "state": "BST",
+                "display_address": [
+                    "65 Park Street",
+                    "Bristol BS1 5JN",
+                    "United Kingdom"
+                ]
+            },
+            "phone": "+441179273339",
+            "display_phone": "+44 117 927 3339",
+            "distance": 1309.3070610141344
         },
         {
             "id": "B9YFBXnpGCDgz9ozAd-q3w",
@@ -1956,6 +1956,48 @@
             "distance": 1343.6942139301377
         },
         {
+            "id": "HroXOJSkxdKWP166g-4Gzw",
+            "alias": "renatos-bristol",
+            "name": "Renatos",
+            "image_url": "https://s3-media2.fl.yelpcdn.com/bphoto/G3FlN_Q2FxJgESH8scGkJQ/o.jpg",
+            "is_closed": false,
+            "url": "https://www.yelp.com/biz/renatos-bristol?adjust_creative=ImUHYSBVrPIY6GpsG5AOBQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ImUHYSBVrPIY6GpsG5AOBQ",
+            "review_count": 19,
+            "categories": [
+                {
+                    "alias": "pizza",
+                    "title": "Pizza"
+                },
+                {
+                    "alias": "bars",
+                    "title": "Bars"
+                }
+            ],
+            "rating": 4.3,
+            "coordinates": {
+                "latitude": 51.451895117536,
+                "longitude": -2.59485544769838
+            },
+            "transactions": [],
+            "location": {
+                "address1": "33 King Street",
+                "address2": "",
+                "address3": "",
+                "city": "Bristol",
+                "zip_code": "BS1 4EF",
+                "country": "GB",
+                "state": "BST",
+                "display_address": [
+                    "33 King Street",
+                    "Bristol BS1 4EF",
+                    "United Kingdom"
+                ]
+            },
+            "phone": "+441179297712",
+            "display_phone": "+44 117 929 7712",
+            "distance": 1176.0660285331899
+        },
+        {
             "id": "3bSbHdb4GjJQFxvdDt_Rtg",
             "alias": "the-pump-house-bristol",
             "name": "The Pump House",
@@ -2043,53 +2085,6 @@
             "phone": "+441179732198",
             "display_phone": "+44 117 973 2198",
             "distance": 1514.5629479719987
-        },
-        {
-            "id": "dhpbqlKqdu18c8mLEklEyw",
-            "alias": "browns-bristol-bristol",
-            "name": "Browns Bristol",
-            "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/hBaAhlD6B5lPu2IiQcvUZg/o.jpg",
-            "is_closed": false,
-            "url": "https://www.yelp.com/biz/browns-bristol-bristol?adjust_creative=ImUHYSBVrPIY6GpsG5AOBQ&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=ImUHYSBVrPIY6GpsG5AOBQ",
-            "review_count": 42,
-            "categories": [
-                {
-                    "alias": "wine_bars",
-                    "title": "Wine Bars"
-                },
-                {
-                    "alias": "british",
-                    "title": "British"
-                },
-                {
-                    "alias": "brasseries",
-                    "title": "Brasseries"
-                }
-            ],
-            "rating": 3.4,
-            "coordinates": {
-                "latitude": 51.456292,
-                "longitude": -2.605747
-            },
-            "transactions": [],
-            "location": {
-                "address1": "38 Queens Road",
-                "address2": "Clifton",
-                "address3": "",
-                "city": "Bristol",
-                "zip_code": "BS8 1RE",
-                "country": "GB",
-                "state": "BST",
-                "display_address": [
-                    "38 Queens Road",
-                    "Clifton",
-                    "Bristol BS8 1RE",
-                    "United Kingdom"
-                ]
-            },
-            "phone": "+441179304777",
-            "display_phone": "+44 117 930 4777",
-            "distance": 1402.397271026412
         }
     ],
     "total": 576,
