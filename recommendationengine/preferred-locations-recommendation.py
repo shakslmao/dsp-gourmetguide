@@ -27,7 +27,7 @@ def calculate_distance(coord1, coord2):
 
 # Fetching user preferences
 preferences_data = preferences_collection.find_one(
-    {"userId": ObjectId("65ff916d3a57f96e46a96e83")})
+    {"userId": ObjectId("660ea3757aa85b7fbdd37006")})
 
 # Setting user location coordinates
 user_location_coords = (preferences_data['userCoordinates']['latitude'], preferences_data['userCoordinates']
@@ -35,7 +35,7 @@ user_location_coords = (preferences_data['userCoordinates']['latitude'], prefere
 
 # Fetching restaurant data
 restaurant_data = restaurant_collection.find({}, {
-    "yelpId": 1, "restaurantName": 1, "categories": 1, "customerRatings": 1, "coordinates": 1,
+    "yelpId": 1, "restaurantName": 1, "categories": 1, "customerRatings": 1, "coordinates": 1, "price": 1,
 })
 
 restaurant_df = pd.DataFrame(list(restaurant_data))
@@ -93,11 +93,49 @@ user_rating_scaled = scaler_restaurants.transform(user_rating_preference_df)
 # Extract tbe scaled rating and update the user profile
 user_profile['ratings'] = user_rating_scaled[0, 0]
 
+# Normalising the Price data
+restaurant_df['price'] = restaurant_df['price'].fillna(
+    restaurant_df['price'].mean())
+restaurant_df[['price']] = MinMaxScaler().fit_transform(
+    restaurant_df[['price']].astype(float))
+
+# Mapping from user preference labels to numeric values
+price_preference_mapping = {
+    "NO_PREFERENCE": 0,
+    "VERY_LOW"
+    "LOW": 2,
+    "MEDIUM": 3,
+    "HIGH": 4,
+    "VERY_HIGH": 4
+}
+# Fetching the user's price range preference
+user_price_preference_label = preferences_data.get(
+    'priceRangePreference', "NO_PREFERENCE")
+
+# Converting the label to its corresponding numeric value
+user_price_preference = price_preference_mapping.get(
+    user_price_preference_label, 0)
+
+if user_price_preference >= 4:
+    user_price_preference = 4
+
+# Manually normalise users price preference
+min_price_range = 1
+max_price_range = 4
+
+# Calculate the normalised price preference
+user_price_preference_normalised = (
+    user_price_preference - min_price_range) / (max_price_range - min_price_range)
+user_profile['price'] = user_price_preference_normalised
+
+common_features = set(user_profile.keys()) & set(restaurant_df.columns)
+assert 'price' in common_features, "Price feature must be included in the similarity calculation."
 
 # Calculating similarity scores
 user_profile_df = pd.DataFrame([user_profile])
 similarity_scores = cosine_similarity(
-    user_profile_df, restaurant_df[list(user_profile.keys())])
+    user_profile_df[list(common_features)], restaurant_df[list(common_features)])
+
 
 restaurant_df['similarity_score'] = similarity_scores[0]
 restaurant_df['distance_to_user'] = restaurant_df.apply(lambda row: calculate_distance(
@@ -115,4 +153,4 @@ print("Restaurants after feature extraction:", restaurant_df.shape[0])
 print("Restaurants after distance calculation:", filtered_restaurants.shape[0])
 print("Final recommended restaurants:", recommended_restaurants.shape[0])
 print(recommended_restaurants[['restaurantName',
-      'similarity_score', 'distance_to_user']])
+      'similarity_score', 'distance_to_user', 'price', 'categories']])

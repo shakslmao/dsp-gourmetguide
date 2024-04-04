@@ -104,6 +104,28 @@ model Restaurant {
     UserRestaurant  UserRestaurant[]
 }
 
+model FakeRestaurant {
+    id             String           @id @default(auto()) @map("_id") @db.ObjectId
+    restaurantId   String           @unique @map("restaurant_id") @db.ObjectId
+    restaurantName String           @map("name")
+    cuisines       Json
+    dietary        Json
+    priceRange     String           @map("price")
+    rating         Float
+    reviewCount    Int              @map("review_count")
+    ambience       Json
+    accessibility  String
+    location       String
+    coordinates    Json
+    openingHours   Json             @map("opening_hours") // Matches dummy data structure and field naming style
+    userReviews    Json?
+    menuItems      Json?
+    userRestaurant Json?
+    UserRestaurant UserRestaurant[]
+    UserReviews    UserReviews[]
+    MenuItem       MenuItem[]
+}
+
 model Location {
     id             String      @id @default(auto()) @map("_id") @db.ObjectId
     address1       String
@@ -120,11 +142,13 @@ model Location {
 }
 
 model UserRestaurant {
-    id           String     @id @default(auto()) @map("_id") @db.ObjectId
-    userId       String     @db.ObjectId
-    restaurantId String     @db.ObjectId
-    User         User       @relation(fields: [userId], references: [id])
-    Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+    id               String          @id @default(auto()) @map("_id") @db.ObjectId
+    userId           String          @db.ObjectId
+    restaurantId     String          @db.ObjectId
+    User             User            @relation(fields: [userId], references: [id])
+    Restaurant       Restaurant      @relation(fields: [restaurantId], references: [id])
+    FakeRestaurant   FakeRestaurant? @relation(fields: [fakeRestaurantId], references: [id])
+    fakeRestaurantId String?         @db.ObjectId
 
     @@unique([userId, restaurantId])
 }
@@ -176,22 +200,26 @@ model UserRatings {
 }
 
 model UserReviews {
-    id           String     @id @default(auto()) @map("_id") @db.ObjectId
-    Restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
-    restaurantId String     @db.ObjectId
-    rating       Int
-    review       String
-    User         User       @relation(fields: [userId], references: [id])
-    userId       String     @db.ObjectId
+    id               String          @id @default(auto()) @map("_id") @db.ObjectId
+    Restaurant       Restaurant      @relation(fields: [restaurantId], references: [id])
+    restaurantId     String          @db.ObjectId
+    rating           Int
+    review           String
+    User             User            @relation(fields: [userId], references: [id])
+    userId           String          @db.ObjectId
+    FakeRestaurant   FakeRestaurant? @relation(fields: [fakeRestaurantId], references: [id])
+    fakeRestaurantId String?         @db.ObjectId
 }
 
 model MenuItem {
-    id           String      @id @default(auto()) @map("_id") @db.ObjectId
-    name         String
-    description  String?
-    price        Float
-    Restaurant   Restaurant? @relation(fields: [restaurantId], references: [id])
-    restaurantId String?     @db.ObjectId
+    id               String          @id @default(auto()) @map("_id") @db.ObjectId
+    name             String
+    description      String?
+    price            Float
+    Restaurant       Restaurant?     @relation(fields: [restaurantId], references: [id])
+    restaurantId     String?         @db.ObjectId
+    FakeRestaurant   FakeRestaurant? @relation(fields: [fakeRestaurantId], references: [id])
+    fakeRestaurantId String?         @db.ObjectId
 }
 
 model VerificationToken {

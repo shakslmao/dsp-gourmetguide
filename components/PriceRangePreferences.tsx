@@ -2,7 +2,7 @@
 
 import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import { Slider } from "./ui/slider";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { PriceRange } from "@prisma/client";
 
 const stringToPriceRange: { [key: string]: PriceRange } = {

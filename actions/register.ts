@@ -136,7 +136,7 @@ export const register = async (
                             latitude: business.coordinates.latitude,
                             longitude: business.coordinates.longitude,
                         },
-                        price: Number(customPriceRange as PriceRange),
+                        price: business.price ? business.price.length : null,
                         phone: business.phone,
                         displayPhone: business.display_phone,
                         location: {
