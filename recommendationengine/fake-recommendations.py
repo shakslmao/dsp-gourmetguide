@@ -6,6 +6,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 from bson.objectid import ObjectId
 import numpy as np
 
+#  INCLUDE DYNAMIC WEIGHTING.
+#  INCLUDE FEEDBACK LOOP.
+
 
 def calculate_distance(coord1, coord2):
     try:
@@ -206,8 +209,10 @@ restaurant_df['similarity_score'] = (
     restaurant_df['distance_score'] * weights['distance_score']
 )
 
-restaurant_df['normalised_score'] = (restaurant_df['similarity_score'] - np.min(restaurant_df['similarity_score'])) / (
-    np.max(restaurant_df['similarity_score']) - np.min(restaurant_df['similarity_score']))
+min_score = restaurant_df['similarity_score'].min()
+max_score = restaurant_df['similarity_score'].max()
+restaurant_df['normalised_similarity_score'] = (
+    restaurant_df['similarity_score'] - min_score) / (max_score - min_score)
 
 filtered_restaurants = restaurant_df[restaurant_df['similarity_score'] > 0]
 
@@ -216,3 +221,11 @@ recommendations = filtered_restaurants.sort_values(
 
 top_recommendations = recommendations
 print(top_recommendations[['name', 'similarity_score', 'price']])
+
+
+'''
+restaurant_df['normalised_score'] = (restaurant_df['similarity_score'] - np.min(restaurant_df['similarity_score'])) / (
+    np.max(restaurant_df['similarity_score']) - np.min(restaurant_df['similarity_score']))
+
+filtered_restaurants = restaurant_df[restaurant_df['similarity_score'] > 0]
+'''

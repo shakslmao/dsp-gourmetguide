@@ -2337,7 +2337,362 @@ data = {
                 "Saturday": "6:00 PM - 11:00 PM",
                 "Sunday": "6:00 PM - 10:00 PM"
             }
-        }
+        },
+        {
+            "restaurant_id": "10a20b30-c40d-50e6-f70g-80h90i00",
+            "name": "Soul of Seoul",
+            "cuisine": [
+                {
+                    "label": "Korean",
+                    "description": "Authentic Korean dishes with a modern twist, including bulgogi, bibimbap, and a variety of kimchi."
+                }
+            ],
+            "dietary": [
+                {
+                    "label": "Gluten Free",
+                    "description": "A selection of gluten-free Korean classics for those with dietary restrictions."
+                }
+            ],
+            "price": "££",
+            "rating": 4.8,
+            "review_count": 146,
+            "ambience": [
+                {
+                    "label": "Modern/Contemporary",
+                    "description": "A sleek, modern interior that pays homage to traditional Korean aesthetics."
+                },
+                {
+                    "label": "Lively/Bustling",
+                    "description": "A vibrant atmosphere, inspired by the bustling streets of Seoul."
+                }
+            ],
+            "accessibility": "Designed to be fully accessible, featuring spacious dining areas and accessible restrooms.",
+            "location": "Bristol",
+            "coordinates": {
+                "latitude": 51.4545,
+                "longitude": -2.5879,
+            },
+            "opening_hours": {
+                "Monday": "5:00 PM - 10:00 PM",
+                "Tuesday": "5:00 PM - 10:00 PM",
+                "Wednesday": "5:00 PM - 10:00 PM",
+                "Thursday": "5:00 PM - 10:00 PM",
+                "Friday": "5:00 PM - 11:00 PM",
+                "Saturday": "12:00 PM - 11:00 PM",
+                "Sunday": "12:00 PM - 9:00 PM"
+            }
+        },
+        {
+            "id": "21b31c41-d52e-63f7-g84h-95i06j70",
+            "name": "Aurora Borealis",
+            "cuisine": [
+                {
+                    "label": "Nordic",
+                    "description": "Features foraged ingredients and seafood from the northern coasts, presenting dishes in the style of New Nordic Cuisine."
+                }
+            ],
+            "dietary": [
+                {
+                    "label": "Vegetarian",
+                    "description": "Highlights the region's best vegetarian offerings, with a focus on seasonal and wild produce."
+                }
+            ],
+            "price": "££££",
+            "rating": 4.9,
+            "review_count": 102,
+            "ambience": [
+                {
+                    "label": "Elegant",
+                    "description": "An elegant dining experience that captures the mystique and beauty of the Northern Lights."
+                },
+                {
+                    "label": "Quiet/Intimate",
+                    "description": "Offers a peaceful and intimate setting, ideal for special occasions."
+                }
+            ],
+            "accessibility": "Provides a fully accessible dining environment, ensuring comfort for all guests.",
+            "location": "Bristol",
+            "coordinates": {
+                "latitude": 51.4545,
+                "longitude": -2.5879
+            },
+            "opening_hours": {
+                "Monday": "Closed",
+                "Tuesday": "6:00 PM - 10:00 PM",
+                "Wednesday": "6:00 PM - 10:00 PM",
+                "Thursday": "6:00 PM - 10:00 PM",
+                "Friday": "6:00 PM - 11:00 PM",
+                "Saturday": "6:00 PM - 11:00 PM",
+                "Sunday": "6:00 PM - 10:00 PM"
+            }
+        },
+        {
+            "id": "32c42d53-e64f-75g8-h89i-97j08k90",
+            "name": "Rustic Rendezvous",
+            "cuisine": [
+                {
+                    "label": "American",
+                    "description": "A farm-to-table experience offering rustic American cuisine, from artisanal burgers to fresh farm salads."
+                }
+            ],
+            "dietary": [
+                {
+                    "label": "Vegan",
+                    "description": "Provides a thoughtful assortment of vegan options, emphasizing organic ingredients."
+                }
+            ],
+            "price": "££",
+            "rating": 4.7,
+            "review_count": 130,
+            "ambience": [
+                {
+                    "label": "Rustic/Country",
+                    "description": "A cozy, country-style setting that feels like a home away from home."
+                },
+                {
+                    "label": "Family-Friendly",
+                    "description": "A welcoming space for families, offering a relaxed dining experience for all ages."
+                }
+            ],
+            "accessibility": "Features no-step entry, wide aisles, and accessible seating to accommodate all guests comfortably.",
+            "location": "Bristol",
+            "coordinates": {
+                "latitude": 51.4545,
+                "longitude": -2.5879
+            },
+            "opening_hours": {
+                "Monday": "11:00 AM - 9:00 PM",
+                "Tuesday": "11:00 AM - 9:00 PM",
+                "Wednesday": "11:00 AM - 9:00 PM",
+                "Thursday": "11:00 AM - 9:00 PM",
+                "Friday": "11:00 AM - 10:00 PM",
+                "Saturday": "11:00 AM - 10:00 PM",
+                "Sunday": "11:00 AM - 8:00 PM"
+            }
+        },
+        {
+            "id": "43d53e64-f75g-86h8-i79j-010k11l2",
+            "name": "Taste of Tuscany",
+            "cuisine": [
+                {
+                    "label": "Italian",
+                    "description": "Classic Tuscan dishes, focusing on the simplicity and purity of local ingredients, including hand-made pasta and traditional Florentine steaks."
+                }
+            ],
+            "dietary": [
+                {
+                    "label": "Gluten Free",
+                    "description": "A selection of gluten-free Italian favorites, ensuring everyone can enjoy the tastes of Tuscany."
+                }
+            ],
+            "price": "£££",
+            "rating": 4.6,
+            "review_count": 115,
+            "ambience": [
+                {
+                    "label": "Romantic",
+                    "description": "Provides a romantic backdrop with its intimate seating and warm, inviting decor."
+                },
+                {
+                    "label": "Quiet/Intimate",
+                    "description": "A perfect setting for quiet, intimate meals, where the food and your company are the focus."
+                }
+            ],
+            "accessibility": "Accommodates all guests with accessible dining options and attentive service to meet everyone's needs.",
+            "location": "Bristol",
+            "coordinates": {
+                "latitude": 51.4545,
+                "longitude": -2.5879
+            },
+            "opening_hours": {
+                "Monday": "Closed",
+                "Tuesday": "6:00 PM - 10:00 PM",
+                "Wednesday": "6:00 PM - 10:00 PM",
+                "Thursday": "6:00 PM - 10:00 PM",
+                "Friday": "6:00 PM - 11:00 PM",
+                "Saturday": "6:00 PM - 11:00 PM",
+                "Sunday": "6:00 PM - 10:00 PM"
+            }
+        },
+        {
+            "id": "5401a2e3-b4c5-d6f7-8901-234a5b6c7d8e",
+            "name": "Indigo Istanbul",
+            "cuisine": [
+                {
+                    "label": "Turkish",
+                    "description": "Offering a rich array of Turkish delights, from savory kebabs to sweet baklava, infused with the exotic flavors of the East."
+                }
+            ],
+            "dietary": [
+                {
+                    "label": "Vegetarian",
+                    "description": "A generous selection of vegetarian dishes inspired by the vibrant markets of Istanbul."
+                }
+            ],
+            "price": "££",
+            "rating": 4.8,
+            "review_count": 178,
+            "ambience": [
+                {
+                    "label": "Cultural/Theme",
+                    "description": "Immerse yourself in the captivating atmosphere of Istanbul, with decor that celebrates its rich history and culture."
+                },
+                {
+                    "label": "Lively/Bustling",
+                    "description": "Experience the energy of a Turkish bazaar, with a lively and vibrant dining environment."
+                }
+            ],
+            "accessibility": "Accessible for all, with facilities designed to welcome guests with varying needs.",
+            "location": "Bristol",
+            "coordinates": {
+                "latitude": 51.4545,
+                "longitude": -2.5879
+            },
+            "opening_hours": {
+                "Monday": "5:00 PM - 10:00 PM",
+                "Tuesday": "5:00 PM - 10:00 PM",
+                "Wednesday": "5:00 PM - 10:00 PM",
+                "Thursday": "5:00 PM - 10:00 PM",
+                "Friday": "5:00 PM - 11:00 PM",
+                "Saturday": "12:00 PM - 11:00 PM",
+                "Sunday": "12:00 PM - 9:00 PM"
+            }
+        },
+        {
+            "id": "890a2b3c-4d5e-6f7g-8h9i-0j1k2l3m",
+            "name": "The Parisian Pantry",
+            "cuisine": [
+                {
+                    "label": "French",
+                    "description": "Classical French cuisine with a modern touch, featuring dishes like coq au vin, ratatouille, and a selection of artisanal cheeses."
+                }
+            ],
+            "dietary": [
+                {
+                    "label": "Dairy Free",
+                    "description": "Curated dairy-free options that maintain the essence and flavors of traditional French cooking."
+                }
+            ],
+            "price": "£££",
+            "rating": 4.7,
+            "review_count": 190,
+            "ambience": [
+                {
+                    "label": "Romantic",
+                    "description": "An intimate setting that evokes the charm of Parisian cafes, perfect for romantic dinners."
+                },
+                {
+                    "label": "Elegant",
+                    "description": "Sophisticated decor that provides a backdrop for an exquisite dining experience."
+                }
+            ],
+            "accessibility": "Ensures a comfortable dining experience for everyone, with attention to detail in accessibility features.",
+            "location": "Bristol",
+            "coordinates": {
+                "latitude": 51.4545,
+                "longitude": -2.5879
+            },
+            "opening_hours": {
+                "Monday": "Closed",
+                "Tuesday": "6:00 PM - 10:00 PM",
+                "Wednesday": "6:00 PM - 10:00 PM",
+                "Thursday": "6:00 PM - 10:00 PM",
+                "Friday": "6:00 PM - 11:00 PM",
+                "Saturday": "6:00 PM - 11:00 PM",
+                "Sunday": "6:00 PM - 10:00 PM"
+            }
+        },
+        {
+            "id": "4b5c6d7e-8f90-g1h2-i3j4-k5l6m7n8",
+            "name": "Bangkok Bites",
+            "cuisine": [
+                {
+                    "label": "Thai",
+                    "description": "From street food favorites to royal Thai dishes, experience the heat and sweetness of Thai cuisine."
+                }
+            ],
+            "dietary": [
+                {
+                    "label": "Gluten Free",
+                    "description": "An array of gluten-free Thai dishes, rich in flavor and free from gluten-based ingredients."
+                }
+            ],
+            "price": "££",
+            "rating": 4.6,
+            "review_count": 165,
+            "ambience": [
+                {
+                    "label": "Casual",
+                    "description": "A casual, friendly environment that's all about celebrating the flavors of Thailand."
+                },
+                {
+                    "label": "Outdoor Dining",
+                    "description": "Enjoy the vibrant tastes of Thailand in our outdoor dining area, reminiscent of Bangkok's bustling street food scene."
+                }
+            ],
+            "accessibility": "Committed to accessibility, with thoughtful amenities to ensure a comfortable visit for all guests.",
+            "location": "Bristol",
+            "coordinates": {
+                "latitude": 51.4545,
+                "longitude": -2.5879
+            },
+            "opening_hours": {
+                "Monday": "12:00 PM - 10:00 PM",
+                "Tuesday": "12:00 PM - 10:00 PM",
+                "Wednesday": "12:00 PM - 10:00 PM",
+                "Thursday": "12:00 PM - 10:00 PM",
+                "Friday": "12:00 PM - 11:00 PM",
+                "Saturday": "12:00 PM - 11:00 PM",
+                "Sunday": "12:00 PM - 9:00 PM"
+            }
+        },
+        {
+            "id": "9o8p7q6r-5s4t-3u2v-1w0x-yz9x8w7v",
+            "name": "Cape Town Corners",
+            "cuisine": [
+                {
+                    "label": "South African",
+                    "description": "Explore South Africa's culinary diversity, from braai (barbecue) to bunny chow, in a setting that's as vibrant as its dishes."
+                }
+            ],
+            "dietary": [
+                {
+                    "label": "Vegan",
+                    "description": "Vegan interpretations of South African classics, using plant-based ingredients for a fresh take on traditional flavors."
+                }
+            ],
+            "price": "££",
+            "rating": 4.5,
+            "review_count": 121,
+            "ambience": [
+                {
+                    "label": "Cultural/Theme",
+                    "description": "Immersive South African decor and music set the scene for an authentic dining experience."
+                },
+                {
+                    "label": "Lively/Bustling",
+                    "description": "A lively atmosphere that mirrors the energetic spirit of Cape Town's dining scene."
+                }
+            ],
+            "accessibility": "Welcoming to all, with accessible options that ensure everyone can enjoy the taste of South Africa.",
+            "location": "Bristol",
+            "coordinates": {
+                "latitude": 51.4545,
+                "longitude": -2.5879
+            },
+            "opening_hours": {
+                "Monday": "5:00 PM - 10:00 PM",
+                "Tuesday": "5:00 PM - 10:00 PM",
+                "Wednesday": "5:00 PM - 10:00 PM",
+                "Thursday": "5:00 PM - 10:00 PM",
+                "Friday": "5:00 PM - 11:00 PM",
+                "Saturday": "12:00 PM - 11:00 PM",
+                "Sunday": "12:00 PM - 9:00 PM"
+            }
+        },
+
+        
+
     ]
 }
 restaurants_list = data["restaurants"]
