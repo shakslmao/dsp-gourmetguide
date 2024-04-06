@@ -1,3 +1,4 @@
+import datetime
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
@@ -8,6 +9,10 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics.pairwise import cosine_similarity
 from bson.objectid import ObjectId
 import numpy as np
+
+#  TODO: INCLUDE DYNAMIC WEIGHTING.
+#  TODO: INCLUDE FEEDBACK LOOP.
+#   TODO: AMEND PRICING
 
 app = Flask(__name__)
 print("Server is running")
@@ -57,13 +62,18 @@ def recommendations_for_preferred_locations():
 
 @app.route("/recommendations_for_fake_data", methods=["POST"])
 def recommendations_for_fake_data():
+    print("Request received at /recommendations_for_fake_data")
     try:
-
+        print("extracting data from request")
         data = request.json
-        user_id = data.get("userId")
-        print("User ID: ", user_id)
+        print("Recieved Data", data)
+        userId = data.get("userId")
+    except Exception as e:
+        print("Error extracting request data:", str(e))
+        return jsonify({"error": str(e)}), 500
         # preferences_id = data.get("preferencesId")
 
+    try:
         restaurant_collection = db['FakeRestaurant']
         preferences_collection = db['Preferences']
 
@@ -148,7 +158,7 @@ def recommendations_for_fake_data():
 
         # Fetching Relevant User Preferences.
         preferences_data = preferences_collection.find_one(
-            {"userId": ObjectId("660ea3757aa85b7fbdd37006")}, {
+            {"userId": ObjectId(userId)}, {
                 "cuisineTypes": 1, "dietaryRestrictions": 1, "priceRangePreference": 1, "preferredTime": 1, "ambienceTypes": 1, "userCoordinates": 1, "prefersHigherRated": 1, "accessibilityFeatures": 1
             })
 
@@ -159,8 +169,14 @@ def recommendations_for_fake_data():
                                         for diet in preferences_data['dietaryRestrictions']])
         user_ambience_preferences = set([ambience.lower()
                                         for ambience in preferences_data['ambienceTypes']])
-        user_location_coords = (preferences_data['userCoordinates']
-                                ['latitude'], preferences_data['userCoordinates']['longitude']) if preferences_data and 'userCoordinates' in preferences_data else (0, 0)
+
+        print("Preparing to access coords with preferences_data:", preferences_data)
+        if preferences_data and "userCoordinates" in preferences_data and preferences_data["userCoordinates"]:
+            user_location_coords = (preferences_data['userCoordinates']
+                                    ['latitude'], preferences_data['userCoordinates']['longitude'])
+        else:
+            user_location_coords = (0, 0)
+
         user_price_preference = preferences_data['priceRangePreference']
         user_prefers_higher_rated = preferences_data['prefersHigherRated']
 
@@ -246,21 +262,63 @@ def recommendations_for_fake_data():
             restaurant_df['distance_score'] * weights['distance_score']
         )
 
+        pd.set_option('display.max_columns', None)
         min_score = restaurant_df['similarity_score'].min()
         max_score = restaurant_df['similarity_score'].max()
         restaurant_df['normalised_similarity_score'] = (
             restaurant_df['similarity_score'] - min_score) / (max_score - min_score)
 
-        filtered_restaurants = restaurant_df[restaurant_df['similarity_score'] > 0]
-
+        filtered_restaurants = restaurant_df[restaurant_df['similarity_score'] > 2]
         recommendations = filtered_restaurants.sort_values(
             by='similarity_score', ascending=False)
 
         top_recommendations = recommendations
         print(top_recommendations[['name', 'similarity_score', 'price']])
+        pd.reset_option('display.max_rows')
 
-        return jsonify({"message": "Success", "userId": user_id}), 200
+        # Push the recommendations to the database
+        try:
+            recommendation_result = {
+                "userId": userId,
+                "recommendedFakeRestaurants": recommendations.to_dict(orient='records'),
+                "createdAt": datetime.datetime.now(),
+                "feedbackReceived": False
+            }
+            db['RecommendationResult'].insert_one(recommendation_result)
+            print("Successfully pushed data to the database")
 
+            return jsonify({"message": "Success", "userId": userId}), 200
+        except Exception as e:
+            print("Error pushing data to the database", str(e))
+            return jsonify({"error": str(e)}), 500
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route("/submit_feedback", methods=["POST"])
+def submit_feedback():
+    try:
+        data = request.json()
+        recommendationResultId = data.get("recommendationResultId")
+        actionType = data.get("actionType")
+        sentimentScore = data.get("sentimentScore", None)
+        feedbackText = data.get("feedbackText", None)
+
+        feedback = {
+            "recommendationResultId": recommendationResultId,
+            "actionType": actionType,
+            "sentimentScore": sentimentScore,
+            "feedbackText": feedbackText,
+            "createdAt": datetime.datetime.now()
+        }
+
+        db['RecommendationFeedback'].insert_one(feedback)
+        db['RecommendationResult'].update_one(
+            {"_id": ObjectId(recommendationResultId)},
+            {"$set": {"feedbackReceived": True}}
+        )
+        return jsonify({"message": "Feedback submitted successfully"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 

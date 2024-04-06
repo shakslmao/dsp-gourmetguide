@@ -39,6 +39,14 @@ enum NotificationType {
     APP_NOTIFICATION
 }
 
+enum ActionType {
+    VISITED_RESTAURANT
+    SEARCHED
+    SUBMITTED_RATING
+    SUBMITTED_REVIEW
+    MARKED_FAVOURITE
+}
+
 model User {
     id                     String                   @id @default(auto()) @map("_id") @db.ObjectId
     name                   String
@@ -59,6 +67,7 @@ model User {
     Account                Account[]
     NotificationPreference NotificationPreference[]
     UserRestaurant         UserRestaurant[]
+    RecommendationResult   RecommendationResult[]
 }
 
 model Preferences {
@@ -126,6 +135,28 @@ model FakeRestaurant {
     MenuItem       MenuItem[]
 }
 
+model RecommendationResult {
+    id                                          String                   @id @default(auto()) @map("_id") @db.ObjectId
+    userId                                      String                   @db.ObjectId
+    User                                        User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    recommendedUserLocationRestaurants          Json[]
+    recommendedUserPreferredLocationRestaurants Json[]
+    recommendedFakeRestaurants                  Json
+    createdAt                                   DateTime
+    feedbackRecieved                            Boolean
+    RecommendationFeedback                      RecommendationFeedback[]
+}
+
+model RecommendationFeedback {
+    id                     String               @id @default(auto()) @map("_id") @db.ObjectId
+    recommendationResultId String               @db.ObjectId
+    RecommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
+    actionType             ActionType
+    sentimentScore         Float?
+    feedbackText           String?
+    createdAT              DateTime
+}
+
 model Location {
     id             String      @id @default(auto()) @map("_id") @db.ObjectId
     address1       String
@@ -180,14 +211,6 @@ model History {
     details    Json
     timestamp  DateTime
     location   String?
-}
-
-enum ActionType {
-    VISITED_RESTAURANT
-    SEARCHED
-    SUBMITTED_RATING
-    SUBMITTED_REVIEW
-    MARKED_FAVOURITE
 }
 
 model UserRatings {
