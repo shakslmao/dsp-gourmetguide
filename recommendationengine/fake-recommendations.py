@@ -110,7 +110,7 @@ full_restaurant_features_df = pd.concat(
 
 # Fetching Relevant User Preferences.
 preferences_data = preferences_collection.find_one(
-    {"userId": ObjectId("660ea3757aa85b7fbdd37006")}, {
+    {"userId": ObjectId("6610b03e5fb8904a3a7731f3")}, {
         "cuisineTypes": 1, "dietaryRestrictions": 1, "priceRangePreference": 1, "preferredTime": 1, "ambienceTypes": 1, "userCoordinates": 1, "prefersHigherRated": 1, "accessibilityFeatures": 1
     })
 
@@ -209,6 +209,8 @@ restaurant_df['similarity_score'] = (
     restaurant_df['distance_score'] * weights['distance_score']
 )
 
+pd.set_option('display.max_columns', None)
+
 min_score = restaurant_df['similarity_score'].min()
 max_score = restaurant_df['similarity_score'].max()
 restaurant_df['normalised_similarity_score'] = (
@@ -221,6 +223,7 @@ recommendations = filtered_restaurants.sort_values(
 
 top_recommendations = recommendations
 print(top_recommendations[['name', 'similarity_score', 'price']])
+pd.reset_option('display.max_rows')
 
 
 '''

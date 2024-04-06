@@ -38,8 +38,10 @@ function convertPriceRange(priceRange: PriceRange) {
     }
 }
 
-const flaskEndPoint = "http://127.0.0.1:5000/receive_data";
-const flaskEndPointForLocations = "http://127.0.0.1:5000/receive_preferred_loc";
+// Flask Endpoints for data preprocessing
+const flaskEndPoint = "http://127.0.0.1:5000/recommendations_for_current_location";
+const flaskEndPointFakeData = "http://127.0.0.1:5000/recommendations_for_fake_data";
+const flaskEndPointForLocations = "http://127.0.0.1:5000/recommendations_for_preferred_locations";
 
 // Define an async function to handle user registration.
 export const register = async (
@@ -101,6 +103,7 @@ export const register = async (
                 where: { id: user.id },
                 data: { preferencesId: preferencesResult.id },
             });
+
             console.log("Preferences Result: ", preferencesResult);
         } else {
             console.warn("No preferences provided for user");
@@ -109,13 +112,12 @@ export const register = async (
         // Call the Yelp API with the user's preferences.
         if (data.preferences) {
             const yelpResponse = await YelpAPIWithPrefs(data.preferences);
+            const preferencesId = user.preferencesId;
             const restaurantId = []; // Initialise an empty array to collect restaurant IDs
             const restaurntName = [];
 
             for (const business of yelpResponse.businesses) {
                 const { id } = business;
-                const yelpPrice = business.price;
-                const customPriceRange = convertPriceRange(yelpPrice);
 
                 // Check if the restaurant already exists, and if not, create it
                 const restaurant = await db.restaurant.upsert({
@@ -181,11 +183,18 @@ export const register = async (
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(yelpResponse),
+                body: JSON.stringify({
+                    userId: user.id,
+                    preferencesId: user.preferencesId,
+                    yelpResponse,
+                }),
             });
+
             if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
                 const responseData = await response.json();
-                console.log("Response from Flask: ", responseData);
+                console.log("Response from Flask User Locations: ", responseData);
+                console.log("User ID: ", user.id);
+                console.log("Preferences ID: ", preferencesId);
             } else {
                 console.error("Error in response from Flask: ", response);
             }
@@ -194,6 +203,7 @@ export const register = async (
         // Call the Second Yelp API with the user's preferred locations if it exists.
         if (data.preferences?.preferredLocations) {
             const yelpLocations = await fetchYelpDataForLocations(data.preferences);
+            const preferencesId = user.preferencesId;
             const restaurantId = [];
             const restaurantName = [];
 
@@ -261,18 +271,46 @@ export const register = async (
 
             // Send data to Django endpoint for data preprocessing
             const response = await fetch(flaskEndPointForLocations, {
-                // Note the change in URL
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(yelpLocations),
+                body: JSON.stringify({
+                    userId: user.id,
+                    preferencesId: user.preferencesId,
+                    yelpLocations,
+                }),
             });
             if (response.ok && response.headers.get("content-type")?.includes("application/json")) {
                 const responseData = await response.json();
-                console.log("Response from Flask: ", responseData);
+                console.log("Response from Flask for Preferred Locations: ", responseData);
+                console.log("User ID: ", user.id);
+                console.log("Preferences ID: ", preferencesId);
             } else {
                 console.error("Error in response from Flask: ", response);
+            }
+
+            const responseForFakeData = await fetch(flaskEndPointFakeData, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: user.id,
+                    preferencesId: user.preferencesId,
+                }),
+            });
+
+            if (
+                responseForFakeData.ok &&
+                responseForFakeData.headers.get("content-type")?.includes("application/json")
+            ) {
+                const responseData = await responseForFakeData.json();
+                console.log("Response from Flask for Fake Data: ", responseData);
+                console.log("User ID: ", user.id);
+                console.log("Preferences ID: ", preferencesId);
+            } else {
+                console.error("Error in response from Flask for Fake Data: ", responseForFakeData);
             }
         }
         const verificationToken = await createVerificationToken(email);

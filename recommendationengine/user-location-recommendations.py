@@ -98,7 +98,7 @@ restaurant_df['price'] = restaurant_df['price'].fillna(
     restaurant_df['price'].mean())
 restaurant_df[['price']] = MinMaxScaler().fit_transform(
     restaurant_df[['price']].astype(float))
-    
+
 
 # Mapping from user preference labels to numeric values
 price_preference_mapping = {
