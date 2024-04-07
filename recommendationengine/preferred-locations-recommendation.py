@@ -23,12 +23,14 @@ def calculate_distance(coord1, coord2):
         return None
 
 
+PROXIMITY_THRESHOLD = 20  # miles
+
 restaurant_collection = db['Restaurant']
 preferences_collection = db['Preferences']
 
 # Fetching user preferences
 preferences_data = preferences_collection.find_one(
-    {"userId": ObjectId("6611efefbeda617053d4c69c")})
+    {"userId": ObjectId("6612a747830764d6817838e6")})
 
 # Setting user location coordinates
 user_location_coords = (preferences_data['userCoordinates']['latitude'], preferences_data['userCoordinates']
@@ -138,8 +140,8 @@ user_profile_df = pd.DataFrame([user_profile])
 similarity_scores = cosine_similarity(
     user_profile_df[list(common_features)], restaurant_df[list(common_features)])
 
-
 restaurant_df['similarity_score'] = similarity_scores[0]
+
 restaurant_df['distance_to_user'] = restaurant_df.apply(lambda row: calculate_distance(
     user_location_coords, (row['latitude'], row['longitude'])), axis=1)
 
@@ -147,30 +149,19 @@ price_tolerance = 0.25
 lower_bound = max(0, user_price_preference_normalised - price_tolerance)
 upper_bound = min(1, user_price_preference_normalised + price_tolerance)
 
-
-# Filtering and sorting recommendations
-PROXIMITY_THRESHOLD = 20  # miles
-
 restaurant_df['composite_score'] = (
     restaurant_df['similarity_score'] +
-    np.where(restaurant_df['distance_to_user'] <= PROXIMITY_THRESHOLD, 1, 0) +
     np.where((restaurant_df['price'] >= lower_bound) & (restaurant_df['price'] <= upper_bound), 1, 0) +
     np.where(restaurant_df['ratings'] >= user_rating_scaled[0, 0], 1, 0)
 )
 
-filtered_by_distance = restaurant_df[restaurant_df['distance_to_user']
-                                     <= PROXIMITY_THRESHOLD]
-filtered_by_price = filtered_by_distance[
-    (filtered_by_distance['price'] >= lower_bound) &
-    (filtered_by_distance['price'] <= upper_bound)
-]
-filtered_by_user_rating = filtered_by_price[
-    filtered_by_price['ratings'] >= user_rating_scaled[0, 0]
-]
-
-recommended_restaurants = filtered_by_user_rating.sort_values(
+recommendations_outside_proximity = restaurant_df[restaurant_df['distance_to_user'] > PROXIMITY_THRESHOLD].sort_values(
     by='composite_score', ascending=False)
 
-print("Final recommended restaurants:", recommended_restaurants.shape[0])
-print(recommended_restaurants[['restaurantName',
-      'composite_score', 'distance_to_user', 'price']])
+top_recommendations_outside_proximity = recommendations_outside_proximity.head(
+    20)
+
+print("\nRecommendations outside proximity threshold:",
+      top_recommendations_outside_proximity.shape[0])
+print(top_recommendations_outside_proximity[[
+      'restaurantName', 'composite_score', 'distance_to_user', 'price']])

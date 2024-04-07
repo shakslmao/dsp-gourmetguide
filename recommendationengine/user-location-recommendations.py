@@ -30,7 +30,7 @@ preferences_collection = db['Preferences']
 
 # Fetching user preferences
 preferences_data = preferences_collection.find_one(
-    {"userId": ObjectId("6611ff061a8d24c8374676a0")})
+    {"userId": ObjectId("6612a747830764d6817838e6")})
 
 # Setting user location coordinates
 user_location_coords = (preferences_data['userCoordinates']['latitude'], preferences_data['userCoordinates']
@@ -157,23 +157,14 @@ restaurant_df['composite_score'] = (
 
 recommendations_within_proximity = restaurant_df[restaurant_df['distance_to_user']
                                                  <= PROXIMITY_THRESHOLD].sort_values(by='composite_score', ascending=False)
-recommendations_outside_proximity = restaurant_df[restaurant_df['distance_to_user'] > PROXIMITY_THRESHOLD].sort_values(
-    by='composite_score', ascending=False)
 
 filtered_by_distance = restaurant_df[restaurant_df['distance_to_user']
                                      <= PROXIMITY_THRESHOLD]
 
 top_recommendations_within_proximity = recommendations_within_proximity.head(
     20)
-top_recommendations_outside_proximity = recommendations_outside_proximity.head(
-    20)
 
 print("Recommendations within proximity threshold:",
       top_recommendations_within_proximity.shape[0])
 print(top_recommendations_within_proximity[[
-      'restaurantName', 'composite_score', 'distance_to_user', 'price']])
-
-print("\nRecommendations outside proximity threshold:",
-      top_recommendations_outside_proximity.shape[0])
-print(top_recommendations_outside_proximity[[
       'restaurantName', 'composite_score', 'distance_to_user', 'price']])

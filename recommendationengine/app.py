@@ -41,7 +41,7 @@ def update_user_recommendations(userId, within_proximity_recommendations, outsid
     # Attempt to find an existing document for the user
     existing_result = db["RecommendationResult"].find_one({"userId": userId})
 
-    # Prepare the update document
+    # Prepare the update documen
     update_doc = {
         "$set": {
             "recommendedUserLocationRestaurants": within_proximity_recommendations,
@@ -52,14 +52,13 @@ def update_user_recommendations(userId, within_proximity_recommendations, outsid
         }
     }
 
-    # If a document exists, update it
+    # If a document exists, update it; otherwise, create a new document including the userId
     if existing_result:
         db['RecommendationResult'].update_one(
             {"_id": existing_result['_id']}, update_doc)
     else:
-        # If no document exists, create a new document including the userId
         new_doc = {"userId": userId, **update_doc["$set"]}
-    db['RecommendationResult'].insert_one(new_doc)
+        db['RecommendationResult'].insert_one(new_doc)
 
 
 @app.route("/recommendations_for_current_location", methods=["POST"])
@@ -236,27 +235,10 @@ def recommendations_for_current_location():
                 orient='records')
             outside_proximity_recommendations = top_recommendations_outside_proximity.to_dict(
                 orient='records')
+            print("recommendations fetched")
 
-            recommendation_type = 'recommendedUserLocationRestaurants'
-            recommendation_type_outside = 'recommendedUserPreferredLocationRestaurants'
-
-            append_result = update_user_recommendations(
-                userId, within_proximity_recommendations, recommendation_type)
-
-            append_result_outside = update_user_recommendations(
-                userId, outside_proximity_recommendations, recommendation_type_outside)
-
-            if '_id' in append_result:
-                db['RecommendationResult'].replace_one(
-                    {"_id": append_result['_id']}, append_result)
-
-            if '_id' in append_result_outside:
-                db['RecommendationResult'].replace_one(
-                    {"_id": append_result_outside['_id']}, append_result_outside)
-
-            else:
-                db['RecommendationResult'].insert_one(append_result)
-                db['RecommendationResult'].insert_one(append_result_outside)
+            update_user_recommendations(
+                userId, within_proximity_recommendations, outside_proximity_recommendations, [])
 
             print("Successfully updated recommendations in the database")
             return jsonify({"message": "Success", "userId": userId}), 200
@@ -275,9 +257,7 @@ def recommendations_for_preferred_locations():
     try:
         data = request.json
         print(data)
-        # Process data here
-        with open("YelpDataPrefLoc.json", "w", encoding="utf-8") as file:
-            json.dump(data, file, ensure_ascii=False, indent=4)
+        userId = data.get("userId")
         return jsonify({"message": "Success"}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -503,19 +483,13 @@ def recommendations_for_fake_data():
         try:
             new_recommendations = recommended_restaurants.to_dict(
                 orient='records')
-            recommendation_type = 'recommendedFakeRestaurants'
 
-            append_result = update_user_recommendations(
-                userId, new_recommendations, recommendation_type)
-
-            if '_id' in append_result:
-                db['RecommendationResult'].replace_one(
-                    {"_id": append_result['_id']}, append_result)
-
-            else:
-                db['RecommendationResult'].insert_one(append_result)
-
-            print("Successfully updated recommendations in the database")
+            update_user_recommendations(
+                userId=userId,
+                within_proximity_recommendations=[],
+                outside_proximity_recommendations=[],
+                fake_recommendations=new_recommendations
+            )
             return jsonify({"message": "Success", "userId": userId}), 200
         except Exception as e:
             print("Error pushing data to the database", str(e))
