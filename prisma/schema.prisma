@@ -40,11 +40,14 @@ enum NotificationType {
 }
 
 enum ActionType {
-    VISITED_RESTAURANT
+    VISITED
     SEARCHED
     SUBMITTED_RATING
     SUBMITTED_REVIEW
-    MARKED_FAVOURITE
+    LIKE
+    DISLIKE
+    FAVOURITE
+    UNFAVOURITE
 }
 
 model User {
@@ -154,7 +157,7 @@ model RecommendationFeedback {
     actionType             ActionType
     sentimentScore         Float?
     feedbackText           String?
-    createdAT              DateTime
+    createdAt              DateTime
 }
 
 model Location {
