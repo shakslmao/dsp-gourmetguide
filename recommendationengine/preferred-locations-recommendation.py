@@ -11,11 +11,9 @@ con_string = "mongodb+srv://shaaqzak:akram101@cluster0.lrls17a.mongodb.net/test"
 client = MongoClient(con_string)
 
 db = client.get_database()
-restaurant_collection = db['Restaurant']
-preferences_collection = db['Preferences']
-
-
 # Function to calculate the distance between two coordinates
+
+
 def calculate_distance(coord1, coord2):
     try:
         distance = geodesic(coord1, coord2).miles
@@ -25,9 +23,12 @@ def calculate_distance(coord1, coord2):
         return None
 
 
+restaurant_collection = db['Restaurant']
+preferences_collection = db['Preferences']
+
 # Fetching user preferences
 preferences_data = preferences_collection.find_one(
-    {"userId": ObjectId("660ea3757aa85b7fbdd37006")})
+    {"userId": ObjectId("6611efefbeda617053d4c69c")})
 
 # Setting user location coordinates
 user_location_coords = (preferences_data['userCoordinates']['latitude'], preferences_data['userCoordinates']
@@ -64,7 +65,7 @@ for category in unique_categories:
 restaurant_df = pd.concat([restaurant_df, category_features_df], axis=1)
 
 # Applying the category weight
-category_weight = 2
+category_weight = 4
 preferred_categories = [
     f"category_{category.lower()}" for category in preferences_data.get('cuisineTypes', [])]
 for category_column_name in preferred_categories:
@@ -98,6 +99,7 @@ restaurant_df['price'] = restaurant_df['price'].fillna(
     restaurant_df['price'].mean())
 restaurant_df[['price']] = MinMaxScaler().fit_transform(
     restaurant_df[['price']].astype(float))
+
 
 # Mapping from user preference labels to numeric values
 price_preference_mapping = {
@@ -141,16 +143,34 @@ restaurant_df['similarity_score'] = similarity_scores[0]
 restaurant_df['distance_to_user'] = restaurant_df.apply(lambda row: calculate_distance(
     user_location_coords, (row['latitude'], row['longitude'])), axis=1)
 
+price_tolerance = 0.25
+lower_bound = max(0, user_price_preference_normalised - price_tolerance)
+upper_bound = min(1, user_price_preference_normalised + price_tolerance)
+
+
 # Filtering and sorting recommendations
 PROXIMITY_THRESHOLD = 20  # miles
-filtered_restaurants = restaurant_df[restaurant_df['distance_to_user']
-                                     <= PROXIMITY_THRESHOLD]
-recommended_restaurants = filtered_restaurants.sort_values(
-    by=['similarity_score', 'distance_to_user'], ascending=[False, True])
 
-print("Total restaurants:", restaurant_df.shape[0])
-print("Restaurants after feature extraction:", restaurant_df.shape[0])
-print("Restaurants after distance calculation:", filtered_restaurants.shape[0])
+restaurant_df['composite_score'] = (
+    restaurant_df['similarity_score'] +
+    np.where(restaurant_df['distance_to_user'] <= PROXIMITY_THRESHOLD, 1, 0) +
+    np.where((restaurant_df['price'] >= lower_bound) & (restaurant_df['price'] <= upper_bound), 1, 0) +
+    np.where(restaurant_df['ratings'] >= user_rating_scaled[0, 0], 1, 0)
+)
+
+filtered_by_distance = restaurant_df[restaurant_df['distance_to_user']
+                                     <= PROXIMITY_THRESHOLD]
+filtered_by_price = filtered_by_distance[
+    (filtered_by_distance['price'] >= lower_bound) &
+    (filtered_by_distance['price'] <= upper_bound)
+]
+filtered_by_user_rating = filtered_by_price[
+    filtered_by_price['ratings'] >= user_rating_scaled[0, 0]
+]
+
+recommended_restaurants = filtered_by_user_rating.sort_values(
+    by='composite_score', ascending=False)
+
 print("Final recommended restaurants:", recommended_restaurants.shape[0])
 print(recommended_restaurants[['restaurantName',
-      'similarity_score', 'distance_to_user', 'price', 'categories']])
+      'composite_score', 'distance_to_user', 'price']])

@@ -37,25 +37,29 @@ def calculate_distance(coord1, coord2):
         return None
 
 
-def append_recommendations(userId, new_recommendations, recommendation_type):
+def update_user_recommendations(userId, within_proximity_recommendations, outside_proximity_recommendations, fake_recommendations):
+    # Attempt to find an existing document for the user
     existing_result = db["RecommendationResult"].find_one({"userId": userId})
-    if existing_result:
-        if recommendation_type in existing_result:
-            existing_recommendations = existing_result[recommendation_type]
-            updated_recommendations = existing_recommendations + new_recommendations
-            existing_result[recommendation_type] = updated_recommendations
-        else:
-            existing_result[recommendation_type] = new_recommendations
 
-        existing_result['createdAt'] = datetime.datetime.now()
-        return existing_result
-    else:
-        return {
-            "userId": userId,
-            recommendation_type: new_recommendations,
+    # Prepare the update document
+    update_doc = {
+        "$set": {
+            "recommendedUserLocationRestaurants": within_proximity_recommendations,
+            "recommendedUserPreferredLocationRestaurants": outside_proximity_recommendations,
+            "recommendedFakeRestaurants": fake_recommendations,
             "createdAt": datetime.datetime.now(),
             "feedbackReceived": False
         }
+    }
+
+    # If a document exists, update it
+    if existing_result:
+        db['RecommendationResult'].update_one(
+            {"_id": existing_result['_id']}, update_doc)
+    else:
+        # If no document exists, create a new document including the userId
+        new_doc = {"userId": userId, **update_doc["$set"]}
+    db['RecommendationResult'].insert_one(new_doc)
 
 
 @app.route("/recommendations_for_current_location", methods=["POST"])
@@ -69,6 +73,7 @@ def recommendations_for_current_location():
         return jsonify({"error": str(e)}), 500
 
     try:
+        PROXIMITY_THRESHOLD = 20  # miles
         restaurant_collection = db['Restaurant']
         preferences_collection = db['Preferences']
 
@@ -196,48 +201,63 @@ def recommendations_for_current_location():
         upper_bound = min(
             1, user_price_preference_normalised + price_tolerance)
 
-        # Filtering and sorting recommendations
-        PROXIMITY_THRESHOLD = 20  # miles
-
         restaurant_df['composite_score'] = (
             restaurant_df['similarity_score'] +
-            np.where(restaurant_df['distance_to_user'] <= PROXIMITY_THRESHOLD, 1, 0) +
             np.where((restaurant_df['price'] >= lower_bound) & (restaurant_df['price'] <= upper_bound), 1, 0) +
             np.where(restaurant_df['ratings'] >=
                      user_rating_scaled[0, 0], 1, 0)
         )
 
-        filtered_by_distance = restaurant_df[restaurant_df['distance_to_user']
-                                             <= PROXIMITY_THRESHOLD]
-        filtered_by_price = filtered_by_distance[
-            (filtered_by_distance['price'] >= lower_bound) &
-            (filtered_by_distance['price'] <= upper_bound)
-        ]
-        filtered_by_user_rating = filtered_by_price[
-            filtered_by_price['ratings'] >= user_rating_scaled[0, 0]
-        ]
-
-        recommended_restaurants = filtered_by_user_rating.sort_values(
+        recommendations_within_proximity = restaurant_df[restaurant_df['distance_to_user']
+                                                         <= PROXIMITY_THRESHOLD].sort_values(by='composite_score', ascending=False)
+        recommendations_outside_proximity = restaurant_df[restaurant_df['distance_to_user'] > PROXIMITY_THRESHOLD].sort_values(
             by='composite_score', ascending=False)
 
-        print("Final recommended restaurants:",
-              recommended_restaurants.shape[0])
-        print(recommended_restaurants[['restaurantName',
-                                       'composite_score', 'distance_to_user', 'price']])
+        filtered_by_distance = restaurant_df[restaurant_df['distance_to_user']
+                                             <= PROXIMITY_THRESHOLD]
+
+        top_recommendations_within_proximity = recommendations_within_proximity.head(
+            20)
+        top_recommendations_outside_proximity = recommendations_outside_proximity.head(
+            20)
+
+        print("Recommendations within proximity threshold:",
+              top_recommendations_within_proximity.shape[0])
+        print(top_recommendations_within_proximity[[
+            'restaurantName', 'composite_score', 'distance_to_user', 'price']])
+
+        print("\nRecommendations outside proximity threshold:",
+              top_recommendations_outside_proximity.shape[0])
+        print(top_recommendations_outside_proximity[[
+            'restaurantName', 'composite_score', 'distance_to_user', 'price']])
 
         try:
-            new_recommendations = recommended_restaurants.to_dict(
+            within_proximity_recommendations = top_recommendations_within_proximity.to_dict(
                 orient='records')
+            outside_proximity_recommendations = top_recommendations_outside_proximity.to_dict(
+                orient='records')
+
             recommendation_type = 'recommendedUserLocationRestaurants'
-            append_result = append_recommendations(
-                userId, new_recommendations, recommendation_type)
+            recommendation_type_outside = 'recommendedUserPreferredLocationRestaurants'
+
+            append_result = update_user_recommendations(
+                userId, within_proximity_recommendations, recommendation_type)
+
+            append_result_outside = update_user_recommendations(
+                userId, outside_proximity_recommendations, recommendation_type_outside)
 
             if '_id' in append_result:
                 db['RecommendationResult'].replace_one(
                     {"_id": append_result['_id']}, append_result)
 
+            if '_id' in append_result_outside:
+                db['RecommendationResult'].replace_one(
+                    {"_id": append_result_outside['_id']}, append_result_outside)
+
             else:
                 db['RecommendationResult'].insert_one(append_result)
+                db['RecommendationResult'].insert_one(append_result_outside)
+
             print("Successfully updated recommendations in the database")
             return jsonify({"message": "Success", "userId": userId}), 200
 
@@ -485,7 +505,7 @@ def recommendations_for_fake_data():
                 orient='records')
             recommendation_type = 'recommendedFakeRestaurants'
 
-            append_result = append_recommendations(
+            append_result = update_user_recommendations(
                 userId, new_recommendations, recommendation_type)
 
             if '_id' in append_result:
