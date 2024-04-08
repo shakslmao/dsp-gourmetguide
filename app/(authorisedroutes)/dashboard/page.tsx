@@ -1,4 +1,5 @@
 "use client";
+
 import { useCurrentUser } from "@/hooks/get-user-prefs";
 import React, { useState, useEffect } from "react";
 
@@ -14,7 +15,7 @@ import {
 } from "@/components/ui/drawer";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Prisma } from "@prisma/client";
-import { fetchUserRecommendations } from "@/hooks/get-user-recommendations";
+import { fetchUserRecommendations } from "@/pages/api/get-user-recommendations";
 import {
     isValidRecommendationContextType,
     RecommendationContextType,
@@ -29,10 +30,13 @@ const DashboardPage = () => {
     });
 
     useEffect(() => {
+        console.log("Current User", currentUser?.id);
         if (currentUser?.id) {
+            console.log("Fetching recommendations for user", currentUser.id);
             fetchUserRecommendations(currentUser.id).then((data) => {
                 if (data && isValidRecommendationContextType(data)) {
                     setRecommendations(data);
+                    console.log("Recommendations updated:", data);
                 } else {
                     setRecommendations({
                         recommendedUserLocationRestaurants: [],

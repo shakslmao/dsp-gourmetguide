@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/db/prismadb";
 
 export const fetchUserRecommendations = async (userId: string | undefined) => {
@@ -13,31 +15,34 @@ export const fetchUserRecommendations = async (userId: string | undefined) => {
         } = userRecommendations || {};
 
         const userLocationRestaurantData = await Promise.all(
-            recommendedUserLocationRestaurants.map(async (restaurantId: any) => {
+            recommendedUserLocationRestaurants.map(async (id: any) => {
                 const restaurant = await db.restaurant.findUnique({
-                    where: { yelpId: restaurantId },
+                    where: { yelpId: id },
                 });
                 return restaurant;
             })
         );
+        console.log(userLocationRestaurantData);
 
         const userPreferredLocationRestaurantData = await Promise.all(
-            recommendedUserPreferredLocationRestaurants.map(async (restaurantId: any) => {
+            recommendedUserPreferredLocationRestaurants.map(async (id: any) => {
                 const restaurant = await db.restaurant.findUnique({
-                    where: { yelpId: restaurantId },
+                    where: { yelpId: id },
                 });
                 return restaurant;
             })
         );
+        console.log(userPreferredLocationRestaurantData);
 
         const fakeRestaurantData = await Promise.all(
-            recommendedFakeRestaurants.map(async (restaurantId: any) => {
+            recommendedFakeRestaurants.map(async (id: any) => {
                 const restaurant = await db.fakeRestaurant.findUnique({
-                    where: { restaurantId: restaurantId },
+                    where: { restaurantId: id },
                 });
                 return restaurant;
             })
         );
+        console.log(fakeRestaurantData);
 
         return {
             recommendedUserLocationRestaurants: userLocationRestaurantData,
@@ -45,6 +50,7 @@ export const fetchUserRecommendations = async (userId: string | undefined) => {
             recommendedFakeRestaurants: fakeRestaurantData,
         };
     } catch (err) {
+        console.error("Error fetching user recommendations:", err);
         return null;
     }
 };
