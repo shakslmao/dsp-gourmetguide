@@ -142,9 +142,9 @@ model RecommendationResult {
     id                                          String                   @id @default(auto()) @map("_id") @db.ObjectId
     userId                                      String                   @db.ObjectId
     User                                        User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    recommendedUserLocationRestaurants          Json
-    recommendedUserPreferredLocationRestaurants Json
-    recommendedFakeRestaurants                  Json
+    recommendedUserLocationRestaurants          Json[]
+    recommendedUserPreferredLocationRestaurants Json[]
+    recommendedFakeRestaurants                  Json[]
     createdAt                                   DateTime
     fedbackRecieved                             Boolean
     RecommendationFeedback                      RecommendationFeedback[]

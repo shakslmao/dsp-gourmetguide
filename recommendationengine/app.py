@@ -528,7 +528,6 @@ def recommendations_for_preferred_locations():
         # preferences_id = data.get("preferencesId")
 
     try:
-
         PROXIMITY_THRESHOLD = 20  # miles
         restaurant_collection = db['Restaurant']
         preferences_collection = db['Preferences']

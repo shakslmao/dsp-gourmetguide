@@ -1,5 +1,6 @@
 "use client";
 import { useCurrentUser } from "@/hooks/get-user-prefs";
+import React, { useState, useEffect } from "react";
 
 import {
     Drawer,
@@ -12,9 +13,42 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { Prisma } from "@prisma/client";
+import { fetchUserRecommendations } from "@/hooks/get-user-recommendations";
+import {
+    isValidRecommendationContextType,
+    RecommendationContextType,
+} from "@/types/RecommendationTypes";
 
 const DashboardPage = () => {
     const { currentUser, userPreferences } = useCurrentUser() || {};
+    const [recommendations, setRecommendations] = useState<RecommendationContextType>({
+        recommendedUserLocationRestaurants: [],
+        recommendedUserPreferredLocationRestaurants: [],
+        recommendedFakeRestaurants: [],
+    });
+
+    useEffect(() => {
+        if (currentUser?.id) {
+            fetchUserRecommendations(currentUser.id).then((data) => {
+                if (data && isValidRecommendationContextType(data)) {
+                    setRecommendations(data);
+                } else {
+                    setRecommendations({
+                        recommendedUserLocationRestaurants: [],
+                        recommendedUserPreferredLocationRestaurants: [],
+                        recommendedFakeRestaurants: [],
+                    });
+                }
+            });
+        } else {
+            setRecommendations({
+                recommendedUserLocationRestaurants: [],
+                recommendedUserPreferredLocationRestaurants: [],
+                recommendedFakeRestaurants: [],
+            });
+        }
+    }, [currentUser?.id]);
 
     return (
         <div className="flex items-center justify-center min-h-screen">
@@ -57,6 +91,30 @@ const DashboardPage = () => {
                             </DrawerContent>
                         </Drawer>
                     </div>
+                </div>
+                <div>
+                    {recommendations && (
+                        <div>
+                            <h2 className="text-xs">Recommended Restaurants</h2>
+                            {[...recommendations.recommendedFakeRestaurants].map(
+                                (restaurant, index) => (
+                                    <div key={index}>
+                                        <h3>{restaurant.restaurantName}</h3>
+                                        <p>{restaurant.cuisines.join(", ")}</p>
+                                    </div>
+                                )
+                            )}
+                            {[
+                                ...recommendations.recommendedUserLocationRestaurants,
+                                ...recommendations.recommendedUserPreferredLocationRestaurants,
+                            ].map((restaurant, index) => (
+                                <div key={index}>
+                                    <h3>{restaurant.restaurantName}</h3>
+                                    <p>{restaurant.categories.join(", ")}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
