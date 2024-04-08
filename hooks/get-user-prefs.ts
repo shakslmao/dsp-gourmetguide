@@ -14,12 +14,10 @@ export const useCurrentUser = () => {
         const fetchUserPreferences = async () => {
             if (isUserLoggedIn && currentUser.email) {
                 try {
-                    console.log("Fetching user preferences for", currentUser.email);
                     const response = await fetch(`/api/preferences?id=${currentUser.id}`);
                     const data = await response.json();
 
                     if (response.ok) {
-                        console.log("User preferences fetched successfully:", data);
                         setUserPreferences(data);
                     } else {
                         console.error("Failed to fetch user preferences", data.error);

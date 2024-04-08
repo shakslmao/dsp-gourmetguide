@@ -20,6 +20,7 @@ import {
     isValidRecommendationContextType,
     RecommendationContextType,
 } from "@/types/RecommendationTypes";
+import { fetchUserRec } from "@/data/user";
 
 const DashboardPage = () => {
     const { currentUser, userPreferences } = useCurrentUser() || {};
@@ -29,29 +30,28 @@ const DashboardPage = () => {
         recommendedFakeRestaurants: [],
     });
 
-    useEffect(() => {
-        console.log("Current User", currentUser?.id);
+    const fetchData = async () => {
         if (currentUser?.id) {
-            console.log("Fetching recommendations for user", currentUser.id);
-            fetchUserRecommendations(currentUser.id).then((data) => {
-                if (data && isValidRecommendationContextType(data)) {
+            try {
+                const data = await fetchUserRecommendations(currentUser.id);
+                if (data === null) {
+                    console.log("No recommendations found for the user.");
+                    // Set the state to reflect no data or display a message
+                } else if (isValidRecommendationContextType(data)) {
                     setRecommendations(data);
-                    console.log("Recommendations updated:", data);
                 } else {
-                    setRecommendations({
-                        recommendedUserLocationRestaurants: [],
-                        recommendedUserPreferredLocationRestaurants: [],
-                        recommendedFakeRestaurants: [],
-                    });
+                    // The data doesn't match the expected type
+                    console.error("Received data does not match the expected format.");
                 }
-            });
-        } else {
-            setRecommendations({
-                recommendedUserLocationRestaurants: [],
-                recommendedUserPreferredLocationRestaurants: [],
-                recommendedFakeRestaurants: [],
-            });
+            } catch (error) {
+                console.error("Error fetching recommendation data:", error);
+                // Optionally, update the UI to reflect that an error occurred
+            }
         }
+    };
+
+    useEffect(() => {
+        fetchData();
     }, [currentUser?.id]);
 
     return (
@@ -97,28 +97,8 @@ const DashboardPage = () => {
                     </div>
                 </div>
                 <div>
-                    {recommendations && (
-                        <div>
-                            <h2 className="text-xs">Recommended Restaurants</h2>
-                            {[...recommendations.recommendedFakeRestaurants].map(
-                                (restaurant, index) => (
-                                    <div key={index}>
-                                        <h3>{restaurant.restaurantName}</h3>
-                                        <p>{restaurant.cuisines.join(", ")}</p>
-                                    </div>
-                                )
-                            )}
-                            {[
-                                ...recommendations.recommendedUserLocationRestaurants,
-                                ...recommendations.recommendedUserPreferredLocationRestaurants,
-                            ].map((restaurant, index) => (
-                                <div key={index}>
-                                    <h3>{restaurant.restaurantName}</h3>
-                                    <p>{restaurant.categories.join(", ")}</p>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                    <h2 className="text-xs">Recommended Fake Restaurants</h2>
+                    {recommendations && JSON.stringify(recommendations.recommendedFakeRestaurants)}
                 </div>
             </div>
         </div>

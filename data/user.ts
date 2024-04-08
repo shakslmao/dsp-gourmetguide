@@ -19,3 +19,14 @@ export const fetchUserId = async (id: string | undefined) => {
         return null;
     }
 };
+
+export const fetchUserRec = async (id: string | undefined) => {
+    try {
+        const rec = await db.recommendationResult.findUnique({
+            where: { id },
+        });
+        return rec;
+    } catch (e) {
+        return null;
+    }
+};
