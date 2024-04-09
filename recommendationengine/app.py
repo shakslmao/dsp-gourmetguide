@@ -87,6 +87,17 @@ def update_user_recommendations(userId, recommendations):
                  "outsideProximityRestaurantId": restaurant_id}
             )
 
+        update = {
+            "$addToSet": {
+                "RecommendationResultFakeRestaurant": {"$each": recommendations.get("fake", [])},
+                "RecommendationResultRestaurant": {"$each": recommendations.get("within_proximity", [])},
+                "RecommendationResultOutsideProxRestaurant": {"$each": recommendations.get("outside_proximity", [])},
+            }
+        }
+
+        db['RecommendationResult'].update_one(
+            {"_id": recommendation_result_id}, update)
+
     except Exception as e:
         print(f"Error updating user recommendations for user {userId}: {e}")
 
