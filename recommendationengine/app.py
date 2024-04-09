@@ -5,6 +5,7 @@ from flask_cors import CORS
 import json
 import pandas as pd
 from pymongo import MongoClient
+from pymongo import ReturnDocument
 from geopy.distance import geodesic
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics.pairwise import cosine_similarity
@@ -19,7 +20,7 @@ from FeedbackInputValidation import FeedbackInput
 
 #  TODO: INCLUDE DYNAMIC WEIGHTING.
 #  TODO: INCLUDE FEEDBACK LOOP.
-#   TODO: AMEND PRICING
+#  TODO: AMEND PRICING
 
 app = Flask(__name__)
 print("Server is running")
@@ -38,77 +39,59 @@ def calculate_distance(coord1, coord2):
         return None
 
 
-'''
-def update_user_recommendations(userId, within_proximity_recommendations, outside_proximity_recommendations, fake_recommendations):
-    # Attempt to find an existing document for the user
-    existing_result = db["RecommendationResult"].find_one({"userId": userId})
-
-    # Prepare the update document
-    update_doc = {
-        "$set": {
-            "recommendedUserLocationRestaurants": within_proximity_recommendations,
-            "recommendedUserPreferredLocationRestaurants": outside_proximity_recommendations,
-            "recommendedFakeRestaurants": fake_recommendations,
-            "createdAt": datetime.datetime.now(),
-            "feedbackReceived": False
-        }
-    }
-
-    # If a document exists, update it; otherwise, create a new document including the userId
-    if existing_result:
-        db['RecommendationResult'].update_one(
-            {"_id": existing_result['_id']}, update_doc)
-    else:
-        db['RecommendationResult'].insert_one({
-            "userId": userId,
-            "recommendedUserLocationRestaurants": within_proximity_recommendations,
-            "recommendedUserPreferredLocationRestaurants": outside_proximity_recommendations,
-            "recommendedFakeRestaurants": fake_recommendations,
-            "createdAt": datetime.datetime.now(),
-            "feedbackReceived": False
-        })
-'''
-
-
 def update_user_recommendations(userId, recommendations):
-    # Find an existing document for the user
-    existing_result = db["RecommendationResult"].find_one({"userId": userId})
+    try:
+        # Fetch or create a recommendation result for the user
+        recommendation_result = db['RecommendationResult'].find_one_and_update(
+            {"userId": ObjectId(userId)},
+            {"$setOnInsert": {
+                "createdAt": datetime.datetime.now(),
+                "feedbackReceived": False,
+                "RecommendationResultFakeRestaurant": [],
+                "RecommendationResultRestaurant": [],
+                "RecommendationResultOutsideProxRestaurant": [],
+            }},
+            upsert=True,
+            return_document=ReturnDocument.AFTER
+        )
 
-    # Prepare the dynamic part of the update document based on the recommendations provided
-    update_doc = {
-        "$set": {
-            "createdAt": datetime.datetime.now(),  # Update the 'createdAt' timestamp
-            "feedbackReceived": False  # Reset feedback received status
-        }
-    }
+        recommendation_result_id = recommendation_result["_id"]
 
-    # Dynamically add only the provided types of recommendations to the update document
-    for key, value in recommendations.items():
-        if key == "within_proximity":
-            update_doc["$set"]["recommendedUserLocationRestaurants"] = value
-        elif key == "outside_proximity":
-            update_doc["$set"]["recommendedUserPreferredLocationRestaurants"] = value
-        elif key == "fake":
-            update_doc["$set"]["recommendedFakeRestaurants"] = value
+        # Handling fake restaurant data
+        fake_restaurants_ids = recommendations.get('fake', [])
+        db["RecommendationResultFakeRestaurant"].delete_many(
+            {"recommendationResultId": recommendation_result_id})
+        for fake_id in fake_restaurants_ids:
+            db["RecommendationResultFakeRestaurant"].insert_one(
+                {"recommendationResultId": recommendation_result_id,
+                 "fakeRestaurantId": fake_id}
+            )
 
-    # If a document exists, update it; otherwise, create a new document
-    if existing_result:
-        db['RecommendationResult'].update_one(
-            {"_id": existing_result['_id']}, update_doc)
-    else:
-        # Ensure the document is fully populated even on first creation
-        full_doc = {
-            "userId": userId,
-            "recommendedUserLocationRestaurants": recommendations.get("within_proximity", []),
-            "recommendedUserPreferredLocationRestaurants": recommendations.get("outside_proximity", []),
-            "recommendedFakeRestaurants": recommendations.get("fake", []),
-            "createdAt": datetime.datetime.now(),
-            "feedbackReceived": False
-        }
-        db['RecommendationResult'].insert_one(full_doc)
+        within_proximity_restaurants = recommendations.get(
+            "within_proximity", [])
+        db["RecommendationResultRestaurant"].delete_many(
+            {"RecommendationResultId": recommendation_result_id})
+        for restaurant_id in within_proximity_restaurants:
+            db["RecommendationResultRestaurant"].insert_one(
+                {"recommendationResultId": recommendation_result_id,
+                 "restaurantId": restaurant_id}
+            )
+
+        outside_proximity_restaurants = recommendations.get(
+            "outside_proximity", [])
+        db["RecommendationResultOutsideProxRestaurant"].delete_many(
+            {"RecommendationResultId": recommendation_result_id})
+        for restaurant_id in outside_proximity_restaurants:
+            db["RecommendationResultOutsideProxRestaurant"].insert_one(
+                {"recommendationResultId": recommendation_result_id,
+                 "outsideProximityRestaurantId": restaurant_id}
+            )
+
+    except Exception as e:
+        print(f"Error updating user recommendations for user {userId}: {e}")
 
 
-@app.route("/recommendations_for_fake_data", methods=["POST"])
+@ app.route("/recommendations_for_fake_data", methods=["POST"])
 def recommendations_for_fake_data():
     print("Request received at /recommendations_for_fake_data")
     try:
@@ -339,7 +322,7 @@ def recommendations_for_fake_data():
         return jsonify({"error": str(e)}), 500
 
 
-@app.route("/recommendations_for_current_location", methods=["POST"])
+@ app.route("/recommendations_for_current_location", methods=["POST"])
 def recommendations_for_current_location():
     print("Request received at /recommendations_for_current_location")
     try:

@@ -141,7 +141,7 @@ export const register = async (
                         price: business.price ? business.price.length : null,
                         phone: business.phone,
                         displayPhone: business.display_phone,
-                        location: {
+                        Location: {
                             create: {
                                 address1: business.location.address1,
                                 address2: business.location.address2,
@@ -237,7 +237,7 @@ export const register = async (
                             price: item.price ? item.price.length : null,
                             phone: item.phone,
                             displayPhone: item.display_phone,
-                            location: {
+                            Location: {
                                 create: {
                                     address1: item.location.address1,
                                     address2: item.location.address2,

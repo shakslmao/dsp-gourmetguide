@@ -92,30 +92,31 @@ model Preferences {
 }
 
 model Restaurant {
-    id                             String                           @id @default(auto()) @map("_id") @db.ObjectId
-    yelpId                         String?                          @unique
-    alias                          String?
-    restaurantName                 String?
-    imageUrl                       String?
-    url                            String?
-    isClosed                       Boolean?
-    categories                     String[]
-    reviewCount                    Int?
-    coordinates                    Json?
-    price                          Int?
-    phone                          String?
-    displayPhone                   String?
-    customerRatings                Float?
-    locationId                     String?
-    reviewsId                      String?
-    ratingsId                      String?
-    RecommendationResultRestaurant RecommendationResultRestaurant[]
-    Location                       Location[]
-    UserRestaurant                 UserRestaurant[]
-    UserRatings                    UserRatings?                     @relation(fields: [userRatingsId], references: [id])
-    userRatingsId                  String?                          @db.ObjectId
-    UserReviews                    UserReviews[]
-    MenuItem                       MenuItem[]
+    id                                        String                                      @id @default(auto()) @map("_id") @db.ObjectId
+    yelpId                                    String?                                     @unique
+    alias                                     String?
+    restaurantName                            String?
+    imageUrl                                  String?
+    url                                       String?
+    isClosed                                  Boolean?
+    categories                                String[]
+    reviewCount                               Int?
+    coordinates                               Json?
+    price                                     Int?
+    phone                                     String?
+    displayPhone                              String?
+    customerRatings                           Float?
+    locationId                                String?
+    reviewsId                                 String?
+    ratingsId                                 String?
+    RecommendationResultRestaurant            RecommendationResultRestaurant[]
+    Location                                  Location[]
+    UserRestaurant                            UserRestaurant[]
+    UserRatings                               UserRatings?                                @relation(fields: [userRatingsId], references: [id])
+    userRatingsId                             String?                                     @db.ObjectId
+    UserReviews                               UserReviews[]
+    MenuItem                                  MenuItem[]
+    RecommendationResultOutsideProxRestaurant RecommendationResultOutsideProxRestaurant[]
 }
 
 model FakeRestaurant {
@@ -139,14 +140,15 @@ model FakeRestaurant {
 }
 
 model RecommendationResult {
-    id                                 String                               @id @default(auto()) @map("_id") @db.ObjectId
-    userId                             String                               @db.ObjectId
-    createdAt                          DateTime
-    feedbackReceived                   Boolean
-    RecommendationResultRestaurant     RecommendationResultRestaurant[]
-    RecommendationResultFakeRestaurant RecommendationResultFakeRestaurant[]
-    User                               User                                 @relation(fields: [userId], references: [id])
-    RecommendationFeedback             RecommendationFeedback[]
+    id                                        String                                      @id @default(auto()) @map("_id") @db.ObjectId
+    userId                                    String                                      @db.ObjectId
+    createdAt                                 DateTime
+    feedbackReceived                          Boolean
+    RecommendationResultRestaurant            RecommendationResultRestaurant[]
+    RecommendationResultFakeRestaurant        RecommendationResultFakeRestaurant[]
+    RecommendationResultOutsideProxRestaurant RecommendationResultOutsideProxRestaurant[]
+    User                                      User                                        @relation(fields: [userId], references: [id])
+    RecommendationFeedback                    RecommendationFeedback[]
 }
 
 model RecommendationResultRestaurant {
@@ -157,6 +159,16 @@ model RecommendationResultRestaurant {
     restaurant             Restaurant           @relation(fields: [restaurantId], references: [id])
 
     @@unique([recommendationResultId, restaurantId], name: "unique_recommendationResult_restaurant")
+}
+
+model RecommendationResultOutsideProxRestaurant {
+    id                           String               @id @default(auto()) @map("_id") @db.ObjectId
+    recommendationResultId       String               @db.ObjectId
+    recommendationResult         RecommendationResult @relation(fields: [recommendationResultId], references: [id])
+    outsideProximityRestaurantId String               @db.ObjectId
+    restaurant                   Restaurant           @relation(fields: [outsideProximityRestaurantId], references: [id])
+
+    @@unique([recommendationResultId, outsideProximityRestaurantId], name: "unique_recommendationResult_restaurant")
 }
 
 model RecommendationResultFakeRestaurant {

@@ -18,9 +18,9 @@ export const fetchUserRecommendations = async (id: string | undefined) => {
         }
 
         const {
-            recommendedUserLocationRestaurants = [],
-            recommendedUserPreferredLocationRestaurants = [],
-            recommendedFakeRestaurants = [],
+            recommendedUserLocationRestaurants,
+            recommendedUserPreferredLocationRestaurants,
+            recommendedFakeRestaurants
         } = userRecommendations || {};
 
         // Fetch restaurant data for each recommendation
