@@ -99,10 +99,9 @@ def update_user_recommendations(userId, recommendations):
                 "RecommendationResultOutsideProxRestaurant": {"$each": recommendations.get("outside_proximity", [])},
             }
         }
-        '''
-
-        db['RecommendationResult'].update_one(
+          db['RecommendationResult'].update_one(
             {"_id": recommendation_result_id})
+        '''
 
     except Exception as e:
         print(f"FAILED, ERROR: {e}")
