@@ -109,7 +109,6 @@ model Restaurant {
     locationId                                String?
     reviewsId                                 String?
     ratingsId                                 String?
-    RecommendationResultRestaurant            RecommendationResultRestaurant[]
     Location                                  Location[]
     UserRestaurant                            UserRestaurant[]
     UserRatings                               UserRatings?                                @relation(fields: [userRatingsId], references: [id])
@@ -117,13 +116,16 @@ model Restaurant {
     UserReviews                               UserReviews[]
     MenuItem                                  MenuItem[]
     RecommendationResultOutsideProxRestaurant RecommendationResultOutsideProxRestaurant[]
+    RecommendationResultRestaurant            RecommendationResultRestaurant[]
+    RecommendationResult                      RecommendationResult?                       @relation(fields: [recommendationResultId], references: [id])
+    recommendationResultId                    String?                                     @db.ObjectId
 }
 
 model FakeRestaurant {
     id                                 String                               @id @default(auto()) @map("_id") @db.ObjectId
     restaurantId                       String                               @unique @map("restaurant_id") @db.ObjectId
     restaurantName                     String                               @map("name")
-    cuisines                           Json
+    cuisine                            Json
     dietary                            Json
     priceRange                         String                               @map("price")
     rating                             Float
@@ -133,21 +135,22 @@ model FakeRestaurant {
     location                           String
     coordinates                        Json
     openingHours                       Json                                 @map("opening_hours")
-    RecommendationResultFakeRestaurant RecommendationResultFakeRestaurant[]
     UserRestaurant                     UserRestaurant[]
     UserReviews                        UserReviews[]
     MenuItem                           MenuItem[]
+    RecommendationResultFakeRestaurant RecommendationResultFakeRestaurant[]
 }
 
 model RecommendationResult {
     id                                        String                                      @id @default(auto()) @map("_id") @db.ObjectId
-    userId                                    String                                      @db.ObjectId
+    userId                                    String                                      @unique @db.ObjectId
     createdAt                                 DateTime
     feedbackReceived                          Boolean
     RecommendationResultRestaurant            RecommendationResultRestaurant[]
     RecommendationResultFakeRestaurant        RecommendationResultFakeRestaurant[]
     RecommendationResultOutsideProxRestaurant RecommendationResultOutsideProxRestaurant[]
     User                                      User                                        @relation(fields: [userId], references: [id])
+    Restaurant                                Restaurant[]
     RecommendationFeedback                    RecommendationFeedback[]
 }
 
@@ -156,29 +159,26 @@ model RecommendationResultRestaurant {
     recommendationResultId String               @db.ObjectId
     recommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
     restaurantId           String               @db.ObjectId
+    recommendationData     Json?
     restaurant             Restaurant           @relation(fields: [restaurantId], references: [id])
-
-    @@unique([recommendationResultId, restaurantId], name: "unique_recommendationResult_restaurant")
 }
 
 model RecommendationResultOutsideProxRestaurant {
-    id                           String               @id @default(auto()) @map("_id") @db.ObjectId
-    recommendationResultId       String               @db.ObjectId
-    recommendationResult         RecommendationResult @relation(fields: [recommendationResultId], references: [id])
-    outsideProximityRestaurantId String               @db.ObjectId
-    restaurant                   Restaurant           @relation(fields: [outsideProximityRestaurantId], references: [id])
-
-    @@unique([recommendationResultId, outsideProximityRestaurantId], name: "unique_recommendationResult_restaurant")
+    id                     String               @id @default(auto()) @map("_id") @db.ObjectId
+    recommendationResultId String               @db.ObjectId
+    recommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
+    restaurantId           String               @db.ObjectId
+    recommendationData     Json?
+    restaurant             Restaurant           @relation(fields: [restaurantId], references: [id])
 }
 
 model RecommendationResultFakeRestaurant {
     id                     String               @id @default(auto()) @map("_id") @db.ObjectId
     recommendationResultId String               @db.ObjectId
-    recommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
     fakeRestaurantId       String               @db.ObjectId
+    recommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
     fakeRestaurant         FakeRestaurant       @relation(fields: [fakeRestaurantId], references: [id])
-
-    @@unique([recommendationResultId, fakeRestaurantId], name: "unique_recommendationResult_fakeRestaurant")
+    recommendationData     Json?
 }
 
 model RecommendationFeedback {

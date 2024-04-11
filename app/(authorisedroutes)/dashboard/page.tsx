@@ -1,7 +1,7 @@
 "use client";
 
 import { useCurrentUser } from "@/hooks/get-user-prefs";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, use } from "react";
 
 import {
     Drawer,
@@ -20,39 +20,26 @@ import {
     isValidRecommendationContextType,
     RecommendationContextType,
 } from "@/types/RecommendationTypes";
-import { fetchUserRec } from "@/data/user";
 
 const DashboardPage = () => {
     const { currentUser, userPreferences } = useCurrentUser() || {};
-    const [recommendations, setRecommendations] = useState<RecommendationContextType>({
-        recommendedUserLocationRestaurants: [],
-        recommendedUserPreferredLocationRestaurants: [],
-        recommendedFakeRestaurants: [],
-    });
-
-    const fetchData = async () => {
-        if (currentUser?.id) {
-            try {
-                const data = await fetchUserRecommendations(currentUser.id);
-                if (data === null) {
-                    console.log("No recommendations found for the user.");
-                    // Set the state to reflect no data or display a message
-                } else if (isValidRecommendationContextType(data)) {
-                    setRecommendations(data);
-                } else {
-                    // The data doesn't match the expected type
-                    console.error("Received data does not match the expected format.");
-                }
-            } catch (error) {
-                console.error("Error fetching recommendation data:", error);
-                // Optionally, update the UI to reflect that an error occurred
-            }
-        }
-    };
+    const [recommendations, setRecommendations] = useState<RecommendationContextType>();
 
     useEffect(() => {
-        fetchData();
+        if (!currentUser) return;
+        if (currentUser?.id) {
+            fetchUserRecommendations(currentUser.id)
+                .then((data) => {
+                    if (isValidRecommendationContextType(data)) {
+                        setRecommendations(data);
+                    } else {
+                        console.error("Invalid recommendation data structure:", data);
+                    }
+                })
+                .catch((error) => console.error("Error fetching user recommendations:", error));
+        }
     }, [currentUser?.id]);
+    console.log("Recommendations", recommendations);
 
     return (
         <div className="flex items-center justify-center min-h-screen">
@@ -96,9 +83,12 @@ const DashboardPage = () => {
                         </Drawer>
                     </div>
                 </div>
-                <div>
-                    <h2 className="text-xs">Recommended Fake Restaurants</h2>
-                    {recommendations && JSON.stringify(recommendations.recommendedFakeRestaurants)}
+                <div className="mt-8">
+                    {recommendations ? (
+                        JSON.stringify(recommendations)
+                    ) : (
+                        <p>Loading Recommendations</p>
+                    )}
                 </div>
             </div>
         </div>

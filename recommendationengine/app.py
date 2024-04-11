@@ -47,9 +47,6 @@ def update_user_recommendations(userId, recommendations):
             {"$setOnInsert": {
                 "createdAt": datetime.datetime.now(),
                 "feedbackReceived": False,
-                "RecommendationResultFakeRestaurant": [],
-                "RecommendationResultRestaurant": [],
-                "RecommendationResultOutsideProxRestaurant": [],
             }},
             upsert=True,
             return_document=ReturnDocument.AFTER
@@ -58,35 +55,43 @@ def update_user_recommendations(userId, recommendations):
         recommendation_result_id = recommendation_result["_id"]
 
         # Handling fake restaurant data
-        fake_restaurants_ids = recommendations.get('fake', [])
+        fake_restaurants_data = recommendations.get('fake', [])
         db["RecommendationResultFakeRestaurant"].delete_many(
             {"recommendationResultId": recommendation_result_id})
-        for fake_id in fake_restaurants_ids:
-            db["RecommendationResultFakeRestaurant"].insert_one(
-                {"recommendationResultId": recommendation_result_id,
-                 "fakeRestaurantId": fake_id}
-            )
 
-        within_proximity_restaurants = recommendations.get(
+        for fake_data in fake_restaurants_data:
+            db["RecommendationResultFakeRestaurant"].insert_one({
+                "recommendationResultId": recommendation_result_id,
+                "fakeRestaurantId": fake_data['_id'],
+                "recommendationData": fake_data
+            })
+
+        # Handling within proximity restaurant data
+        within_proximity_restaurants_data = recommendations.get(
             "within_proximity", [])
         db["RecommendationResultRestaurant"].delete_many(
-            {"RecommendationResultId": recommendation_result_id})
-        for restaurant_id in within_proximity_restaurants:
-            db["RecommendationResultRestaurant"].insert_one(
-                {"recommendationResultId": recommendation_result_id,
-                 "restaurantId": restaurant_id}
-            )
+            {"recommendationResultId": recommendation_result_id})
 
-        outside_proximity_restaurants = recommendations.get(
+        for restaurant_data in within_proximity_restaurants_data:
+            db["RecommendationResultRestaurant"].insert_one({
+                "recommendationResultId": recommendation_result_id,
+                "recommendationData": restaurant_data
+            })
+
+        # Handling outside proximity restaurant data
+        outside_proximity_restaurants_data = recommendations.get(
             "outside_proximity", [])
         db["RecommendationResultOutsideProxRestaurant"].delete_many(
-            {"RecommendationResultId": recommendation_result_id})
-        for restaurant_id in outside_proximity_restaurants:
-            db["RecommendationResultOutsideProxRestaurant"].insert_one(
-                {"recommendationResultId": recommendation_result_id,
-                 "outsideProximityRestaurantId": restaurant_id}
-            )
+            {"recommendationResultId": recommendation_result_id})
 
+        for outside_prox_restaurant_data in outside_proximity_restaurants_data:
+            db["RecommendationResultOutsideProxRestaurant"].insert_one({
+                "recommendationResultId": recommendation_result_id,
+                "recommendationData": outside_prox_restaurant_data
+            })
+
+        '''
+        # Update the RecommendationResult document
         update = {
             "$addToSet": {
                 "RecommendationResultFakeRestaurant": {"$each": recommendations.get("fake", [])},
@@ -94,12 +99,14 @@ def update_user_recommendations(userId, recommendations):
                 "RecommendationResultOutsideProxRestaurant": {"$each": recommendations.get("outside_proximity", [])},
             }
         }
+        '''
 
         db['RecommendationResult'].update_one(
-            {"_id": recommendation_result_id}, update)
+            {"_id": recommendation_result_id})
 
     except Exception as e:
-        print(f"Error updating user recommendations for user {userId}: {e}")
+        print(f"FAILED, ERROR: {e}")
+        print(f"userId: {userId}")
 
 
 @ app.route("/recommendations_for_fake_data", methods=["POST"])
@@ -319,8 +326,7 @@ def recommendations_for_fake_data():
         try:
             # Push the recommendations to the database
             new_recommendations = recommendations.to_dict(orient='records')
-            recommendation_data = {
-                "fake": new_recommendations}
+            recommendation_data = {"fake": new_recommendations}
             update_user_recommendations(
                 userId=userId, recommendations=recommendation_data)
             return jsonify({"message": "Success", "userId": userId}), 200

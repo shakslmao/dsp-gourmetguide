@@ -40,16 +40,16 @@ export interface RestaurantProps {
 }
 
 export interface RecommendationContextType {
-    recommendedUserLocationRestaurants: RestaurantProps[];
-    recommendedUserPreferredLocationRestaurants: RestaurantProps[];
-    recommendedFakeRestaurants: FakeRestaurantProps[];
+    RecommendationResultRestaurant: RestaurantProps[];
+    RecommendationResultOutsideProxRestaurant: RestaurantProps[];
+    RecommendationResultFakeRestaurant: FakeRestaurantProps[];
 }
 
 export function isValidRecommendationContextType(data: any): data is RecommendationContextType {
     return (
         data &&
-        data.recommendedUserLocationRestaurants &&
-        data.recommendedUserPreferredLocationRestaurants &&
-        data.recommendedFakeRestaurants
+        data.RecommendationResultRestaurant &&
+        data.RecommendationResultOutsideProxRestaurant &&
+        data.RecommendationResultFakeRestaurant
     );
 }
