@@ -182,7 +182,7 @@ export const RegisterForm = () => {
                                 </div>
                                 <div className="mt-8 flex items-center w-full justify-center">
                                     {!validationError && !validationSuccess && isSubmitting && (
-                                        <FormLoadingState loadingMessage="We're submitting your preferences" />
+                                        <FormLoadingState loadingMessage="Please Wait... We're Cooking!" />
                                     )}
                                 </div>
                                 <FormMessageError errorMessage={validationError} />

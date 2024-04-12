@@ -2,7 +2,6 @@
 
 import { useCurrentUser } from "@/hooks/get-user-prefs";
 import React, { useState, useEffect, use } from "react";
-
 import {
     Drawer,
     DrawerClose,
@@ -14,12 +13,12 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { Prisma } from "@prisma/client";
-import { fetchUserRecommendations } from "@/pages/api/get-user-recommendations";
 import {
+    FakeRestaurantProps,
     isValidRecommendationContextType,
     RecommendationContextType,
 } from "@/types/RecommendationTypes";
+import { getUserRecommendations } from "@/pages/api/get-user-recommendations";
 
 const DashboardPage = () => {
     const { currentUser, userPreferences } = useCurrentUser() || {};
@@ -28,12 +27,12 @@ const DashboardPage = () => {
     useEffect(() => {
         if (!currentUser) return;
         if (currentUser?.id) {
-            fetchUserRecommendations(currentUser.id)
+            getUserRecommendations(currentUser?.id)
                 .then((data) => {
                     if (isValidRecommendationContextType(data)) {
                         setRecommendations(data);
                     } else {
-                        console.error("Invalid recommendation data structure:", data);
+                        console.error("Error", data);
                     }
                 })
                 .catch((error) => console.error("Error fetching user recommendations:", error));
@@ -52,11 +51,7 @@ const DashboardPage = () => {
                 <div className="flex flex-col sm:flex-row gap-6 mt-8">
                     <div className="flex flex-col sm:flex-row gap-6 mt-8">
                         <Drawer>
-                            <DrawerTrigger>
-                                <Button className={buttonVariants({ size: "sm" })}>
-                                    Check your preferences
-                                </Button>
-                            </DrawerTrigger>
+                            <DrawerTrigger></DrawerTrigger>
                             <DrawerContent>
                                 <DrawerHeader>
                                     <DrawerTitle>Your Current Preferences</DrawerTitle>
@@ -82,13 +77,6 @@ const DashboardPage = () => {
                             </DrawerContent>
                         </Drawer>
                     </div>
-                </div>
-                <div className="mt-8">
-                    {recommendations ? (
-                        JSON.stringify(recommendations)
-                    ) : (
-                        <p>Loading Recommendations</p>
-                    )}
                 </div>
             </div>
         </div>

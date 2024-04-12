@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { buttonVariants } from "../ui/button";
-import { DotLoader } from "react-spinners";
+import { BeatLoader, DotLoader } from "react-spinners";
 import { useSearchParams } from "next/navigation";
 import { newVerificationToken } from "@/actions/new-verification";
 import { FormMessageError } from "../formError";
@@ -43,7 +43,7 @@ const VerificationPageCard = () => {
                 </h1>
 
                 <div className="mt-6 flex items-center w-full justify-center">
-                    {!success && !error && <DotLoader />}
+                    {!success && !error && <BeatLoader />}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-6 mt-8">

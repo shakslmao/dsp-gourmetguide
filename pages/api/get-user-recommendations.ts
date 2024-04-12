@@ -2,7 +2,7 @@
 
 import { db } from "@/db/prismadb";
 
-export const fetchUserRecommendations = async (userId: string | undefined) => {
+export const getUserRecommendations = async (userId: string | undefined) => {
     console.log("Fetching recommendations for user:", userId);
     if (!userId) {
         return null; // or throw an error depending on your error handling strategy
@@ -17,9 +17,18 @@ export const fetchUserRecommendations = async (userId: string | undefined) => {
                         fakeRestaurant: true,
                     },
                 },
+                RecommendationResultRestaurant: {
+                    include: {
+                        restaurant: true,
+                    },
+                },
+                RecommendationResultOutsideProxRestaurant: {
+                    include: {
+                        restaurant: true,
+                    },
+                },
             },
         });
-        console.log("Recommendation result:", recommendationResult);
 
         if (!recommendationResult) {
             return null;
@@ -28,9 +37,21 @@ export const fetchUserRecommendations = async (userId: string | undefined) => {
         const fakeRestaurants = recommendationResult.RecommendationResultFakeRestaurant.map(
             (restaurant) => restaurant.fakeRestaurant
         );
-        console.log("Fake restaurants:", fakeRestaurants);
 
-        return { fakeRestaurants };
+        const restaurants = recommendationResult.RecommendationResultRestaurant.map(
+            (restaurant) => restaurant.restaurant
+        );
+
+        const outsideProxRestaurant =
+            recommendationResult.RecommendationResultOutsideProxRestaurant.map(
+                (restaurant) => restaurant.restaurant
+            );
+
+        console.log("Fake restaurants:", fakeRestaurants);
+        console.log("Restaurants:", restaurants);
+        console.log("Outside prox restaurants:", outsideProxRestaurant);
+
+        return { fakeRestaurants, restaurants, outsideProxRestaurant };
     } catch (error) {
         console.error("Error fetching recommendations:", error);
         throw error;

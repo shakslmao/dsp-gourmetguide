@@ -117,8 +117,6 @@ model Restaurant {
     MenuItem                                  MenuItem[]
     RecommendationResultOutsideProxRestaurant RecommendationResultOutsideProxRestaurant[]
     RecommendationResultRestaurant            RecommendationResultRestaurant[]
-    RecommendationResult                      RecommendationResult?                       @relation(fields: [recommendationResultId], references: [id])
-    recommendationResultId                    String?                                     @db.ObjectId
 }
 
 model FakeRestaurant {
@@ -150,26 +148,25 @@ model RecommendationResult {
     RecommendationResultFakeRestaurant        RecommendationResultFakeRestaurant[]
     RecommendationResultOutsideProxRestaurant RecommendationResultOutsideProxRestaurant[]
     User                                      User                                        @relation(fields: [userId], references: [id])
-    Restaurant                                Restaurant[]
     RecommendationFeedback                    RecommendationFeedback[]
 }
 
 model RecommendationResultRestaurant {
     id                     String               @id @default(auto()) @map("_id") @db.ObjectId
     recommendationResultId String               @db.ObjectId
-    recommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
     restaurantId           String               @db.ObjectId
-    recommendationData     Json?
+    recommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
     restaurant             Restaurant           @relation(fields: [restaurantId], references: [id])
+    recommendationData     Json?
 }
 
 model RecommendationResultOutsideProxRestaurant {
     id                     String               @id @default(auto()) @map("_id") @db.ObjectId
     recommendationResultId String               @db.ObjectId
-    recommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
     restaurantId           String               @db.ObjectId
-    recommendationData     Json?
+    recommendationResult   RecommendationResult @relation(fields: [recommendationResultId], references: [id])
     restaurant             Restaurant           @relation(fields: [restaurantId], references: [id])
+    recommendationData     Json?
 }
 
 model RecommendationResultFakeRestaurant {

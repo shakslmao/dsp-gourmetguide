@@ -1,20 +1,15 @@
+import numpy as np
 import datetime
-import logging
+import pandas as pd
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import json
-import pandas as pd
 from pymongo import MongoClient
 from pymongo import ReturnDocument
 from geopy.distance import geodesic
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics.pairwise import cosine_similarity
 from bson.objectid import ObjectId
-import numpy as np
-from pydantic import BaseModel, Field, validator
-from typing import Optional
 from bson import ObjectId
-import re
 from FeedbackInputValidation import FeedbackInput
 
 
@@ -39,7 +34,8 @@ def calculate_distance(coord1, coord2):
         return None
 
 
-def update_user_recommendations(userId, recommendations):
+# Function to update the user recommendations in the database
+def update_user_fake_recommendations(userId, recommendations):
     try:
         # Fetch or create a recommendation result for the user
         recommendation_result = db['RecommendationResult'].find_one_and_update(
@@ -47,7 +43,9 @@ def update_user_recommendations(userId, recommendations):
             {"$setOnInsert": {
                 "createdAt": datetime.datetime.now(),
                 "feedbackReceived": False,
+                "RecommendationResultFakeRestaurant": [],
             }},
+
             upsert=True,
             return_document=ReturnDocument.AFTER
         )
@@ -66,6 +64,34 @@ def update_user_recommendations(userId, recommendations):
                 "recommendationData": fake_data
             })
 
+        update = {
+            "$addToSet": {
+                "RecommendationResultFakeRestaurant": {"$each": recommendations.get("fake", [])}
+            }
+        }
+        db['RecommendationResult'].update_one(
+            {"_id": recommendation_result_id}, update)
+
+    except Exception as e:
+        print(f"FAILED, ERROR: {e}")
+        print(f"userId: {userId}")
+
+
+# Function to update the user recommendations in the database
+def update_user_real_restaurants(userId, recommendations):
+    try:
+        recommendation_result = db['RecommendationResult'].find_one_and_update(
+            {"userId": ObjectId(userId)},
+            {"$setOnInsert": {
+                "createdAt": datetime.datetime.now(),
+                "feedbackReceived": False,
+                "RecommendationResultRestaurant": [],
+            }},
+            upsert=True,
+            return_document=ReturnDocument.AFTER
+        )
+
+        recommendation_result_id = recommendation_result["_id"]
         # Handling within proximity restaurant data
         within_proximity_restaurants_data = recommendations.get(
             "within_proximity", [])
@@ -75,10 +101,40 @@ def update_user_recommendations(userId, recommendations):
         for restaurant_data in within_proximity_restaurants_data:
             db["RecommendationResultRestaurant"].insert_one({
                 "recommendationResultId": recommendation_result_id,
+                "restaurantId": restaurant_data['_id'],
                 "recommendationData": restaurant_data
             })
 
-        # Handling outside proximity restaurant data
+        update = {
+            "$addToSet": {
+                "RecommendationResultRestaurant": {"$each": recommendations.get("within_proximity", [])}
+            }
+        }
+        db['RecommendationResult'].update_one(
+            {"_id": recommendation_result_id}, update)
+
+    except Exception as e:
+        print(f"FAILED, ERROR: {e}")
+        print(f"userId: {userId}")
+
+
+# Function to update the user recommendations in the database
+def update_user_outside_prox_restaurants(userId, recommendations):
+    try:
+        recommendation_result = db['RecommendationResult'].find_one_and_update(
+            {"userId": ObjectId(userId)},
+            {"$setOnInsert": {
+                "createdAt": datetime.datetime.now(),
+                "feedbackReceived": False,
+                "RecommendationResultOutsideProxRestaurant": [],
+            }},
+            upsert=True,
+            return_document=ReturnDocument.AFTER
+        )
+
+        recommendation_result_id = recommendation_result["_id"]
+
+       # Handling outside proximity restaurant data
         outside_proximity_restaurants_data = recommendations.get(
             "outside_proximity", [])
         db["RecommendationResultOutsideProxRestaurant"].delete_many(
@@ -87,21 +143,17 @@ def update_user_recommendations(userId, recommendations):
         for outside_prox_restaurant_data in outside_proximity_restaurants_data:
             db["RecommendationResultOutsideProxRestaurant"].insert_one({
                 "recommendationResultId": recommendation_result_id,
+                "restaurantId": outside_prox_restaurant_data['_id'],
                 "recommendationData": outside_prox_restaurant_data
             })
 
-        '''
-        # Update the RecommendationResult document
         update = {
             "$addToSet": {
-                "RecommendationResultFakeRestaurant": {"$each": recommendations.get("fake", [])},
-                "RecommendationResultRestaurant": {"$each": recommendations.get("within_proximity", [])},
-                "RecommendationResultOutsideProxRestaurant": {"$each": recommendations.get("outside_proximity", [])},
+                "RecommendationResultOutsideProxRestaurant": {"$each": recommendations.get("outside_proximity", [])}
             }
         }
-          db['RecommendationResult'].update_one(
-            {"_id": recommendation_result_id})
-        '''
+        db['RecommendationResult'].update_one(
+            {"_id": recommendation_result_id}, update)
 
     except Exception as e:
         print(f"FAILED, ERROR: {e}")
@@ -110,7 +162,6 @@ def update_user_recommendations(userId, recommendations):
 
 @ app.route("/recommendations_for_fake_data", methods=["POST"])
 def recommendations_for_fake_data():
-    print("Request received at /recommendations_for_fake_data")
     try:
         data = request.json
         userId = data.get("userId")
@@ -216,7 +267,6 @@ def recommendations_for_fake_data():
         user_ambience_preferences = set([ambience.lower()
                                         for ambience in preferences_data['ambienceTypes']])
 
-        print("Preparing to access coords with preferences_data:", preferences_data)
         if preferences_data and "userCoordinates" in preferences_data and preferences_data["userCoordinates"]:
             user_location_coords = (preferences_data['userCoordinates']
                                     ['latitude'], preferences_data['userCoordinates']['longitude'])
@@ -326,7 +376,7 @@ def recommendations_for_fake_data():
             # Push the recommendations to the database
             new_recommendations = recommendations.to_dict(orient='records')
             recommendation_data = {"fake": new_recommendations}
-            update_user_recommendations(
+            update_user_fake_recommendations(
                 userId=userId, recommendations=recommendation_data)
             return jsonify({"message": "Success", "userId": userId}), 200
 
@@ -500,11 +550,10 @@ def recommendations_for_current_location():
         try:
             new_recommendations_within_proximity = top_recommendations_within_proximity.to_dict(
                 orient='records')
-            recommendations = {
-                "within_proximity": new_recommendations_within_proximity
-            }
-            update_user_recommendations(
-                userId=userId, recommendations=recommendations)
+            recommendation_data = {
+                "within_proximity": new_recommendations_within_proximity}
+            update_user_real_restaurants(
+                userId=userId, recommendations=recommendation_data)
 
             return jsonify({"message": "Success", "userId": userId}), 200
 
@@ -677,11 +726,11 @@ def recommendations_for_preferred_locations():
         try:
             new_recommendations_outside_proximity = top_recommendations_outside_proximity.to_dict(
                 orient='records')
-            recommendations = {
+            recommendation_data = {
                 "outside_proximity": new_recommendations_outside_proximity
             }
-            update_user_recommendations(
-                userId=userId, recommendations=recommendations)
+            update_user_outside_prox_restaurants(
+                userId=userId, recommendations=recommendation_data)
 
             print("Successfully updated recommendations in the database")
             return jsonify({"message": "Success", "userId": userId}), 200
