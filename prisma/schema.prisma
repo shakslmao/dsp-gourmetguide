@@ -123,16 +123,16 @@ model FakeRestaurant {
     id                                 String                               @id @default(auto()) @map("_id") @db.ObjectId
     restaurantId                       String                               @unique @map("restaurant_id") @db.ObjectId
     restaurantName                     String                               @map("name")
-    cuisine                            String[]
-    dietary                            String[]
+    cuisine                            Json[]
+    dietary                            Json[]
     priceRange                         String                               @map("price")
     rating                             Float
     reviewCount                        Int                                  @map("review_count")
-    ambience                           String[]
+    ambience                           Json[]
     accessibility                      String
     location                           String
-    coordinates                        String[]
-    openingHours                       String[]                             @map("opening_hours")
+    coordinates                        Json
+    openingHours                       Json                                 @map("opening_hours")
     UserRestaurant                     UserRestaurant[]
     UserReviews                        UserReviews[]
     MenuItem                           MenuItem[]

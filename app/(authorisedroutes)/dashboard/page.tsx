@@ -1,7 +1,5 @@
 "use client";
 
-import { useCurrentUser } from "@/hooks/get-user-prefs";
-import React, { useState, useEffect, use } from "react";
 import {
     Drawer,
     DrawerClose,
@@ -13,32 +11,10 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Button, buttonVariants } from "@/components/ui/button";
-import {
-    FakeRestaurantProps,
-    isValidRecommendationContextType,
-    RecommendationContextType,
-} from "@/types/RecommendationTypes";
-import { getUserRecommendations } from "@/pages/api/get-user-recommendations";
+import { useCurrentUser } from "@/hooks/get-user-data";
 
 const DashboardPage = () => {
-    const { currentUser, userPreferences } = useCurrentUser() || {};
-    const [recommendations, setRecommendations] = useState<RecommendationContextType>();
-
-    useEffect(() => {
-        if (!currentUser) return;
-        if (currentUser?.id) {
-            getUserRecommendations(currentUser?.id)
-                .then((data) => {
-                    if (isValidRecommendationContextType(data)) {
-                        setRecommendations(data);
-                    } else {
-                        console.error("Error", data);
-                    }
-                })
-                .catch((error) => console.error("Error fetching user recommendations:", error));
-        }
-    }, [currentUser?.id]);
-    console.log("Recommendations", recommendations);
+    const { currentUser, userPreferences, userRecommendations } = useCurrentUser() || {};
 
     return (
         <div className="flex items-center justify-center min-h-screen">
@@ -78,6 +54,11 @@ const DashboardPage = () => {
                         </Drawer>
                     </div>
                 </div>
+                {userRecommendations ? (
+                    JSON.stringify(userRecommendations)
+                ) : (
+                    <p>Loading user recommendations...</p>
+                )}
             </div>
         </div>
     );

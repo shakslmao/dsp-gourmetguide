@@ -12,7 +12,7 @@ import {
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import UserAvatar from "../Avatar";
-import { useCurrentUser } from "@/hooks/get-user-prefs";
+import { useCurrentUser } from "@/hooks/get-user-data";
 import { logout } from "@/actions/logout";
 
 const UserDropdown = () => {

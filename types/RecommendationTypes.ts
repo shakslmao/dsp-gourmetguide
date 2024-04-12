@@ -1,18 +1,44 @@
+export interface Cuisine {
+    label: string;
+    flag: string;
+    description: string;
+}
+
+export interface Dietary {
+    label: string;
+    description: string;
+}
+
+export interface Ambience {
+    label: string;
+    description: string;
+}
+
+export interface Coordinates {
+    latitude: number;
+    longitude: number;
+}
+
+export interface OpeningHours {
+    [day: string]: string;
+}
+
 export interface FakeRestaurantProps {
     id: string;
     restaurantId: string;
     restaurantName: string;
-    cuisine: string[];
-    dietary: string[];
+    cuisine: Cuisine[];
+    dietary: Dietary[];
     priceRange: string;
     rating: number;
     reviewCount: number;
-    ambience: string[];
+    ambience: Ambience[];
     accessibility: string;
     location: string;
-    coordinates: string[];
-    openingHours: string[];
+    coordinates: Coordinates;
+    openingHours: OpeningHours;
 }
+
 export interface RestaurantProps {
     id: string;
     yelpId: string;
@@ -33,14 +59,17 @@ export interface RestaurantProps {
     ratingsId?: string | null;
 }
 
-export interface RecommendationContextType {
+export interface RecommendationState {
     RecommendationResultRestaurant: RestaurantProps[];
     RecommendationResultOutsideProxRestaurant: RestaurantProps[];
     RecommendationResultFakeRestaurant: FakeRestaurantProps[];
-    updateRecommendations: (newRecommendations: Partial<RecommendationContextType>) => void;
 }
 
-export function isValidRecommendationContextType(data: any): data is RecommendationContextType {
+export interface RecommendationContextType extends RecommendationState {
+    updateRecommendations: (newRecommendations: Partial<RecommendationState>) => void;
+}
+
+export function isValidRecommendationContextType(data: any): data is RecommendationState {
     return (
         data &&
         data.RecommendationResultRestaurant &&

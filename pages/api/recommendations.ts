@@ -1,20 +1,30 @@
 "use server";
+
 import { db } from "@/db/prismadb";
-import { RecommendationContextType } from "@/types/RecommendationTypes";
+import { RecommendationState } from "@/types/RecommendationTypes";
+import {
+    parseAmbience,
+    parseCoordinates,
+    parseCuisine,
+    parseDietary,
+    parseOpeningHours,
+} from "@/utils/parsing";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<RecommendationContextType | { error: string }>
+    res: NextApiResponse<RecommendationState | { error: string }>
 ) {
     if (req.method === "GET") {
         const userId = req.query.userId as string;
         if (!userId) {
+            console.error("User ID Missing in Request");
             return res.status(400).json({ error: "User ID is required" });
         }
         try {
             const user = await db.user.findUnique({ where: { id: userId } });
             if (!user) {
+                console.error(`User not found for ID:" ${userId}`);
                 return res.status(404).json({ error: "User not found" });
             }
 
@@ -38,24 +48,29 @@ export default async function handler(
                     },
                 },
             });
+            console.log("Fetching recommendations for user:", userId);
+
+            if (!recommendationResult) {
+                return null;
+            }
 
             if (recommendationResult && user) {
-                const response: RecommendationContextType = {
+                const response: RecommendationState = {
                     RecommendationResultFakeRestaurant:
                         recommendationResult.RecommendationResultFakeRestaurant.map((r) => ({
                             id: r.fakeRestaurant.id,
                             restaurantId: r.fakeRestaurant.restaurantId,
                             restaurantName: r.fakeRestaurant.restaurantName,
-                            cuisine: r.fakeRestaurant.cuisine,
-                            dietary: r.fakeRestaurant.dietary,
+                            cuisine: parseCuisine(r.fakeRestaurant.cuisine),
+                            dietary: parseDietary(r.fakeRestaurant.dietary),
                             priceRange: r.fakeRestaurant.priceRange,
                             rating: r.fakeRestaurant.rating,
                             reviewCount: r.fakeRestaurant.reviewCount,
-                            ambience: r.fakeRestaurant.ambience,
+                            ambience: parseAmbience(r.fakeRestaurant.ambience),
                             accessibility: r.fakeRestaurant.accessibility,
                             location: r.fakeRestaurant.location,
-                            coordinates: r.fakeRestaurant.coordinates,
-                            openingHours: r.fakeRestaurant.openingHours,
+                            coordinates: parseCoordinates(r.fakeRestaurant.coordinates),
+                            openingHours: parseOpeningHours(r.fakeRestaurant.openingHours),
                         })),
 
                     RecommendationResultRestaurant:
@@ -99,13 +114,14 @@ export default async function handler(
                             reviewsId: r.restaurant.reviewsId,
                             ratingsId: r.restaurant.ratingsId,
                         })),
-                    updateRecommendations: () => {},
                 };
+                console.log("Recommendations fetched successfully");
                 res.status(200).json(response);
             } else {
                 res.status(404).json({ error: "Recommendation not found" });
             }
         } catch (error) {
+            console.error("Server error when fetching recommendations:", error);
             res.status(500).json({ error: "Failed to fetch recommendations" });
         }
     }

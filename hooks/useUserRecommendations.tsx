@@ -1,13 +1,12 @@
 "use client";
 
 import { ReactNode, createContext, useContext, useState } from "react";
-import { RecommendationContextType } from "@/types/RecommendationTypes";
+import { RecommendationContextType, RecommendationState } from "@/types/RecommendationTypes";
 
-const defaultRecommendations: RecommendationContextType = {
+const defaultRecommendations: RecommendationState = {
     RecommendationResultFakeRestaurant: [],
     RecommendationResultRestaurant: [],
     RecommendationResultOutsideProxRestaurant: [],
-    updateRecommendations: () => {},
 };
 
 const RecommendationsContext = createContext<RecommendationContextType | undefined>(undefined);
@@ -22,7 +21,7 @@ export const useUserRecommendations = (): RecommendationContextType => {
 
 export const UserRecommendationsProvider = ({ children }: { children: ReactNode }) => {
     const [recommendations, setRecommendations] =
-        useState<RecommendationContextType>(defaultRecommendations);
+        useState<RecommendationState>(defaultRecommendations);
 
     const updateRecommendations = async (
         newRecommendations: Partial<RecommendationContextType>
