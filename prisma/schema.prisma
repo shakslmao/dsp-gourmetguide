@@ -93,19 +93,19 @@ model Preferences {
 
 model Restaurant {
     id                                        String                                      @id @default(auto()) @map("_id") @db.ObjectId
-    yelpId                                    String?                                     @unique
-    alias                                     String?
-    restaurantName                            String?
-    imageUrl                                  String?
+    yelpId                                    String                                      @unique
+    alias                                     String
+    restaurantName                            String
+    imageUrl                                  String
     url                                       String?
-    isClosed                                  Boolean?
+    isClosed                                  Boolean
     categories                                String[]
-    reviewCount                               Int?
-    coordinates                               Json?
-    price                                     Int?
-    phone                                     String?
-    displayPhone                              String?
-    customerRatings                           Float?
+    reviewCount                               Int
+    coordinates                               Json
+    price                                     Int
+    phone                                     String
+    displayPhone                              String
+    customerRatings                           Float
     locationId                                String?
     reviewsId                                 String?
     ratingsId                                 String?
@@ -123,16 +123,16 @@ model FakeRestaurant {
     id                                 String                               @id @default(auto()) @map("_id") @db.ObjectId
     restaurantId                       String                               @unique @map("restaurant_id") @db.ObjectId
     restaurantName                     String                               @map("name")
-    cuisine                            Json
-    dietary                            Json
+    cuisine                            String[]
+    dietary                            String[]
     priceRange                         String                               @map("price")
     rating                             Float
     reviewCount                        Int                                  @map("review_count")
-    ambience                           Json
+    ambience                           String[]
     accessibility                      String
     location                           String
-    coordinates                        Json
-    openingHours                       Json                                 @map("opening_hours")
+    coordinates                        String[]
+    openingHours                       String[]                             @map("opening_hours")
     UserRestaurant                     UserRestaurant[]
     UserReviews                        UserReviews[]
     MenuItem                           MenuItem[]

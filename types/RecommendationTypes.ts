@@ -1,13 +1,8 @@
-interface Coordinates {
-    latitude: number;
-    longitude: number;
-}
-
 export interface FakeRestaurantProps {
     id: string;
     restaurantId: string;
     restaurantName: string;
-    cuisines: string[];
+    cuisine: string[];
     dietary: string[];
     priceRange: string;
     rating: number;
@@ -15,34 +10,34 @@ export interface FakeRestaurantProps {
     ambience: string[];
     accessibility: string;
     location: string;
-    coordinates: Coordinates;
-    openingHours: string[] | string;
+    coordinates: string[];
+    openingHours: string[];
 }
-
 export interface RestaurantProps {
     id: string;
-    yelpId?: string;
-    alias?: string;
-    restaurantName?: string;
-    imageUrl?: string;
-    url?: string;
-    isClosed?: boolean;
+    yelpId: string;
+    alias: string;
+    restaurantName: string;
+    imageUrl: string;
+    url?: string | null;
+    isClosed: boolean;
     categories: string[];
-    reviewCount?: number;
-    coordinates?: Coordinates;
-    price?: number;
-    phone?: string;
-    displayPhone?: string;
-    customerRatings?: number;
-    locationId?: string;
-    reviewsId?: string;
-    ratingsId?: string;
+    reviewCount: number;
+    coordinates: any;
+    price: number;
+    phone: string;
+    displayPhone: string;
+    customerRatings: number;
+    locationId?: string | null;
+    reviewsId?: string | null;
+    ratingsId?: string | null;
 }
 
 export interface RecommendationContextType {
     RecommendationResultRestaurant: RestaurantProps[];
     RecommendationResultOutsideProxRestaurant: RestaurantProps[];
     RecommendationResultFakeRestaurant: FakeRestaurantProps[];
+    updateRecommendations: (newRecommendations: Partial<RecommendationContextType>) => void;
 }
 
 export function isValidRecommendationContextType(data: any): data is RecommendationContextType {
