@@ -6,8 +6,6 @@ import { useUserPreferences } from "@/hooks/useUserCuisinePreferences";
 import Link from "next/link";
 
 export default function Home() {
-    const { preferences, updatePreferences } = useUserPreferences();
-    console.log(preferences);
     return (
         <div className="flex items-center justify-center min-h-screen">
             <div className="py-20 mx-auto text-center flex flex-col items-center max-w-3xl">

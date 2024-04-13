@@ -15,9 +15,7 @@ const UserNavbar = () => {
 
                 {/* Centered navigation dropdown */}
                 {currentUser?.currentUser && (
-                    <div className="flex justify-center">
-                        <NavigationDropdown />
-                    </div>
+                    <div className="flex justify-center">{/* <NavigationDropdown /> */}</div>
                 )}
 
                 {/* Right side of the navbar: User dropdown or sign in and blog links */}

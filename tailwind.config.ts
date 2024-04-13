@@ -77,6 +77,15 @@ const config = {
                 "accordion-up": "accordion-up 0.2s ease-out",
                 "caret-blink": "caret-blink 1.25s ease-out infinite",
             },
+            scrollbar: {
+                hide: {
+                    "&::-webkit-scrollbar": {
+                        display: "none",
+                    },
+                    "-ms-overflow-style": "none",
+                    "scrollbar-width": "none",
+                },
+            },
         },
     },
     plugins: [require("tailwindcss-animate")],
