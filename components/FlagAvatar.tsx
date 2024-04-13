@@ -28,6 +28,7 @@ const FlagAvatar = ({ src, icon }: FlagAvatarProps) => {
                 className="rounded-full"
                 alt=""
                 src={src || ""}
+                sizes=""
             />
         );
     }

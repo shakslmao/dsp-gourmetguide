@@ -3,10 +3,10 @@ import { useCurrentUser } from "@/hooks/get-user-data";
 import Link from "next/link";
 import UserDropdown from "./UserDropdown";
 import { NavigationDropdown } from "./NavigationDropdown";
+import Categories from "./Categories";
 
 const UserNavbar = () => {
     const currentUser = useCurrentUser();
-
     return (
         <div className="relative w-full">
             <div className="flex flex-row items-center justify-between">
