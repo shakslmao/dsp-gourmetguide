@@ -482,7 +482,7 @@ def recommendations_for_current_location():
         # Mapping from user preference labels to numeric values
         price_preference_mapping = {
             "NO_PREFERENCE": 0,
-            "VERY_LOW"
+            "VERY_LOW": 1,
             "LOW": 2,
             "MEDIUM": 3,
             "HIGH": 4,

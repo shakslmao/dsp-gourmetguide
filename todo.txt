@@ -1,0 +1,5 @@
+todo:
+    if no preferences get submitted, reroute user back to preferences page or create a default set of preferences
+    feedback looop
+    unit testings
+    ui

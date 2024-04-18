@@ -63,6 +63,7 @@ export const register = async (
     const saltRounds = 12;
     // Hash the password using bcrypt.
     const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     // Check if a user with the given email already exists in the database.
     const existingUser = await db.user.findUnique({
         where: {
@@ -85,7 +86,9 @@ export const register = async (
                 password: hashedPassword,
             },
         });
+
         console.log("New user created with ID:", user.id);
+
         // If user preferences are provided, create a new preferences record and associate it with the user.
         if (data.preferences) {
             const priceRangeEnum = stringToPriceRange[data.preferences.priceRangePreference];
@@ -118,7 +121,6 @@ export const register = async (
 
             for (const business of yelpResponse.businesses) {
                 const { id } = business;
-
                 // Check if the restaurant already exists, and if not, create it
                 const restaurant = await db.restaurant.upsert({
                     where: { yelpId: id },
@@ -176,7 +178,7 @@ export const register = async (
                 },
             });
 
-            // Send data to Django endpoint for data preprocessing
+            // Send data to flask endpoint for data preprocessing
             const response = await fetch(flaskEndPoint, {
                 // Note the change in URL
                 method: "POST",

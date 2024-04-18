@@ -37,7 +37,10 @@ export const useUserPreferences = (): UserCuisinePreferencesContextType => {
     return context;
 };
 
-// Provider component for UserPreferences, allowing state management for user preferences.
+/* 
+Provider component for UserPreferences, allowing state management for user preferences
+This will be used to wrap th entire application, in page.tsx (root component),
+allowing access to user preferences from any child component */
 export const UserCuisinePreferencesProvider = ({ children }: { children: ReactNode }) => {
     const [preferences, setPreferences] = useState<UserCuisinePreferences>(defaultUserPrefs); // Initialise state with default preferences.
 

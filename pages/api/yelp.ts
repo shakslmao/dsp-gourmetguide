@@ -29,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const price = convertPriceRange(preferences.priceRangePreference);
     const params = new URLSearchParams({
         term: "restaurants",
-        location: preferences.currentLocation || "london",
+        location: preferences.currentLocation || "Bristol", // Default to Bristol if no location is provided
         radius: preferences.recommendationRadius
             ? String(preferences.recommendationRadius * 1000)
             : "30000",
