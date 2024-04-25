@@ -28,6 +28,6 @@
         ".next/types/**/*.ts",
         "tests/yelpFetchTest.test.js",
         "tests/.test.js"
-    ],
+, ".babelrc.ts"    ],
     "exclude": ["node_modules"]
 }

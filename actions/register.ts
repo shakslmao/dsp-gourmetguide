@@ -236,7 +236,7 @@ export const register = async (
                                 latitude: item.coordinates.latitude,
                                 longitude: item.coordinates.longitude,
                             },
-                            price: item.price ? item.price.length : null,
+                            price: item.price ? item.price.length : 0,
                             phone: item.phone,
                             displayPhone: item.display_phone,
                             Location: {

@@ -32,9 +32,11 @@ const config: Config = {
     //   "/node_modules/"
     // ],
 
+    moduleNameMapper: {
+        "^@/(.*)$": "<rootDir>/$1",
+    },
     // Indicates which provider should be used to instrument code for coverage
     coverageProvider: "v8",
-    testEnvironment: "jsdom",
 
     // A list of reporter names that Jest uses when writing coverage reports
     // coverageReporters: [
@@ -103,7 +105,7 @@ const config: Config = {
     // notifyMode: "failure-change",
 
     // A preset that is used as a base for Jest's configuration
-    // preset: undefined,
+    preset: "ts-jest",
 
     // Run tests from one or more projects
     // projects: undefined,
@@ -147,7 +149,7 @@ const config: Config = {
     // snapshotSerializers: [],
 
     // The test environment that will be used for testing
-    // testEnvironment: "jest-environment-node",
+    testEnvironment: "node",
 
     // Options that will be passed to the testEnvironment
     // testEnvironmentOptions: {},
@@ -176,7 +178,9 @@ const config: Config = {
     // testRunner: "jest-circus/runner",
 
     // A map from regular expressions to paths to transformers
-    // transform: undefined,
+    transform: {
+        "^.+\\.(ts|tsx)$": "ts-jest",
+    },
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
     // transformIgnorePatterns: [
