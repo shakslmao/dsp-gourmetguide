@@ -15,7 +15,7 @@ jest.mock("../db/prismadb", () => ({
         user: {
             findUnique: jest.fn().mockImplementation(({ where }) => {
                 if (where.email === "text@example.com") {
-                    return Promise.resolve({ email: "test@example.com " });
+                    return Promise.resolve({ email: "test@example.com" });
                 }
                 return Promise.resolve(null);
             }),
@@ -118,6 +118,7 @@ describe("register", () => {
             recommendationRadius: 10,
             locationFeatureUsed: false,
         };
+        
 
         const mockUser = { id: 1, preferencesId: 1 };
         const mockPreferencesResult = { id: 1 };
@@ -209,4 +210,6 @@ describe("register", () => {
             })
         );
     });
+    
 });
+

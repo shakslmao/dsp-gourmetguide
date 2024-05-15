@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import datetime
 import pandas as pd
@@ -20,7 +21,9 @@ from FeedbackInputValidation import FeedbackInput
 app = Flask(__name__)
 print("Server is running")
 CORS(app, origins=["http://localhost:3000"])
-con_string = "mongodb+srv://shaaqzak:akram101@cluster0.lrls17a.mongodb.net/test"
+
+# Change back to hardcoded string if not working
+con_string = os.getenv("DATABASE_URL")
 client = MongoClient(con_string)
 db = client.get_database()
 

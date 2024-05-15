@@ -1,7 +1,8 @@
+import os
 from pymongo import MongoClient
 import json
 
-con_string = "mongodb+srv://shaaqzak:akram101@cluster0.lrls17a.mongodb.net/test"
+con_string = os.getenv("DATABASE_URL")
 client = MongoClient(con_string)
 db_names = client.list_database_names()
 print(db_names)

@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from pymongo import MongoClient
 from geopy.distance import geodesic
@@ -7,7 +8,7 @@ from bson.objectid import ObjectId
 import numpy as np
 
 
-con_string = "mongodb+srv://shaaqzak:akram101@cluster0.lrls17a.mongodb.net/test"
+con_string = os.getenv("DATABASE_URL")
 client = MongoClient(con_string)
 
 db = client.get_database()
